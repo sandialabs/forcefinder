@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: forcefinder
+Version: 0.1.0
+Summary: An advanced inverse source estimation package for Python
+Home-page: https://cee-gitlab.sandia.gov/spcarte/forcefinder
+Author: Steven Carter
+Author-email: spcarte@sandia.gov
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10Operating System :: Microsoft :: Windows :: Windows 11Operating System :: MacOS :: MacOS X
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: sdynpy
+Requires-Dist: joblib
+
+# Force Finder
+This repository houses ForceFinder, which is a Python package that extends SDynPy (Structural Dynamics Python Libraries) with a comprehensive tool for inverse source estimation (ISE) tasks via frequency response function (FRF) matrix inversion. ForceFinder leverages an object oriented framework, where all the components of the ISE problem (e.g., the FRFs, responses, transformations, etc.) are stored in a so-called "SourcePathReceiver" object.
+
+The main benefits of ForceFinder are:
+- Automated bookkeeping
+    - Organizes FRF and response DOFs to be consistent for the source estimate
+    - Manages sample splitting for training and validation response DOFs
+    - Organizes and applies response and reference transformation matrices, as appropriate
+    - Ensures consistent abscissa quantities
+    - Etc.
+- Automatic recording keeping for the meta-data related to the inverse problem
+- Automatic regularization methods to mitigate overfitting 
+
+The SourcePathReceiver object has also been built into a Rattlesnake control law for both random and transient vibration control, meaning that the same exact code can be used in offline predictions and online control during a multiple-input/multiple-output (MIMO) vibration test. Note that the control laws are included in this package for completeness, but are not imported to the Python environment when ForceFinder is used.
+
+## Support
+Please submit any bugs or feature requests into the GitLab issue tracker.
+
+## Project status
+ForceFinder is currently under development and the current version should be treated as an "alpha" release.  
