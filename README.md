@@ -21,16 +21,17 @@ The ForceFinder project has two main goals:
 2. Make it easier for non-expert practitioners to use advanced ISE tools through the creation of a simple object-oriented framework where ISE methods can be used with a simple method call.
 
 ## Support
-Please submit any bugs or feature requests into the GitLab issue tracker.
+Please submit any bugs or feature requests into the Github issue tracker.
 
 ## Project status
 ForceFinder is currently under development and the current version should be treated as an "alpha" release. Breaking changes may be pushed to the develop branch without notice. 
 
 ## Installation and Usage
-It is suggested that ForceFinder be installed from a GIT repository on the users local machine. Note that the package is in its infancy and may see rapid changes over the coming weeks/months, which is why a GIT repository is suggested. The process for doing this is:
+It is suggested that ForceFinder be installed from a GIT repository on the users local machine because the package is in active development may see changes over the coming months. The process for doing this is:
 
 1. Clone the ForceFinder repository to your local machine via "Clone with SSH"
 2. PIP install ForceFinder with the following commands (from the command prompt or terminal):
     - cd local_ForceFinder_repository (this is the filepath to the local repository)
     - pip install -e . (this will pip install the whole repository, the -e flag lets python know that the package is a git repo so it will see changes as they are made to the repo)
 3. Use ForceFinder with the following import "import forcefinder as ff" 
+
