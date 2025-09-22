@@ -12,7 +12,7 @@ The main features of ForceFinder are:
 - Automatic recording keeping for the meta-data related to the inverse problem
 - Automatic regularization methods to mitigate overfitting 
 
-The SourcePathReceiver object has also been built into a Rattlesnake control law for both random and transient vibration control, meaning that the same exact code can be used in offline predictions and online control during a multiple-input/multiple-output (MIMO) vibration test. Note that the control laws are included in this package for completeness, but are not imported to the Python environment when ForceFinder is used.
+The SourcePathReceiver object has also been built into a Rattlesnake control law for random vibration control, meaning that the same exact code can be used in offline predictions and online control during a multiple-input/multiple-output (MIMO) vibration test. Note that the control law is included with this package for completeness, but are not imported to the Python environment when ForceFinder is used.
 
 ## Goals
 The ForceFinder project has two main goals:
@@ -24,7 +24,7 @@ The ForceFinder project has two main goals:
 Please submit any bugs or feature requests into the Github issue tracker.
 
 ## Project status
-ForceFinder is currently under development and the current version should be treated as an "alpha" release. Breaking changes may be pushed to the develop branch without notice. 
+ForceFinder is currently under development and the current version should be treated as an "alpha" release. Breaking changes may be pushed to the develop and main branches without notice. 
 
 ## Installation and Usage
 It is suggested that ForceFinder be installed from a GIT repository on the users local machine because the package is in active development may see changes over the coming months. The process for doing this is:
@@ -34,4 +34,5 @@ It is suggested that ForceFinder be installed from a GIT repository on the users
     - cd local_ForceFinder_repository (this is the filepath to the local repository)
     - pip install -e . (this will pip install the whole repository, the -e flag lets python know that the package is a git repo so it will see changes as they are made to the repo)
 3. Use ForceFinder with the following import "import forcefinder as ff" 
+
 
