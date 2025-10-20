@@ -1,3 +1,5 @@
+[![Main Tests](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml)
+
 ![ForceFinder Logo](/logo/ForceFinder_Logo.png)
 # ForceFinder Inverse Source Estimation
 This repository houses ForceFinder, which is a Python project that extends SDynPy (Structural Dynamics Python Libraries) with a comprehensive tool for inverse source estimation (ISE) tasks via frequency response function (FRF) matrix inversion. ForceFinder leverages an object oriented framework, where all the components of the ISE problem (e.g., the FRFs, responses, transformations, etc.) are stored in a so-called "SourcePathReceiver" object.
@@ -34,5 +36,6 @@ It is suggested that ForceFinder be installed from a GIT repository on the users
     - cd local_ForceFinder_repository (this is the filepath to the local repository)
     - pip install -e . (this will pip install the whole repository, the -e flag lets python know that the package is a git repo so it will see changes as they are made to the repo)
 3. Use ForceFinder with the following import "import forcefinder as ff" 
+
 
 
