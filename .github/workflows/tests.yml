@@ -30,4 +30,9 @@ jobs:
           pip install pytest pytest-cov
 
       - name: Run tests
-        run: pytest --cov=forcefinder
+        run: pytest --cov=forcefinder --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          file: ./coverage.xml
