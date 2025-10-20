@@ -1,4 +1,4 @@
-[![Main Tests](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml)
+[![Main Tests](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/forcefinder/actions/workflows/tests.yml) [![codecov](https://codecov.io/gh/sandialabs/forcefinder/graph/badge.svg?token=TxYDhM7NCq)](https://codecov.io/gh/sandialabs/forcefinder)
 
 ![ForceFinder Logo](/logo/ForceFinder_Logo.png)
 # ForceFinder Inverse Source Estimation
@@ -36,6 +36,7 @@ It is suggested that ForceFinder be installed from a GIT repository on the users
     - cd local_ForceFinder_repository (this is the filepath to the local repository)
     - pip install -e . (this will pip install the whole repository, the -e flag lets python know that the package is a git repo so it will see changes as they are made to the repo)
 3. Use ForceFinder with the following import "import forcefinder as ff" 
+
 
 
 
