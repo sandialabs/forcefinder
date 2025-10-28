@@ -2,9 +2,9 @@ name: Main Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -36,4 +36,5 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           file: ./coverage.xml
+          flags: ${{ github.ref_name }}
           token: ${{ secrets.CODECOV_TOKEN }}
