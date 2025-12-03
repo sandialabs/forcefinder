@@ -1,0 +1,41 @@
+name: Publish Python package to PyPI
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"   # e.g. v0.1.0, v0.1.1
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    # Required for Trusted Publishing
+    permissions:
+      id-token: write
+      contents: read
+
+    # Optional but recommended – must match the PyPI pending publisher
+    environment: pypi
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install build backend
+        run: |
+          pip install --upgrade pip
+          pip install build
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Publish to PyPI (Trusted Publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
