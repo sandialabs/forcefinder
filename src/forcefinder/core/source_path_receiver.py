@@ -30,7 +30,8 @@ from scipy.linalg import norm
 from scipy.signal import sosfiltfilt 
 from scipy.fft import rfftfreq
 from scipy.interpolate import interp1d
-from .utilities import (check_frequency_abscissa, compare_sampling_rate, is_cpsd, apply_buzz_method)
+from .utilities import (check_frequency_abscissa, compare_sampling_rate, is_cpsd, apply_buzz_method,
+                        reduce_drives_condition_not_met)
 from .inverse_processing import (linear_inverse_processing, power_inverse_processing, transient_inverse_processing)
 from .auto_regularization import (tikhonov_full_path_for_l_curve,
                                   l_curve_optimal_regularization,
@@ -45,6 +46,10 @@ from ..transient_quality_evaluation.transient_quality_metrics import (preprocess
                                                                       compute_average_rms_error,
                                                                       compute_time_varying_trac,
                                                                       compute_time_varying_level_error)
+from .transient_utilities import attenuate_signal
+import cvxpy as cp
+from joblib import delayed, Parallel
+import warnings
 from copy import deepcopy
 
 class SourcePathReceiver:
@@ -85,29 +90,29 @@ class SourcePathReceiver:
         response_transformation applied.
     reconstructed_validation_response
         The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : coordinate_array
+    response_coordinate : CoordinateArray
         All the response DOFs in teh SPR object, including the prediction, training, and 
         validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : coordinate_array
+    target_response_coordinate : CoordinateArray
         The target_response coordinates of the SPR object, based on the intersection of the
         DOFs in the target_response and FRFs.
-    training_response_coordinate : coordinate_array
+    training_response_coordinate : CoordinateArray
         The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : coordinate_array
+    validation_response_coordinate : CoordinateArray
         The validation response coordinates of teh SPR object, based on the difference between
         the target and training response coordinates.
-    reference_coordinate : coordinate_array
+    reference_coordinate : CoordinateArray
         The reference coordinates of the SPR object, based on the FRFs.
     response_transformation : Matrix
         The response transformation that is used in the inverse problem. The default is 
         identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : coordinate_array
+    transformed_response_coordinate : CoordinateArray
         The coordinates that the response is transformed into through the response 
         transformation array.
     reference_transformation : Matrix
         The reference transformation that is used in the inverse problem. The default is 
         identity.
-    transformed_reference_coordinate : coordinate_array
+    transformed_reference_coordinate : CoordinateArray
         The coordinates that the reference is transformed into through the reference 
         transformation array.
     abscissa : float
@@ -144,7 +149,7 @@ class SourcePathReceiver:
             The measured responses that will be used to estimate the forces in the SPR object 
             (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
             response if a training response or training_response_coordinate is not supplied .
-        training_response_coordinate : coordinate_array, optional
+        training_response_coordinate : CoordinateArray, optional
             The training response coordinates of teh SPR object, based on the training responses.
         response_transformation : Matrix, optional
             The response transformation that is used in the inverse problem. The default is 
@@ -575,7 +580,7 @@ class SourcePathReceiver:
         return self
     
     def apply_reference_weighting(self, physical_reference_weighting = None,
-                                 transformed_reference_weighting = None):
+                                  transformed_reference_weighting = None):
         """
         Applys a weighting to the rows or columns of the reference 
         transformation array.
@@ -859,34 +864,34 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         applied.
     reconstructed_target_response : SpectrumArray
         The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response
+    transformed_reconstructed_response : SpectrumArray
         The reconstructed response at the training_response_coordinate with the 
         response_transformation applied.
-    reconstructed_validation_response
+    reconstructed_validation_response : SpectrumArray
         The computed responses from the FRFs and forces at the validation response DOFs.  
-    response_coordinate : coordinate_array
+    response_coordinate : CoordinateArray
         All the response DOFs in teh SPR object, including the prediction, training, and 
         validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : coordinate_array
+    target_response_coordinate : CoordinateArray
         The target_response coordinates of the SPR object, based on the intersection of the
         DOFs in the target_response and FRFs.
-    training_response_coordinate : coordinate_array
+    training_response_coordinate : CoordinateArray
         The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : coordinate_array
+    validation_response_coordinate : CoordinateArray
         The validation response coordinates of teh SPR object, based on the difference between
         the target and training response coordinates.
-    reference_coordinate : coordinate_array
+    reference_coordinate : CoordinateArray
         The reference coordinates of the SPR object, based on the FRFs.
     response_transformation : Matrix, optional
         The response transformation that is used in the inverse problem. The default is 
         identity. Transformations are only applied to the training responses.
-    transformed_response_coordinate : coordinate_array
+    transformed_response_coordinate : CoordinateArray
         The coordinates that the response is transformed into through the response 
         transformation array.
     reference_transformation : Matrix, optional
         The reference transformation that is used in the inverse problem. The default is 
         identity.
-    transformed_reference_coordinate : coordinate_array
+    transformed_reference_coordinate : CoordinateArray
         The coordinates that the reference is transformed into through the reference 
         transformation array.
     abscissa : float
@@ -923,7 +928,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The measured responses that will be used to estimate the forces in the SPR object 
             (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
             response if a training response or training_response_coordinate is not supplied .
-        training_response_coordinate : coordinate_array, optional
+        training_response_coordinate : CoordinateArray, optional
             The training response coordinates of teh SPR object, based on the training responses.
         response_transformation : Matrix, optional
             The response transformation that is used in the inverse problem. The default is 
@@ -1070,6 +1075,45 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         return sdpy.data_array(FunctionTypes.SPECTRUM, self.abscissa, np.moveaxis(reconstructed_response, 0, -1), 
                                self._transformed_response_coordinate_[..., np.newaxis])
 
+    def predicted_response_specific_dofs(self, response_dofs):
+        """
+        Computes the predicted response for specific response DOFs in the SPR object.
+
+        Parameters
+        ----------
+        response_dofs : CoordinateArray
+            The response DOFs to compute the response for. It should be shaped as a 1d array. 
+
+        Returns
+        -------
+        predicted_response : SpectrumArray
+            The predicted response at the desired response DOFs (in the order they were 
+            supplied). 
+        
+        Raises
+        ------
+        AttributeError
+            If there are not forces in the SPR object.
+        ValueError
+            If any of the selected response DOFs are not in the response_coordinate of 
+            the SPR object. 
+        ValueError
+            If the response_dofs is not a 1d array.
+        """
+        if self._force_array_ is None:
+            raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
+        if len(response_dofs.shape) != 1:
+            raise ValueError('The supplied response DOFs must be a 1D array')
+        if np.any(~np.isin(response_dofs, self._response_coordinate_)):
+            raise ValueError('All the supplied response DOFs are not included in the SPR object')
+        
+        prediction_frfs = self.frfs[sdpy.coordinate.outer_product(response_dofs, self.reference_coordinate)]
+        prediction_frfs = np.moveaxis(prediction_frfs.ordinate, -1, 0)
+
+        predicted_response = (prediction_frfs@self._force_array_[..., np.newaxis])[..., 0]
+        return sdpy.data_array(FunctionTypes.SPECTRUM, self.abscissa, np.moveaxis(predicted_response, 0, -1), 
+                               response_dofs[..., np.newaxis])
+
     def global_asd_error(self, 
                          channel_set='training'):
         """
@@ -1083,7 +1127,9 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
 
@@ -1115,7 +1161,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         else:
             raise ValueError('Selected channel set is not available')
         
-        weights = truth/norm(truth, axis=0, ord=2)
+        weights = (truth**2)/(norm(truth, axis=0, ord=2)**2)
         asd_error = 10*np.log10(reconstructed/truth)
         global_asd_error = np.sum(asd_error*weights, axis=0)
         return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self._abscissa_, global_asd_error, coordinate_array(node=1, direction=1))
@@ -1132,7 +1178,9 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object.
         Returns
@@ -1176,7 +1224,9 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+                
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
 
@@ -1224,7 +1274,9 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+                
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object.
         figure_kwargs : dict, optional
@@ -1304,12 +1356,14 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The method to be used for the FRF matrix inversions. The available 
             methods are:
                 - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                  default rcond parameter, this is the default method
+                  default rcond parameter, this is the default method.
+
                 - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                  condition number threshold
+                  condition number threshold.
+
                 - tikhonov - pseudo-inverse using the Tikhonov regularization method
                 - truncation - pseudo-inverse where a fixed number of singular values
-                  are retained for the inverse 
+                  are retained for the inverse.
         regularization_weighting_matrix : sdpy.Matrix or np.ndarray, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization. 
             This matrix can also be a 3D matrix such that the the weights are different
@@ -1376,7 +1430,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
                                  low_regularization_limit = None, 
                                  high_regularization_limit = None,
                                  number_regularization_values=100,
-                                 l_curve_type = 'forces',
+                                 l_curve_type = 'standard',
                                  optimality_condition = 'curvature',
                                  use_transformation=True,
                                  response=None, frf=None):
@@ -1404,17 +1458,18 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces (default) - This L-curve is constructed with the "size" 
-                of the forces on the Y-axis and the regularization parameter on the 
-                X-axis. 
-                - standard - This L-curve is constructed with the residual squared 
-                error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces - This L-curve is constructed with the "size" of the forces 
+                on the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default) - This L-curve is constructed with the residual 
+                squared error on the X-axis and the "size" of the forces on the Y-axis. 
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
                 - curvature (default) - This method searches for the regularization
                 parameter that results in maximum curvature of the L-curve. It is 
                 also referred to as the L-curve criterion. 
+
                 - distance - This method searches for the regularization parameter that
                 minimizes the distance between the L-curve and a "virtual origin". A 
                 virtual origin is used, because the L-curve is scaled and offset to always 
@@ -1510,6 +1565,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
                 - loocv (default) - Leave one out cross validation.
+
                 - k-fold - K fold cross validation.
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
@@ -1598,6 +1654,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             parameter. The available types are:
                 - forces - This L-curve is constructed with the "size" of the 
                 forces on the Y-axis and the regularization parameter on the X-axis. 
+
                 - standard (default) - This L-curve is constructed with the residual 
                 squared error on the X-axis and the "size" of the forces on the Y-axis. 
         optimality_condition : str
@@ -1606,6 +1663,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
                 - curvature - This method searches for the regularization parameter 
                 that results in maximum curvature of the L-curve. It is also referred 
                 to as the L-curve criterion. 
+
                 - distance (default) - This method searches for the regularization 
                 parameter that minimizes the distance between the L-curve and a "virtual 
                 origin". A virtual origin is used, because the L-curve is scaled and 
@@ -1616,6 +1674,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             parameter. The default is None and the options are:
                 - numerical - this method computes the curvature of the L-curve via 
                 numerical derivatives
+
                 - cubic_spline - this method fits a cubic spline to the L-curve
                 the computes the curvature from the cubic spline (this might 
                 perform better if the L-curve isn't "smooth")
@@ -1707,7 +1766,9 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         information_criterion : str
             The desired information criterion, the available options are:
                 - 'BIC' - the Bayesian information criterion
+
                 - 'AIC' - the Akaike information criterion
+                
                 - 'AICC' (default) - the corrected Akaike information criterion
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
@@ -1784,34 +1845,34 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         in the inverse source estimation.
     reconstructed_target_response : PowerSpectralDensityArray
         The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response
+    transformed_reconstructed_response : PowerSpectralDensityArray
         The reconstructed response at the training_response_coordinate with the 
         response_transformation applied.
-    reconstructed_validation_response
+    reconstructed_validation_response : PowerSpectralDensityArray
         The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : coordinate_array
+    response_coordinate : CoordinateArray
         All the response DOFs in teh SPR object, including the prediction, training, and 
         validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : coordinate_array
+    target_response_coordinate : CoordinateArray
         The target_response coordinates of the SPR object, based on the intersection of the
         DOFs in the target_response and FRFs.
-    training_response_coordinate : coordinate_array
+    training_response_coordinate : CoordinateArray
         The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : coordinate_array
+    validation_response_coordinate : CoordinateArray
         The validation response coordinates of teh SPR object, based on the difference between
         the target and training response coordinates.
-    reference_coordinate : coordinate_array
+    reference_coordinate : CoordinateArray
         The reference coordinates of the SPR object, based on the FRFs.
     response_transformation : Matrix, optional
         The response transformation that is used in the inverse problem. The default is 
         identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : coordinate_array
+    transformed_response_coordinate : CoordinateArray
         The coordinates that the response is transformed into through the response 
         transformation array.
     reference_transformation : Matrix, optional
         The reference transformation that is used in the inverse problem. The default is 
         identity.
-    transformed_reference_coordinate : coordinate_array
+    transformed_reference_coordinate : CoordinateArray
         The coordinates that the reference is transformed into through the reference 
         transformation array.
     abscissa : float
@@ -1851,7 +1912,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         buzz_cpsd : PowerSpectralDensityArray, optional
             The cpsd matrix from the system ID matrix to use the so-called "buzz method"
             in the inverse source estimation. Defaults to None. 
-        training_response_coordinate : coordinate_array, optional
+        training_response_coordinate : CoordinateArray, optional
             The training response coordinates of teh SPR object, based on the training responses.
         response_transformation : Matrix, optional
             The response transformation that is used in the inverse problem. The default is 
@@ -1937,12 +1998,15 @@ class PowerSourcePathReceiver(SourcePathReceiver):
 
     @property
     def training_response(self):
+        training_cpsd_coordinate = outer_product(self._training_response_coordinate_, self._training_response_coordinate_)
         if is_cpsd(self._training_response_array_):
             return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self._abscissa_, np.moveaxis(self._training_response_array_, 0, -1), 
-                                   outer_product(self._training_response_coordinate_, self._training_response_coordinate_))
+                                   training_cpsd_coordinate)
         else:
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self._abscissa_, np.moveaxis(self._training_response_array_, 0, -1), 
-                                   np.column_stack((self._training_response_coordinate_, self._training_response_coordinate_)))
+            # Apply buzz method if the _training_response_array_ is a vector of PSDs, since the buzz is required when only PSDs are supplied
+            training_response_with_buzz = apply_buzz_method(self)
+            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self._abscissa_, np.moveaxis(training_response_with_buzz, 0, -1), 
+                                   training_cpsd_coordinate)
     
     @training_response.setter
     def training_response(self, data_array):
@@ -2004,63 +2068,31 @@ class PowerSourcePathReceiver(SourcePathReceiver):
 
     @property
     def predicted_response(self):
-        """
-        Outputs a response CPSD matrix if "response" is a CPSD. Otherwise, the the reconstructed 
-        target response is indexed to output the PSDs.
-        """
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so predicted responses cannot be reconstructed')
         predicted_response = self._frf_array_@self._force_array_@np.transpose(self._frf_array_.conj(), (0, 2, 1))
-        
-        if is_cpsd(self._training_response_array_):    
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(predicted_response, 0, -1), 
-                                   outer_product(self._response_coordinate_, self._response_coordinate_)) 
-        else:
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(predicted_response.diagonal(axis1=1, axis2=2), 0, -1), 
-                                   np.column_stack((self._response_coordinate_, self._response_coordinate_)))
+         
+        return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(predicted_response, 0, -1), 
+                               outer_product(self._response_coordinate_, self._response_coordinate_)) 
 
     @property
     def reconstructed_target_response(self):
-        """
-        Outputs a response CPSD matrix if "response" is a CPSD. Otherwise, the the reconstructed 
-        target response is indexed to output the PSDs.
-        """
         if self._force_array_ is None:
             raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
         reconstructed_target_response = self._target_frf_array_@self._force_array_@np.transpose(self._target_frf_array_.conj(), (0, 2, 1))
         
-        # Need this logic in case there isn't a response array associated with the SPR object (which could be the case if 
-        # only a training response was provided). This should only be the case if the SPR object is constructed manually, 
-        # such as in the rattlesnake control classes. 
-        if self._target_response_array_ is not None:
-            return_cpsd = is_cpsd(self._target_response_array_)
-        else:
-            return_cpsd = is_cpsd(self._training_response_array_)
-        
-        if return_cpsd:    
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_target_response, 0, -1), 
-                                   outer_product(self._target_response_coordinate_, self._target_response_coordinate_)) 
-        else:
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_target_response.diagonal(axis1=1, axis2=2), 0, -1), 
-                                   np.column_stack((self._target_response_coordinate_, self._target_response_coordinate_)))
+        return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_target_response, 0, -1), 
+                               outer_product(self._target_response_coordinate_, self._target_response_coordinate_)) 
         
     @property
     def reconstructed_validation_response(self):
-        """
-        Outputs a response CPSD matrix if "response" is a CPSD. Otherwise, the the reconstructed 
-        target response is indexed to output the PSDs.
-        """
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so validation responses cannot be reconstructed')
         reconstructed_validation_response = self._validation_frf_array_@self._force_array_@np.transpose(self._validation_frf_array_.conj(), (0, 2, 1))
-
-        if is_cpsd(self._target_response_array_):    
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_validation_response, 0, -1), 
-                                   outer_product(self._validation_response_coordinate_, self._validation_response_coordinate_)) 
-        else:
-            return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_validation_response.diagonal(axis1=1, axis2=2), 0, -1), 
-                                   np.column_stack((self._validation_response_coordinate_, self._validation_response_coordinate_)))
-
+ 
+        return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_validation_response, 0, -1), 
+                               outer_product(self._validation_response_coordinate_, self._validation_response_coordinate_)) 
+        
     @property
     def transformed_reconstructed_response(self):
         """
@@ -2078,6 +2110,46 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         reconstructed_response = response_transform@reconstructed_response@np.transpose(response_transform.conj(), (0, 2, 1))
         return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_response, 0, -1), 
                                outer_product(self._transformed_response_coordinate_, self._transformed_response_coordinate_))
+
+    def predicted_response_specific_dofs(self, response_dofs):
+        """
+        Computes the predicted response for specific response DOFs in the SPR object.
+
+        Parameters
+        ----------
+        response_dofs : CoordinateArray
+            The response DOFs to compute the response for. It should be shaped as a 1d array. 
+
+        Returns
+        -------
+        predicted_response : PowerSpectralDensityArray
+            The predicted response as a square CPSD matrix with the desired response DOFs (in 
+            the order they were supplied). 
+        
+        Raises
+        ------
+        AttributeError
+            If there are not forces in the SPR object.
+        ValueError
+            If any of the selected response DOFs are not in the response_coordinate of 
+            the SPR object. 
+        ValueError
+            If the response_dofs is not a 1d array.
+        """
+        if self._force_array_ is None:
+            raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
+        if len(response_dofs.shape) != 1:
+            raise ValueError('The supplied response DOFs must be a 1D array')
+        if np.any(~np.isin(response_dofs, self._response_coordinate_)):
+            raise ValueError('The supplied response DOFs are not included in the SPR object')
+        
+        prediction_frfs = self.frfs[sdpy.coordinate.outer_product(response_dofs, self.reference_coordinate)]
+        prediction_frfs = np.moveaxis(prediction_frfs.ordinate, -1, 0)
+
+        predicted_response = prediction_frfs@self._force_array_@np.transpose(prediction_frfs.conj(), (0, 2, 1))
+
+        return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(predicted_response, 0, -1), 
+                               outer_product(response_dofs, response_dofs))
 
     def make_buzz_cpsd_from_frf(self):
         """
@@ -2099,7 +2171,9 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
 
@@ -2126,7 +2200,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         else:
             raise ValueError('Selected channel set is not available')
         
-        weights = truth/norm(truth, axis=0, ord=2)
+        weights = (truth**2)/(norm(truth, axis=0, ord=2)**2)
         asd_error = 10*np.log10(reconstructed/truth)
         global_asd_error = np.sum(asd_error*weights, axis=0)
         return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self._abscissa_, global_asd_error, coordinate_array(node=1, direction=1))
@@ -2143,7 +2217,9 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
 
@@ -2183,7 +2259,9 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+                
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
 
@@ -2226,7 +2304,9 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs.
-                - validation - This compares the responses at the validation DOFs . 
+                
+                - validation - This compares the responses at the validation DOFs.
+
                 - target - This compares the responses for all the target response 
                 DOFs in the SPR object. 
         figure_kwargs : dict, optional
@@ -2284,12 +2364,15 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             The method to be used for the FRF matrix inversions. The available 
             methods are:
                 - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                  default rcond parameter, this is the default method
+                  default rcond parameter, this is the default method.
+
                 - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                  condition number threshold
-                - tikhonov - pseudo-inverse using the Tikhonov regularization method
+                  condition number threshold.
+                
+                - tikhonov - pseudo-inverse using the Tikhonov regularization method.
+                
                 - truncation - pseudo-inverse where a fixed number of singular values
-                  are retained for the inverse 
+                  are retained for the inverse. 
         regularization_weighting_matrix : sdpy.Matrix or np.ndarray, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization. 
             This matrix can also be a 3D matrix such that the the weights are different
@@ -2372,7 +2455,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
                                  low_regularization_limit = None, 
                                  high_regularization_limit = None,
                                  number_regularization_values=100,
-                                 l_curve_type = 'forces',
+                                 l_curve_type = 'standard',
                                  optimality_condition = 'curvature',
                                  use_transformation=True,
                                  use_buzz = False,
@@ -2402,17 +2485,18 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces (default) - This L-curve is constructed with the "size" 
-                of the forces on the Y-axis and the regularization parameter on the 
-                X-axis. 
-                - standard - This L-curve is constructed with the residual squared 
-                error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces - This L-curve is constructed with the "size" of the forces 
+                on the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default) - This L-curve is constructed with the residual 
+                squared error on the X-axis and the "size" of the forces on the Y-axis. 
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
                 - curvature (default) - This method searches for the regularization
                 parameter that results in maximum curvature of the L-curve. It is 
                 also referred to as the L-curve criterion. 
+
                 - distance - This method searches for the regularization parameter that
                 minimizes the distance between the L-curve and a "virtual origin". A 
                 virtual origin is used, because the L-curve is scaled and offset to always 
@@ -2518,6 +2602,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
                 - loocv (default) - Leave one out cross validation.
+
                 - k-fold - K fold cross validation.
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
@@ -2610,6 +2695,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             parameter. The available types are:
                 - forces - This L-curve is constructed with the "size" of the 
                 forces on the Y-axis and the regularization parameter on the X-axis. 
+
                 - standard (default) - This L-curve is constructed with the residual 
                 squared error on the X-axis and the "size" of the forces on the Y-axis. 
         optimality_condition : str
@@ -2618,6 +2704,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
                 - curvature - This method searches for the regularization parameter 
                 that results in maximum curvature of the L-curve. It is also referred 
                 to as the L-curve criterion. 
+
                 - distance (default) - This method searches for the regularization 
                 parameter that minimizes the distance between the L-curve and a "virtual 
                 origin". A virtual origin is used, because the L-curve is scaled and 
@@ -2627,10 +2714,11 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             case that the curvature is used to find the optimal regularization 
             parameter. The default is None and the options are:
                 - numerical - this method computes the curvature of the L-curve via 
-                numerical derivatives
+                numerical derivatives.
+
                 - cubic_spline - this method fits a cubic spline to the L-curve
                 the computes the curvature from the cubic spline (this might 
-                perform better if the L-curve isn't "smooth")
+                perform better if the L-curve isn't "smooth").
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "power_inverse_processing" 
@@ -2704,7 +2792,8 @@ class PowerSourcePathReceiver(SourcePathReceiver):
 
         return selected_force
     
-    def match_trace_update(self, use_transformation=True):
+    def match_trace_update(self, use_transformation=True,
+                           in_place=True):
         """
         Applies a "match trace" update to the to the forces in the SPR object to 
         eliminate bias error.
@@ -2715,26 +2804,257 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             Whether or not the transformation was used in the input estimation, 
             this should match what was used in the inverse problem for the correct
             behavior. The default is true. 
+        in_place : bool, optional
+            Whether to apply the limit to the original SPR object or not. When 
+            true, The limit will be applied to the original SPR object. When 
+            false, a copy will be made of the original and the limit will be 
+            applied to that copy. The default is true. 
+
+        Returns
+        -------
+            SPR object with the match trace update applied to the force attribute.
 
         References
         ----------
         .. [1] D. Rohe, R. Schultz, and N. Hunter, "Rattlesnake Users Manual," 
                 Sandia National Laboratories, 2021. 
         """
+        if self._force_array_ is None:
+            raise AttributeError('The SPR object must have pre-existing forces for the update to work')
+    
+        # setting work object to self is the same as filter self.
+        work_object = self if in_place else self.copy()
+
         if use_transformation:
-            reconstructed_response_trace = np.trace(self.transformed_reconstructed_response.ordinate) 
-            training_response_trace = np.trace(self.transformed_training_response.ordinate)
+            reconstructed_response_trace = np.trace(work_object.transformed_reconstructed_response.ordinate) 
+            training_response_trace = np.trace(work_object.transformed_training_response.ordinate)
         elif not use_transformation:
-            reconstructed_response_trace = np.trace(self.reconstructed_target_response[self._training_response_coordinate_].ordinate) 
-            training_response_trace = np.trace(self.training_response.ordinate)
+            reconstructed_response_trace = np.trace(work_object.reconstructed_target_response[work_object._training_response_coordinate_].ordinate) 
+            training_response_trace = np.trace(work_object.training_response.ordinate)
         
         trace_ratio = training_response_trace / reconstructed_response_trace
-        self._force_array_ = self._force_array_*trace_ratio[..., np.newaxis, np.newaxis]
+        work_object._force_array_ = work_object._force_array_*trace_ratio[..., np.newaxis, np.newaxis]
 
-        self.inverse_settings.update({'match_trace_applied':True,
-                                      'match_trace_use_transformation':use_transformation})
+        work_object.inverse_settings.update({'match_trace_applied':True,
+                                             'match_trace_use_transformation':use_transformation})
         
-        return self
+        if in_place:
+            return self
+        else:
+            return work_object
+
+    def reduce_drives_update(self, use_transformation=True,
+                             db_error_ratio=1.0,
+                             reduce_max_drive=False,
+                             use_warm_start=True,
+                             in_place=True):
+        """
+        Minimizes the sum of the force PSDs while holding absolute dB error between 
+        predicted and actual responses constant, where this dB error is defined by 
+        the reconstructed response from the pre-existing force in the SPR object. 
+
+        Parameters
+        ----------
+        use_transformation : bool, optional
+            Whether or not the transformation was used in the input estimation, 
+            this should match what was used in the inverse problem for the correct
+            behavior. The default is true.
+        db_error_ratio : float, optional
+            Recommend >=1. Constrains the predicted dB error after drive reduction
+            to this value times the prior dB error. Default is 1.0.
+        reduce_max_drive : bool, optional
+            If true, reduces the maximum drive in each frequency bin. If false,
+            reduces the drive trace. Default is False.
+        use_warm_start : bool, optional
+            Whether to use the initial forces as a warm start for the optimizer.
+            Default is True.
+        in_place : bool, optional
+            Whether to apply the limit to the original SPR object or not. When 
+            true, The limit will be applied to the original SPR object. When 
+            false, a copy will be made of the original and the limit will be 
+            applied to that copy. The default is true. 
+
+        Returns
+        -------
+            SPR object with the reduce drives update applied to the force attribute.
+
+        Raises
+        ------
+        AttributeError
+            If there are not forces in the SPR object.
+        warning
+            If the optimization fails to converge or meet the error constraints. 
+
+        Notes
+        -----
+        This method leverages an optimization problem and warnings may be supplied
+        if the optimization fails or has not converged. A failed optimization may 
+        have resulted in under/over predicted response or unexpected force amplitudes.
+        """
+        if self._force_array_ is None:
+            raise AttributeError('The SPR object must have pre-existing forces for the update to work')
+        
+        if use_transformation is True:
+            # Checking that there is not a reference transformation
+            num_reference_coord = self._reference_coordinate_.shape[0]
+            if self._reference_transformation_array_.shape != (num_reference_coord, num_reference_coord):
+                raise NotImplementedError('The reduce drives update does not currently work with SPR objects that have non-identity reference transformations')
+            else:
+                if not np.all(self._reference_transformation_array_ == np.eye(num_reference_coord)):
+                    raise NotImplementedError('The reduce drives update does not currently work with SPR objects that have non-identity reference transformations')
+
+        # Initial function for the drive minimization
+        if db_error_ratio < 1.0:
+            use_warm_start=False # initial value must be feasible
+            
+        #  Drive minimizer
+        def minimize_reference(y, H, y_prior, X0, db_error_ratio):
+            # y is (N_response,) slice of response asd, H is slice of FRF, y_prior
+            # is (N_ref,) slice of prior forces
+            m,n = H.shape
+            X   = cp.Variable((n, n), hermitian=True)
+            if use_warm_start:
+                try:
+                    X.value = X0 # warm start from prior solution
+                except:
+                    pass
+                
+            # Get LB and UB based on db difference
+            db_diffs = db_error_ratio*10*np.log10(y_prior/y)
+            y_lb = y*10**(-np.abs(db_diffs)/10) # LB is current dB error below spec
+            y_ub = y*10**(np.abs(db_diffs)/10) # UB is current dB error above spec
+            
+            # Constraints
+            constraints  = [X >> 0]                     # PSD constraint
+            for i, h in enumerate(H):
+                expr = cp.real(h[np.newaxis,:] @ X @ cp.conj(h[:,np.newaxis]))    # affine in X
+                constraints += [expr >= y_lb[i], expr <= y_ub[i]]
+        
+            # objective
+            if reduce_max_drive:
+                obj = cp.Minimize(cp.norm(cp.diag(X),"inf"))
+            else:
+                obj = cp.Minimize(cp.trace(X))
+        
+            # solve
+            prob = cp.Problem(obj, constraints)
+            
+            try:
+                prob.solve(solver="SCS", warm_start=use_warm_start, verbose=False) # "SCS" or "CLARABEL"
+                return X.value
+            except:
+                warnings.warn("optimization failed in frequency bin")
+                return np.zeros((n,n))
+        
+        # setting work object to self is the same as filter self.
+        work_object = self if in_place else self.copy()
+
+        # Get numpy arrays
+        if use_transformation:
+            reconstructed_response_asd = np.abs(np.einsum('jji->ij',work_object.transformed_reconstructed_response.ordinate))
+            asd_response = np.abs(np.einsum('jji->ij',work_object.transformed_training_response.ordinate))
+            frf = work_object.transformed_training_frfs.ordinate.transpose(2,0,1)
+            prior_drives = work_object.transformed_force.ordinate.transpose(2,0,1)
+        elif not use_transformation:
+            training_coords = sdpy.coordinate.outer_product(work_object.training_response_coordinate, work_object.training_response_coordinate)
+            reconstructed_response_asd = np.abs(np.einsum('jji->ij', work_object.reconstructed_target_response[training_coords].ordinate))
+            asd_response = np.abs(np.einsum('jji->ij', work_object.training_response.ordinate))
+            frf = work_object._training_frf_array_
+            prior_drives = work_object.force.ordinate.transpose(2,0,1)
+        
+        # Other pre-processing
+        n_freq = reconstructed_response_asd.shape[0]
+        target_exists = np.sum(asd_response,axis=1)>1e-15 # don't solve if target is 0
+        
+        # Parallel execution
+        X_solved = Parallel(n_jobs=-1)(delayed(minimize_reference)(asd_response[i], frf[i],
+                                                                   reconstructed_response_asd[i], prior_drives[i], db_error_ratio)
+                                       for i in np.arange(n_freq)[target_exists])
+        
+        # Logic to ignore frequency lines where the optimization returned None
+        for ii, index in enumerate(np.where(target_exists==True)[0]):
+            if X_solved[ii] is None:
+                target_exists[index] = False
+
+        work_object._force_array_[target_exists] = np.array([X_solved[ii] for ii in range(len(X_solved)) if X_solved[ii] is not None]) 
+        work_object.inverse_settings.update({'reduce_drives_applied':True,
+                                             'reduce_drives_use_transformation':use_transformation})
+
+        if use_transformation:
+            reduced_reconstructed = np.abs(np.einsum('jji->ij',work_object.transformed_reconstructed_response.ordinate))
+        elif not use_transformation:
+            reduced_reconstructed = np.abs(np.einsum('jji->ij', work_object.reconstructed_target_response[training_coords].ordinate))
+
+        if reduce_drives_condition_not_met(asd_response, reconstructed_response_asd, reduced_reconstructed, db_error_ratio):
+            warnings.warn('The reduce drives update failed and resulted in an under or over predicted response at some frequencies')
+        
+        if in_place:
+            return self
+        else:
+            return work_object
+        
+    def apply_response_limit(self, response_limit,
+                             limit_db_level=float(0), 
+                             interpolation_type='loglog',
+                             in_place=True):
+        """
+        Scales the force CPSD to apply a limit to the predicted PSD responses in 
+        the SPR object.
+
+        Parameters
+        ----------
+        response_limit : ResponseLimit
+            The ResponseLimit object that defines the limits.
+        limit_level : optional, float
+            The dB level for the limit. The levels in the limit_dict will be 
+            modified by the dB level. The default is 0 dB (no modification). 
+        interpolation_type : str, optional
+            The type of interpolation to use to convert the breakpoints to all
+            the frequency lines in the SPR object. The options are loglog or 
+            linearlinear, depending on if the frequencies and levels should be 
+            plotted on log-log or linear-linear plot axes. The default is loglog.
+        in_place : bool, optional
+            Whether to apply the limit to the original SPR object or not. When 
+            true, The limit will be applied to the original SPR object. When 
+            false, a copy will be made of the original and the limit will be 
+            applied to that copy. The default is true. 
+
+        Returns
+        -------
+            SPR object with the response limits applied.
+
+        Raises
+        ------
+        KeyError
+            If the limit_dict does not have the correct keys or if the information
+            for the keys are not organized correctly.
+        ValueError
+            If the specified interpolation type is not available. 
+        
+        Notes
+        -----
+        The limit is applied iteratively to each limit DOF, one at a time, rather
+        than determining a globally optimal solution with the limits applied.
+        """
+        # setting work object to self is the same as filter self.
+        work_object = self if in_place else self.copy()
+
+        limit_multiplier = 10**(float(limit_db_level)/10)
+
+        for dof_limit in response_limit:
+            predicted_response = np.abs(work_object.predicted_response_specific_dofs(dof_limit.limit_coordinate).ordinate)[0,0,:]            
+            
+            limit = dof_limit.interpolate_to_full_frequency(self.abscissa, interpolation_type)*limit_multiplier
+            limit = limit[0,:]
+
+            if np.any(predicted_response > limit):
+                limit_inds = predicted_response > limit
+                work_object._force_array_[limit_inds, ...] *= (limit[limit_inds] / predicted_response[limit_inds])[:, np.newaxis, np.newaxis]
+        
+        if in_place:
+            return self
+        else:
+            return work_object
 
 class TransientSourcePathReceiver(SourcePathReceiver):
     """
@@ -2766,34 +3086,34 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         applied.
     reconstructed_target_response : TimeHistoryArray
         The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response
+    transformed_reconstructed_response : TimeHistoryArray
         The reconstructed response at the training_response_coordinate with the 
         response_transformation applied.
-    reconstructed_validation_response
+    reconstructed_validation_response : TimeHistoryArray
         The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : coordinate_array
+    response_coordinate : CoordinateArray
         All the response DOFs in teh SPR object, including the prediction, training, and 
         validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : coordinate_array
+    target_response_coordinate : CoordinateArray
         The target_response coordinates of the SPR object, based on the intersection of the
         DOFs in the target_response and FRFs.
-    training_response_coordinate : coordinate_array
+    training_response_coordinate : CoordinateArray
         The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : coordinate_array
+    validation_response_coordinate : CoordinateArray
         The validation response coordinates of teh SPR object, based on the difference between
         the target and training response coordinates.
-    reference_coordinate : coordinate_array
+    reference_coordinate : CoordinateArray
         The reference coordinates of the SPR object, based on the FRFs.
     response_transformation : Matrix, optional
         The response transformation that is used in the inverse problem. The default is 
         identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : coordinate_array
+    transformed_response_coordinate : CoordinateArray
         The coordinates that the response is transformed into through the response 
         transformation array.
     reference_transformation : Matrix, optional
         The reference transformation that is used in the inverse problem. The default is 
         identity.
-    transformed_reference_coordinate : coordinate_array
+    transformed_reference_coordinate : CoordinateArray
         The coordinates that the reference is transformed into through the reference 
         transformation array.
     time_abscissa : float
@@ -2830,7 +3150,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The measured responses that will be used to estimate the forces in the SPR object 
             (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
             response if a training response or training_response_coordinate is not supplied .
-        training_response_coordinate : coordinate_array, optional
+        training_response_coordinate : CoordinateArray, optional
             The training response coordinates of teh SPR object, based on the training responses.
         response_transformation : Matrix, optional
             The response transformation that is used in the inverse problem. The default is 
@@ -3016,7 +3336,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
     @property
     def predicted_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so predicted responses cannot be reconstructed')
         return self.force.mimo_forward(self.frfs)
     
     @property
@@ -3028,13 +3348,13 @@ class TransientSourcePathReceiver(SourcePathReceiver):
     @property
     def reconstructed_training_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so training responses cannot be reconstructed')
         return self.force.mimo_forward(self.training_frfs)
     
     @property
     def reconstructed_validation_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so validation responses cannot be reconstructed')
         return self.force.mimo_forward(self.validation_frfs)
     
     @property
@@ -3060,6 +3380,42 @@ class TransientSourcePathReceiver(SourcePathReceiver):
     def time_abscissa_spacing(self):
         return np.mean(np.diff(self._time_abscissa_))
     
+    def predicted_response_specific_dofs(self, response_dofs):
+        """
+        Computes the predicted response for specific response DOFs in the SPR object.
+
+        Parameters
+        ----------
+        response_dofs : CoordinateArray
+            The response DOFs to compute the response for. It should be shaped as a 1d array. 
+
+        Returns
+        -------
+        predicted_response : TimeHistoryArray
+            The predicted response with the desired response DOFs (in the order they were 
+            supplied). 
+        
+        Raises
+        ------
+        AttributeError
+            If there are not forces in the SPR object.
+        ValueError
+            If any of the selected response DOFs are not in the response_coordinate of 
+            the SPR object. 
+        ValueError
+            If the response_dofs is not a 1d array.
+        """
+        if self._force_array_ is None:
+            raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
+        if len(response_dofs.shape) != 1:
+            raise ValueError('The supplied response DOFs must be a 1D array')
+        if np.any(~np.isin(response_dofs, self._response_coordinate_)):
+            raise ValueError('All the supplied response DOFs are not included in the SPR object')
+        
+        prediction_frfs = self.frfs[sdpy.coordinate.outer_product(response_dofs, self.reference_coordinate)]
+
+        return self.force.mimo_forward(prediction_frfs)
+
     def extract_time_elements_by_abscissa(self, min_abscissa=None, max_abscissa=None, in_place=True):
         """
         Extracts the time elements from all the components of the SPR object with 
@@ -3121,8 +3477,10 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs in the SPR object.
-                - training - This compares the responses for the validation
+
+                - validation - This compares the responses for the validation
                 response DOFs in the SPR object.
+
                 - target - This compares the responses for all the target 
                 response DOFs in the SPR object. 
         samples_per_frame : int, optional
@@ -3185,8 +3543,10 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs in the SPR object.
-                - training - This compares the responses for the validation
+
+                - validation - This compares the responses for the validation
                 response DOFs in the SPR object.
+
                 - target - This compares the responses for all the target 
                 response DOFs in the SPR object. 
         samples_per_frame : int, optional
@@ -3246,8 +3606,10 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs in the SPR object.
-                - training - This compares the responses for the validation
+
+                - validation - This compares the responses for the validation
                 response DOFs in the SPR object.
+                
                 - target - This compares the responses for all the target 
                 response DOFs in the SPR object. 
         samples_per_frame : int, optional
@@ -3307,14 +3669,17 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The available options are:
                 - training (default) - This compares the responses for the 
                 transformed training DOFs in the SPR object.
-                - training - This compares the responses for the validation
+
+                - validation - This compares the responses for the validation
                 response DOFs in the SPR object.
+                
                 - target - This compares the responses for all the target 
                 response DOFs in the SPR object. 
         level_type : str, optional
             The type of level to be used in the comparison. The options are:
                 - rms - The rms level error for each frame of data in the 
                 responses. This is the default.
+
                 - max - The error in the maximum level that is seem for each 
                 frame of data in the responses.
         samples_per_frame : int, optional
@@ -3398,6 +3763,48 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             return self
         else:
             return work_object
+        
+    def attenuate_force(self, limit: float | np.ndarray, 
+                        full_scale: float = 1.0,
+                        in_place: bool =True):
+        """
+        Attenuate peaks in the force that exceed limits by scaling the region between
+        zero crossings using the local maximum. This maintains a smooth waveform that
+        does not exceed the specified limits.
+
+        Parameters
+        ----------
+        limit : float | np.ndarray
+            limit value or array of limit values with shape (n_signals,)
+        full_scale : float, optional
+            global scaling factor applied to limit value, intended to be used such
+            that output waveform peaks are slightly less than physical limit,
+            (ex. use full_scale=0.97 so that output signal will not exceed 97% of specified 
+            limit), by default 1.0
+        in_place : bool, optional
+            Whether to apply the limit to the original SPR object or not. When 
+            true, The limit will be applied to the original SPR object. When 
+            false, a copy will be made of the original and the limit will be 
+            applied to that copy. The default is true. 
+        
+        Returns
+        -------
+            SPR object with the limit applied to the force attribute.
+
+        Notes
+        -----
+        Each region between zero crossings is scaled according to:
+            `full_scale * limit / local_maximum`
+        """
+        # setting work object to self is the same as filter self.
+        work_object = self if in_place else self.copy()
+
+        work_object._force_array_ = attenuate_signal(work_object._force_array_.T, 
+                                                    limit=limit, full_scale=full_scale).T
+        if in_place:
+            return self
+        else:
+            return work_object
 
     @transient_inverse_processing
     def manual_inverse(self, 
@@ -3409,7 +3816,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                        cola_frame_length = None,
                        cola_window = ('tukey', 0.5),
                        cola_overlap_samples = None,
-                       frf_interpolation_type = 'cubic',
+                       frf_interpolation_type = 'sinc',
                        transformation_interpolation_type = 'cubic',
                        use_transformation = False,
                        response_generator = None, 
@@ -3434,12 +3841,15 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The method to be used for the FRF matrix inversions. The available 
             methods are:
                 - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                default rcond parameter, this is the default method
+                default rcond parameter, this is the default method.
+
                 - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                condition number threshold
-                - tikhonov - pseudo-inverse using the Tikhonov regularization method
+                condition number threshold.
+
+                - tikhonov - pseudo-inverse using the Tikhonov regularization method.
+
                 - truncation - pseudo-inverse where a fixed number of singular values
-                are retained for the inverse 
+                are retained for the inverse.
         regularization_weighting_matrix : sdpy.Matrix, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization.
         regularization_parameter : float or np.ndarray, optional
@@ -3556,7 +3966,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                  cola_frame_length = None,
                                  cola_window = ('tukey', 0.5),
                                  cola_overlap_samples = None,
-                                 frf_interpolation_type = 'cubic',
+                                 frf_interpolation_type = 'sinc',
                                  transformation_interpolation_type = 'cubic',
                                  use_transformation = False,
                                  response_generator = None, 
@@ -3596,10 +4006,10 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces (default) - This L-curve is constructed with the "size" 
-                of the forces on the Y-axis and the regularization parameter on the 
-                X-axis. 
-                - standard - This L-curve is constructed with the residual squared 
+                - forces - This L-curve is constructed with the "size" of the forces on 
+                the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default) - This L-curve is constructed with the residual squared 
                 error on the X-axis and the "size" of the forces on the Y-axis. 
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
@@ -3607,6 +4017,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                 - curvature (default) - This method searches for the regularization
                 parameter that results in maximum curvature of the L-curve. It is 
                 also referred to as the L-curve criterion. 
+
                 - distance - This method searches for the regularization parameter that
                 minimizes the distance between the L-curve and a "virtual origin". A 
                 virtual origin is used, because the L-curve is scaled and offset to always 
@@ -3649,6 +4060,14 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         ----------
         .. [1] Wikipedia, "Overlap-add Method".
             https://en.wikipedia.org/wiki/Overlap-add_method
+        .. [2] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
+            of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+            vol. 14, no. 6, pp. 1487-1503, 1993.
+        .. [3] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+            problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
+            2000, pp. 119-142.  
+        .. [4] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
+            Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008. 
         """
         regularization_values, Uh, V, regularized_S = compute_regularized_svd_inv(frf, 
                                                                                   low_regularization_limit=low_regularization_limit,
@@ -3696,7 +4115,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                 cola_frame_length=None,
                                 cola_window=('tukey', 0.5),
                                 cola_overlap_samples=None,
-                                frf_interpolation_type='cubic',
+                                frf_interpolation_type='sinc',
                                 transformation_interpolation_type='cubic',
                                 use_transformation=False,
                                 response_generator=None, 
@@ -3727,6 +4146,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
                 - loocv (default) - Leave one out cross validation.
+                
                 - k-fold - K fold cross validation.
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
@@ -3757,10 +4177,12 @@ class TransientSourcePathReceiver(SourcePathReceiver):
 
         References
         ----------
-        .. [1] D. M. Allen, "The Relationship between Variable Selection and Data Agumentation 
+        .. [1] Wikipedia, "Overlap-add Method".
+               https://en.wikipedia.org/wiki/Overlap-add_method
+        .. [2] D. M. Allen, "The Relationship between Variable Selection and Data Agumentation 
                and a Method for Prediction," Technometrics, vol. 16, no. 1, pp. 125-127, 1974, 
                doi: 10.2307/1267500.
-        .. [2] T. Hastie, R. Tibshirani, and J. Friedman, The Elements of Statistical Learning: 
+        .. [3] T. Hastie, R. Tibshirani, and J. Friedman, The Elements of Statistical Learning: 
                Data Mining, Inference, and Prediction, 2nd Edition ed. New York: Springer New York, 
                2017.
         """

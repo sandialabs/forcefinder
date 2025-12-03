@@ -330,3 +330,58 @@ def test_transformed_spr_inverse(rigid_ise_frfs, rigid_truth_response,
     transform_spr.manual_inverse(use_transformation=True)
     
     assert np.allclose(rigid_excitation.ordinate, transform_spr.transformed_force.ordinate)
+
+#%% Set-up for the simple unit tests
+
+@pytest.fixture(scope='module')
+def unit_test_frf():
+    abscissa = np.array([0,1,2])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    frf_dof = sdpy.coordinate.outer_product(dof, dof)
+    return sdpy.transfer_function_array(abscissa, np.moveaxis(np.array([np.eye(4)*[1,2,3,4]]*3),0,-1), frf_dof)
+
+@pytest.fixture(scope='module')
+def unit_test_force():
+    abscissa = np.array([0,1,2])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]]),0,-1), 
+                               dof[...,np.newaxis])
+
+@pytest.fixture(scope='module')
+def unit_test_response():
+    abscissa = np.array([0,1,2])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]])*[1,2,3,4],0,-1), 
+                               dof[...,np.newaxis])
+
+@pytest.fixture()
+def unit_test_spr(unit_test_frf, unit_test_force, unit_test_response):
+    return ff.LinearSourcePathReceiver(unit_test_frf, unit_test_response, unit_test_force)
+
+#%% Unit tests on the simple system
+
+def test_predicted_response_specific_dofs(unit_test_spr, unit_test_response):
+    """
+    This makes sure that the `predicted_response_specific_dofs` works as expected. It
+    checks that the predicted response computes the response for the correct DOFs and 
+    makes sure that the correct errors are raised, as necessary.
+    """
+    predicted_response_one_dof = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+'])).ordinate 
+    assert np.all(predicted_response_one_dof == unit_test_response.ordinate[0,:])
+
+    predicted_response_skipping_dofs = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+', '3X+'])).ordinate 
+    assert np.all(predicted_response_skipping_dofs == unit_test_response.ordinate[[0,2],:])
+
+    predicted_response_flipped_dofs = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['2X+', '1X+', '3X+'])).ordinate 
+    assert np.all(predicted_response_flipped_dofs == unit_test_response.ordinate[[1,0,2],:])
+
+    with pytest.raises(ValueError, match='The supplied response DOFs must be a 1D array'):
+        unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+'])[...,np.newaxis])
+
+    with pytest.raises(ValueError, match='All the supplied response DOFs are not included in the SPR object'):
+        unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['10X+']))
+    
+    test_spr = unit_test_spr.copy()
+    test_spr._force_array_ = None
+    with pytest.raises(AttributeError, match='There is no force array in this object so predicted responses cannot be computed'):
+        test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+']))

@@ -23,7 +23,8 @@ import sdynpy as sdpy
 import forcefinder as ff
 from test_system_generation import (create_beam_system_truth_frfs, 
                                     create_beam_system_ise_frfs, 
-                                    create_transient_excitation, 
+                                    create_transient_excitation,
+                                    create_pulse_excitation, 
                                     create_rigid_system)
 import pytest
 
@@ -394,6 +395,97 @@ def test_auto_tikhonov_by_cv_rse_loocv(ise_frfs, system_a_noised_response, syste
     assert nrmse_comparison_manual > nrmse_comparison_auto
     assert rms_percent_error_manual > rms_percent_error_auto
 
+def test_attenuate_force_single_limit(truth_frfs, ise_frfs):
+    """
+    This test verifies that the attenuate_force method for the transient SPR object 
+    functions as expected. It is a five step test:
+
+        1. truth FRFs and truth excitation are created for the test beam system, where
+        the truth excitation is on the source beam. 
+        2. The truth FRFs and truth excitation are combined to compute the truth 
+        response of the beam system.
+        3. A reduced set of "ISE" FRFs are computed with responses DOF on the "receiver" 
+        beam and reference DOFs on the "source" beam at the interface DOFs between the 
+        source and receiver beam.
+        4. The ISE FRFs (from step three) and truth responses (from step two) are used to 
+        estimate pseudo-forces.
+        5. The attenuate_force method is applied to the pseudo-forces (from step four) 
+        to limit the forces to a peak amplitude of 1.  
+
+    The test passes if the attenuated forces have a maximum level of 1 (which is the 
+    limit) and the frequency content for the attenuated and non-attenuated forces is the 
+    same. The similarity in the frequency content is tested via a FRAC comparison, where 
+    the lower limit for the comparison is 0.97. Note that the frequency content is only 
+    compared for the 5-100 Hz band, since the truth excitation was filtered outside of 
+    this frequency range.
+    """
+    system_a_ise_frfs, _ = ise_frfs
+    system_a_truth_frfs, _ = truth_frfs
+
+    shock_excitation = create_pulse_excitation(system_a_truth_frfs)
+    truth_response = shock_excitation.mimo_forward(system_a_truth_frfs)
+
+    ise_spr = ff.TransientSourcePathReceiver(system_a_ise_frfs, truth_response)
+    ise_spr.manual_inverse(use_transformation=False)
+
+    attenuated_spr = ise_spr.attenuate_force(1, in_place=False)
+
+    assert np.abs(attenuated_spr.force.ordinate).max() == 1
+
+    force_frac = sdpy.correlation.frac(np.abs(ise_spr.force.fft().extract_elements_by_abscissa(5,100).ordinate), 
+                      np.abs(attenuated_spr.force.fft().extract_elements_by_abscissa(5,100).ordinate))
+    
+    assert force_frac.min() > 0.98
+
+    ise_spr.attenuate_force(1, in_place=True)
+    assert np.abs(ise_spr.force.ordinate).max() == 1
+
+def test_attenuate_force_array_limit(truth_frfs, ise_frfs):
+    """
+    This test verifies that the attenuate_force method for the transient SPR object 
+    functions as expected. It is a five step test:
+
+        1. truth FRFs and truth excitation are created for the test beam system, where
+        the truth excitation is on the source beam. 
+        2. The truth FRFs and truth excitation are combined to compute the truth 
+        response of the beam system.
+        3. A reduced set of "ISE" FRFs are computed with responses DOF on the "receiver" 
+        beam and reference DOFs on the "source" beam at the interface DOFs between the 
+        source and receiver beam.
+        4. The ISE FRFs (from step three) and truth responses (from step two) are used to 
+        estimate pseudo-forces.
+        5. The attenuate_force method is applied to the pseudo-forces (from step four) 
+        to limit the forces to a peak amplitudes of [1.45, 0.71, 1, 0.95].  
+
+    The test passes if the attenuated forces have a maximum level of 1 (which is the 
+    limit) and the frequency content for the attenuated and non-attenuated forces is the 
+    same. The similarity in the frequency content is tested via a FRAC comparison, where 
+    the lower limit for the comparison is 0.97. Note that the frequency content is only 
+    compared for the 5-100 Hz band, since the truth excitation was filtered outside of 
+    this frequency range.
+    """
+    system_a_ise_frfs, _ = ise_frfs
+    system_a_truth_frfs, _ = truth_frfs
+
+    shock_excitation = create_pulse_excitation(system_a_truth_frfs)
+    truth_response = shock_excitation.mimo_forward(system_a_truth_frfs)
+
+    ise_spr = ff.TransientSourcePathReceiver(system_a_ise_frfs, truth_response)
+    ise_spr.manual_inverse(use_transformation=False)
+
+    limit_vector = np.array([1.45, 0.71, 1, 0.95])
+    attenuated_spr = ise_spr.attenuate_force(limit_vector, in_place=False)
+
+    assert np.all(np.round(np.abs(attenuated_spr.force.ordinate).max(axis=-1),2) == limit_vector)
+
+    force_frac = sdpy.correlation.frac(np.abs(ise_spr.force.fft().extract_elements_by_abscissa(5,100).ordinate), 
+                      np.abs(attenuated_spr.force.fft().extract_elements_by_abscissa(5,100).ordinate))
+    
+    assert force_frac.min() > 0.98
+
+    ise_spr.attenuate_force(limit_vector, in_place=True)
+    assert np.all(np.round(np.abs(ise_spr.force.ordinate).max(axis=-1),2) == limit_vector)
+
 #%% Set-up for the test on the rigidized system
 
 @pytest.fixture(scope='module')
@@ -487,3 +579,59 @@ def test_transformed_spr_inverse(rigid_beam_frfs, rigid_point_frfs,
 
     assert np.allclose(transform_beam_spr.transformed_force.extract_elements_by_abscissa(0,5).ordinate, 
                        point_spr.force.extract_elements_by_abscissa(0,5).ordinate)
+    
+#%% Set-up for the simple unit tests
+
+@pytest.fixture(scope='module')
+def unit_test_frf():
+    abscissa = np.array([0,1,2])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    frf_dof = sdpy.coordinate.outer_product(dof, dof)
+    return sdpy.transfer_function_array(abscissa, np.moveaxis(np.array([np.eye(4)*[1,2,3,4]]*3),0,-1), frf_dof)
+
+@pytest.fixture(scope='module')
+def unit_test_force():
+    abscissa = np.array([0,0.25,0.5])
+    ordinate = np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.time_history_array(abscissa, np.moveaxis(ordinate,0,-1), dof[...,np.newaxis])
+
+@pytest.fixture(scope='module')
+def unit_test_response():
+    abscissa = np.array([0,0.25,0.5])
+    ordinate = np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.time_history_array(abscissa, np.moveaxis(ordinate*[1,2,3,4],0,-1), dof[...,np.newaxis])
+
+@pytest.fixture()
+def unit_test_spr(unit_test_frf, unit_test_force, unit_test_response):
+    return ff.TransientSourcePathReceiver(unit_test_frf, unit_test_response, unit_test_force)
+
+#%% Unit tests on the simple system
+
+def test_predicted_response_specific_dofs(unit_test_spr, unit_test_response):
+    """
+    This makes sure that the `predicted_response_specific_dofs` works as expected. It
+    checks that the predicted response computes the response for the correct DOFs and 
+    makes sure that the correct errors are raised, as necessary.
+    """
+    predicted_response_one_dof = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+'])).ordinate 
+    assert np.all(predicted_response_one_dof == unit_test_response.ordinate[0,:])
+
+    predicted_response_skipping_dofs = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+', '3X+'])).ordinate 
+    assert np.all(predicted_response_skipping_dofs == unit_test_response.ordinate[[0,2],:])
+
+    # The transient response prediction returns the response DOFs in ascending order (which is different than the other SPRs) 
+    predicted_response_flipped_dofs = unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['2X+', '1X+', '3X+'])).ordinate 
+    assert np.all(predicted_response_flipped_dofs == unit_test_response.ordinate[[0,1,2],:])
+
+    with pytest.raises(ValueError, match='The supplied response DOFs must be a 1D array'):
+        unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+'])[...,np.newaxis])
+
+    with pytest.raises(ValueError, match='All the supplied response DOFs are not included in the SPR object'):
+        unit_test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['10X+']))
+    
+    test_spr = unit_test_spr.copy()
+    test_spr._force_array_ = None
+    with pytest.raises(AttributeError, match='There is no force array in this object so predicted responses cannot be computed'):
+        test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+']))

@@ -111,4 +111,46 @@ def apply_buzz_method(self):
         new_cpsd = cpsd_from_coh_phs(asds, coherence, phase)
     elif self._training_response_array_.ndim == 2:
         new_cpsd = cpsd_from_coh_phs(self._training_response_array_, coherence, phase)
-    return new_cpsd    
+    return new_cpsd
+
+def reduce_drives_condition_not_met(training_psd, reconstructed_psd, 
+                                      reduced_drive_reconstructed_psd, 
+                                      db_error_ratio):
+    """
+    Evaluates the reconstructed response from the reduce_drives_update to
+    see if the optimality condition was met. 
+
+    Parameters 
+    ----------
+    training_psd : ndarray
+        The training PSDs for the SPR, which is the diagonal of the training 
+        response. It should be shaped [number of lines, number of dofs].
+    reconstructed_psd : ndarray
+        The reconstructed training PSDs for the SPR with the non-reduced forces, 
+        which is the diagonal of the reconstructed training response. It should 
+        be shaped [number of lines, number of dofs].
+    reconstructed_psd : ndarray
+        The reconstructed training PSDs for the SPR with the reduced forces, 
+        which is the diagonal of the reconstructed training response. It should 
+        be shaped [number of lines, number of dofs].
+    db_error_ratio : float
+        The dB error ratio that was used in the reduced drives update. 
+
+    Returns
+    -------
+    bool
+        Returns True if the reduce drives optimality condition is not met. Returns
+        False if the condition is meth
+    """    
+    db_diffs = db_error_ratio*np.log10(reconstructed_psd/training_psd)
+    y_lb = training_psd*(10**(-np.abs(db_diffs))) # LB is current dB error below spec
+    y_ub = training_psd*(10**(np.abs(db_diffs))) # UB is current dB error above spec
+
+    condition_checker = (reduced_drive_reconstructed_psd-y_lb)/(y_ub-y_lb)
+
+    if not (np.isclose(condition_checker.min(), 0) or condition_checker.min() >= 0):
+        return True
+    elif not (np.isclose(condition_checker.max(), 1) or condition_checker.max() <= 1):
+        return True
+    else:
+        return False

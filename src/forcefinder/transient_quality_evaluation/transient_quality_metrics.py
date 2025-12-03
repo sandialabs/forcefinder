@@ -46,8 +46,10 @@ def preprocess_data_for_quality_metric(spr_object,
         The available options are:
             - training (default) - This compares the responses for the 
             transformed training DOFs in the SPR object.
+
             - validation - This compares the responses for the validation
             response DOFs in the SPR object.
+
             - target - This compares the responses for all the target 
             response DOFs in the SPR object. 
     samples_per_frame : int, optional
@@ -148,6 +150,13 @@ def compute_global_rms_error(truth_response, check_response):
         The segmented TimeHistoryArray (from the split_into_frames method)
         for the check response in the comparison. 
 
+    Returns
+    -------
+    TimeHistoryArray
+        Returns a time history array of the global RMS error in dB. The response
+        coordinate for this array is made up to have a value for the DataArray
+        and does not correspond to anything.
+
     Raises
     ------
     ValueError 
@@ -158,13 +167,6 @@ def compute_global_rms_error(truth_response, check_response):
         shape.
     ValueError
         If the abscissa for the truth and check responses are not the same.
-
-    Returns
-    -------
-    TimeHistoryArray
-        Returns a time history array of the global RMS error in dB. The response
-        coordinate for this array is made up to have a value for the DataArray
-        and does not correspond to anything.
 
     Notes
     -----
@@ -207,6 +209,13 @@ def compute_average_rms_error(truth_response, check_response):
         The segmented TimeHistoryArray (from the split_into_frames method)
         for the check response in the comparison. 
 
+    Returns
+    -------
+    TimeHistoryArray
+        Returns a time history array of the average RMS error in dB. The response
+        coordinate for this array is made up to have a value for the DataArray
+        and does not correspond to anything.
+
     Raises
     ------
     ValueError 
@@ -222,13 +231,6 @@ def compute_average_rms_error(truth_response, check_response):
     -----
     This function assumes that both the truth and check responses have been 
     segmented using the `split_into_frames` method.
-
-    Returns
-    -------
-    TimeHistoryArray
-        Returns a time history array of the average RMS error in dB. The response
-        coordinate for this array is made up to have a value for the DataArray
-        and does not correspond to anything.
     """
     if not np.all(truth_response[0,:].response_coordinate==check_response[0,:].response_coordinate):
         raise ValueError('The truth and check responses must hav the same response DOFs (and DOF ordering)')
@@ -261,6 +263,12 @@ def compute_time_varying_trac(truth_response, check_response):
         The segmented TimeHistoryArray (from the split_into_frames method)
         for the check response in the comparison. 
 
+    Returns
+    -------
+    TimeHistoryArray
+        Returns a time history array of the time varying TRAC for all the 
+        response degrees of freedom.
+
     Raises
     ------
     ValueError 
@@ -276,12 +284,6 @@ def compute_time_varying_trac(truth_response, check_response):
     -----
     This function assumes that both the truth and check responses have been 
     segmented using the `split_into_frames` method.
-
-    Returns
-    -------
-    TimeHistoryArray
-        Returns a time history array of the time varying TRAC for all the 
-        response degrees of freedom.
     """
     if not np.all(truth_response[0,:].response_coordinate==check_response[0,:].response_coordinate):
         raise ValueError('The truth and check responses must hav the same response DOFs (and DOF ordering)')
@@ -316,6 +318,12 @@ def compute_time_varying_level_error(truth_response, check_response, level_type=
             - max - The error in the maximum level that is seem for each 
             frame of data in the responses.
 
+    Returns
+    -------
+    TimeHistoryArray
+        Returns a time history array of the time varying level error in dB for 
+        all the response degrees of freedom.
+
     Raises
     ------
     ValueError 
@@ -331,12 +339,6 @@ def compute_time_varying_level_error(truth_response, check_response, level_type=
     -----
     This function assumes that both the truth and check responses have been 
     segmented using the `split_into_frames` method.
-
-    Returns
-    -------
-    TimeHistoryArray
-        Returns a time history array of the time varying level error in dB for 
-        all the response degrees of freedom.
     """
     if not np.all(truth_response[0,:].response_coordinate==check_response[0,:].response_coordinate):
         raise ValueError('The truth and check responses must hav the same response DOFs (and DOF ordering)')
@@ -377,8 +379,10 @@ def compute_error_stft(spr_object,
         The available options are:
             - training (default) - This compares the responses for the 
             transformed training DOFs in the SPR object.
+
             - validation - This compares the responses for the validation
             response DOFs in the SPR object.
+            
             - target - This compares the responses for all the target 
             response DOFs in the SPR object. 
     samples_per_frame : int, optional
