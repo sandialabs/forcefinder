@@ -1,0 +1,28 @@
+title: ForceFinder Documentation
+author: National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+copyright: '2025'
+execute:
+  execute_notebooks: auto
+  timeout: 600
+
+sphinx:
+  extra_extensions:
+    - autoapi.extension
+    - sphinx.ext.napoleon
+    - sphinx.ext.viewcode
+  config:
+    autoapi_dirs: ["../../src/forcefinder"] 
+    autoapi_python_use_implicit_namespaces: true
+    autoapi_keep_files: false
+    add_module_names: false
+    autoapi_add_toctree_entry: true
+    toc_object_entries_show_parents: "hide"
+    autoapi_generate_api_docs: true
+    autoapi_file_patterns: ["*.py"]
+    autoapi_ignore: ["*/demo/"]
+    autoapi_options:
+      - members
+    # - undoc-members
+      - show-inheritance
+      - show-module-summary 
+      - no-init-method
