@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="forcefinder",
-    version="0.1.0",
+    version="0.1.1",
     author="Steven Carter",
     author_email="spcarte@sandia.gov",
     description="An advanced inverse source estimation package for Python",
@@ -12,11 +12,11 @@ setup(
     packages=find_packages(where='src'),  # Tell setuptools to look in the src/ folder
     package_dir={"": "src"},  # Set the base folder for the packages to src/
     classifiers=["Programming Language :: Python :: 3.11",
-                 "License :: Other/Proprietary License",
-                 'Natural Language :: English',
-                 'Operating System :: Microsoft :: Windows :: Windows 10'
-                 'Operating System :: Microsoft :: Windows :: Windows 11'
-                 'Operating System :: MacOS :: MacOS X'
+                 "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+                 "Natural Language :: English",
+                 "Operating System :: Microsoft :: Windows :: Windows 10",
+                 "Operating System :: Microsoft :: Windows :: Windows 11",
+                 "Operating System :: MacOS :: MacOS X"
                  ],
     python_requires='>=3.8',
     install_requires=[
@@ -28,3 +28,5 @@ setup(
         "pyqt5"
         ],
 )
+
+
