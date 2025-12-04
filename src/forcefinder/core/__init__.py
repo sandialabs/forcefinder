@@ -1,5 +1,5 @@
 """
-Core SourcePathReceiver objects of ForceFinder
+Core modules of ForceFinder.
 
 Copyright 2025 National Technology & Engineering Solutions of Sandia,
 LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.

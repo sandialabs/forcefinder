@@ -29,14 +29,32 @@ Please submit any bugs or feature requests into the Github issue tracker.
 ForceFinder is currently under development and the current version should be treated as an "alpha" release. Breaking changes may be pushed to the develop and main branches without notice. 
 
 ## Installation and Usage
-It is suggested that ForceFinder be installed from a GIT repository on the users local machine because the package is in active development may see changes over the coming months. The process for doing this is:
+ForceFinder is available on PyPi and can be installed with:
 
+```
+pip install forcefinder
+```
+
+However, the package is under active develop and may see changes to the develop branch, which are not immediately pushed to the main branch (which is what is published to PyPi). Further, the demo and benchmark portions of the package are not published to PyPi. As such, it may be preferable to install ForceFinder from a GIT repository on the users local machine. The process for doing this is:
+
+```
 1. Clone the ForceFinder repository to your local machine via "Clone with SSH"
 2. PIP install ForceFinder with the following commands (from the command prompt or terminal):
     - cd local_ForceFinder_repository (this is the filepath to the local repository)
     - pip install -e . (this will pip install the whole repository, the -e flag lets python know that the package is a git repo so it will see changes as they are made to the repo)
-3. Use ForceFinder with the following import "import forcefinder as ff" 
+```
 
+Developers may want to install the package with extra dependencies that run the tests and build the documentation. This can be done by modifying the pip command from the above process to:
+
+```
+pip install -e .[dev]
+```
+
+Once installed, ForceFinder can be imported with the following alias:
+
+```python3
+import forcefinder as ff
+```
 
 
 

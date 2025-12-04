@@ -448,11 +448,13 @@ def k_fold_cv(frfs, response,
         The function that is used to compute the error in the inverse 
         problem. The function should take the following parameters:
             - validation_frfs - ndarray that is sized [number of lines, number of validation responses, number of references]. 
+            
             - validation_response - ndarray that is sized [number of lines, number of responses].
+            
             - frf_inverse - ndarray that is sized [number of lines, number of references, number of training responses].
+            
             - training_response - ndarray that is sized [number of lines, number of training responses, 1].
-        The function should return:
-            - error - a 1d array that is sized number of lines.
+        The function should return a 1d array that is sized number of lines.
         The default function computes the mean squared error.
     
     Returns
@@ -561,6 +563,7 @@ def l_curve_optimal_regularization(regularization_values, penalty, residual,
             - forces (default) - This L-curve is constructed with the "size" 
             of the forces on the Y-axis and the regularization parameter on the 
             X-axis. 
+
             - standard - This L-curve is constructed with the residual squared 
             error on the X-axis and the "size" of the forces on the Y-axis. 
     optimality_condition : str
@@ -569,23 +572,24 @@ def l_curve_optimal_regularization(regularization_values, penalty, residual,
             - curvature (default) - This method searches for the regularization
             parameter that results in maximum curvature of the L-curve. It is 
             also referred to as the L-curve criterion. 
+
             - distance - This method searches for the regularization parameter that
             minimizes the distance between the L-curve and a "virtual origin". A 
             virtual origin is used, because the L-curve is scaled and offset to always 
             range from zero to one, in this case.
     
+    Returns
+    -------
+    optimal_regularization : ndarray
+        A vector of the optimal regularization values, as defined by the L-curve. 
+        The length matches that number of frequency lines.
+
     Raises
     ------
     ValueError
         If the requested L-curve type is not available.
     ValueError
-        If the requested optimality condition is not available.
-    
-    Returns
-    -------
-    optimal_regularization : ndarray
-        A vector of the optimal regularization values, as defined by the L-curve. 
-        The length matches that number of frequency lines.   
+        If the requested optimality condition is not available.   
     
     References
     ----------
@@ -652,6 +656,11 @@ def broadcasting_l_curve_criterion(x_axis, y_axis, regularization_values, return
         of regularization_values. This is not returned by default. It is
         sized [number of regularization values, number of frequency lines].
     
+    Notes
+    -----
+    The code will automatically skip frequency lines where the regularization parameter 
+    doesn't change (e.g., 0 Hz). 
+
     References
     ----------
     .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
@@ -660,11 +669,6 @@ def broadcasting_l_curve_criterion(x_axis, y_axis, regularization_values, return
     .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
            problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
            2000, pp. 119-142.  
-
-    Notes
-    -----
-    The code will automatically skip frequency lines where the regularization parameter 
-    doesn't change (e.g., 0 Hz). 
     """
     divisor = np.gradient(np.log(regularization_values), axis=0)
 
@@ -748,8 +752,11 @@ def select_model_by_information_criterion(H, x, f, method):
         [number_lines, number_models, number_references]
     method : str
         The desired information criterion, the available options are:
+
             - 'BIC': the Bayesian information criterion
+        
             - 'AIC': the Akaike information criterion
+            
             - 'AICC': the corrected Akaike information criterion
     
     Returns
@@ -757,7 +764,15 @@ def select_model_by_information_criterion(H, x, f, method):
     selected_forces : ndarray
         The forces that were selected using the desired model, sized: 
         [number_lines, number_references]
+
+    Raise
+    -----
+    NotImplementedError
+        If the supplied responses are a CPSD matrix.
     """
+    if is_cpsd(x):
+        raise NotImplementedError('The information criterion code has not been implemented for power spectra')
+    
     n = np.squeeze(x).shape[-1]
     p = f.shape[-1]
     residual = norm(np.squeeze(x[:, np.newaxis, ...] - H[:, np.newaxis, ...]@f[..., np.newaxis]), axis=-1)**2
@@ -1167,7 +1182,7 @@ def compute_residual_penalty_for_l_curve(frfs, forces, response):
 
 #%% obsolete auto-tikhonov functions
 
-def tikhonov_full_path(frf, response,
+def _tikhonov_full_path(frf, response,
                        low_regularization_limit = None, 
                        high_regularization_limit = None,
                        number_regularization_values=100,
@@ -1276,7 +1291,7 @@ def tikhonov_full_path(frf, response,
         high_regularization_limit = s[:, 0]
 
     if parallel==True:
-        tasks = [delayed(tikhonov_full_path_single_frequency)(frf[ii, ...], 
+        tasks = [delayed(_tikhonov_full_path_single_frequency)(frf[ii, ...], 
                                                               response[ii, ...], 
                                                               low_regularization_limit=low_regularization_limit[ii], 
                                                               high_regularization_limit=high_regularization_limit[ii],
@@ -1297,14 +1312,14 @@ def tikhonov_full_path(frf, response,
         residual = np.zeros((frf.shape[0], number_regularization_values), dtype=float) 
         penalty = np.zeros((frf.shape[0], number_regularization_values), dtype=float)
         for ii in range(frf.shape[0]):
-            forces_full_path[ii, ...], regularization_values[ii, ...], residual[ii, ...], penalty[ii, ...] = tikhonov_full_path_single_frequency(frf[ii, ...], 
+            forces_full_path[ii, ...], regularization_values[ii, ...], residual[ii, ...], penalty[ii, ...] = _tikhonov_full_path_single_frequency(frf[ii, ...], 
                                                                                                                                                  response[ii, ...], 
                                                                                                                                                  low_regularization_limit=low_regularization_limit[ii], 
                                                                                                                                                  high_regularization_limit=high_regularization_limit[ii],
                                                                                                                                                  number_regularization_values=int(number_regularization_values))
     return forces_full_path, regularization_values, residual, penalty
 
-def tikhonov_full_path_single_frequency(H, x,  
+def _tikhonov_full_path_single_frequency(H, x,  
                                         low_regularization_limit = None, 
                                         high_regularization_limit = None,
                                         number_regularization_values = 100):

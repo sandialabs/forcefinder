@@ -1,4 +1,7 @@
 """
+ForceFinder is a package for inverse source estimation via frequency 
+response function matrix inversion.
+
 Copyright 2025 National Technology & Engineering Solutions of Sandia,
 LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.
 Government retains certain rights in this software.
@@ -21,3 +24,4 @@ from .transient_quality_evaluation.transient_gui_plot import SpectrogramGUI, Lev
 from .core.source_path_receiver import (LinearSourcePathReceiver,
                                         PowerSourcePathReceiver,
                                         TransientSourcePathReceiver)
+from .core.response_limit import ResponseLimit

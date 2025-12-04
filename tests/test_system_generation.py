@@ -547,3 +547,35 @@ def create_transient_excitation(force_coordinate=sdpy.coordinate_array(node=np.a
     force = sdpy.data_array(sdpy.data.FunctionTypes.TIME_RESPONSE, time, force_ordinate, force_coordinate[...,np.newaxis])
     force = force.zero_pad(num_samples=zero_pad_samples,left=True,right=True)
     return force
+
+def create_pulse_excitation(frfs):
+    """
+    Creates the pulse excitation for transient SPR tests.
+
+    Parameters
+    ----------
+    frfs : TransferFunctionArray
+        The FRFs that the pulse will be applied to
+    """
+    Fs = frfs.abscissa.max()*2 #Hz
+    T = 20 #seconds
+
+    # Making the basic pulse that will be applied at different times for the different force DOFs
+    pulse_width = 0.05 #seconds
+    pusle_time = np.arange(Fs*pulse_width+1)/Fs
+    pulse = np.sin(((2*np.pi)/(pulse_width*2))*pusle_time)
+
+    force_coordinate = np.unique(frfs.reference_coordinate)
+    time = np.arange(Fs*T+1)/Fs
+    shock = np.zeros((force_coordinate.shape[0], time.shape[0]), dtype=float)
+    time_ind = int(Fs/2)
+    time_step = int(Fs/2)
+
+    for ii in range(force_coordinate.shape[0]):
+        shock[ii, time_ind:pusle_time.shape[0]+time_ind] = pulse
+        time_ind += time_step
+
+    sos_filter = butter(10, 5, 'highpass', output='sos', fs=Fs)
+    shock = sosfiltfilt(sos_filter, shock)
+
+    return sdpy.data_array(sdpy.data.FunctionTypes.TIME_RESPONSE, time, shock, force_coordinate[...,np.newaxis])

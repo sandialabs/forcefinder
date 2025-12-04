@@ -22,6 +22,7 @@ import numpy as np
 from scipy.signal import get_window, check_COLA
 from scipy.fft import rfft, irfft, next_fast_len, rfftfreq
 from scipy.interpolate import interp1d
+from typing import Union
 
 def prepare_for_zero_padding(spr_object, 
                              cola_frame_length=None, 
@@ -60,18 +61,25 @@ def prepare_for_zero_padding(spr_object,
             - pre_data_blank_frame_length - The amount of zeros that were added to 
             the beginning of the training response to enable a perfect COLA 
             reconstruction.
+
             - post_data_blank_frame_length - The amount of zeros that were added to 
             the end of the training response to enable a perfect COLA reconstruction.
+
             - left_zero_pad_length - The amount of zeros that were used to pad the 
             left side of the COLA frames. 
+            
             - right_zero_pad_length - The amount of zeros that were used to pad the 
             right side of the COLA frames. 
+            
             - number_cola_frames - The number of frames to segment the data into for 
             the COLA processing.
+            
             - cola_frame_length - The frame length (in samples) that was use for the 
             COLA processing (corresponds to the cola_frame_length input parameter).
+            
             - cola_overlap_samples - The overlap (in samples) between the frames in 
             the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            
             - zero_padded_signal_length - The frame length (in samples) of each zero 
             padded COLA frame. 
     frame_indices : ndarray
@@ -138,10 +146,13 @@ def generate_zero_padded_response_fft(full_data, frame_indices, signal_sizes,
         padding. The keys in the dictionary should include:
             - left_zero_pad_length - The amount of zeros that were used to pad the 
             left side of the COLA frames. 
+            
             - right_zero_pad_length - The amount of zeros that were used to pad the 
             right side of the COLA frames. 
+            
             - number_cola_frames - The number of frames to segment the data into for 
             the COLA processing.
+            
             - zero_padded_signal_length - The frame length (in samples) of each zero 
             padded COLA frame. 
     window : ndarray
@@ -180,18 +191,25 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
             - pre_data_blank_frame_length - The amount of zeros that were added to 
             the beginning of the training response to enable a perfect COLA 
             reconstruction.
+            
             - post_data_blank_frame_length - The amount of zeros that were added to 
             the end of the training response to enable a perfect COLA reconstruction.
+            
             - left_zero_pad_length - The amount of zeros that were used to pad the 
             left side of the COLA frames. 
+            
             - right_zero_pad_length - The amount of zeros that were used to pad the 
             right side of the COLA frames. 
+            
             - number_cola_frames - The number of frames to segment the data into for 
             the COLA processing.
+            
             - cola_frame_length - The frame length (in samples) that was use for the 
             COLA processing (corresponds to the cola_frame_length input parameter).
+            
             - cola_overlap_samples - The overlap (in samples) between the frames in 
             the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            
             - zero_padded_signal_length - The frame length (in samples) of each zero 
             padded COLA frame. 
     return_signal_length : int
@@ -322,6 +340,67 @@ def sinc_interpolation(original_ordinate, padded_length):
 
     return np.ascontiguousarray(interpolated_ordinate)
 
+def attenuate_signal(input_waveform: np.ndarray, 
+                     limit: Union[float, np.ndarray], 
+                     full_scale: float = 1.0) -> np.ndarray:
+    """
+    Attenuate peaks that exceed limits in time domain by scaling the region between zero 
+    crossings using the local maximum. This maintains a smooth waveform that does not 
+    exceed the specified limits.
+
+    Parameters
+    ----------
+    input_waveform : np.ndarray
+        1D or 2D array with shape (n_signals, n_samples)
+    limit : float | np.ndarray
+        limit value or array of limit values with shape (n_signals,)
+    full_scale : float, optional
+        global scaling factor applied to limit value, intended to be used such
+        that output waveform peaks are slightly less than physical limit,
+        (ex. use full_scale=0.97 so that output signal will not exceed 97% of specified limit), 
+        by default 1.0
+
+    Returns
+    -------
+    np.ndarray
+        clipped waveform, with shape (n_signals, n_samples)
+
+    Notes
+    -----
+    Each region between zero crossings is scaled according to:
+        `full_scale * limit / local_maximum`
+    """
+    if input_waveform.ndim == 1:
+        input_waveform = input_waveform[np.newaxis, :]
+    if isinstance(limit, (int, float)):
+        limit = np.ones(input_waveform.shape[0]) * limit
+    elif isinstance(limit, (list, tuple)):
+        limit = np.array(limit)
+    # pre-scale the limit value to the full scale percentage
+    limit = np.abs(limit * full_scale)[:, np.newaxis]
+    shape = input_waveform.shape
+    # pre-scale the waveform by the limit (so that we can flatten the array with limits already applied)
+    # waveform > limit equivalent to waveform / limit > 1
+    scaled_waveform = (input_waveform / limit).flatten()
+    samples = input_waveform.shape[-1]
+    # find each index after the waveform crosses zero
+    zero_crossings = np.diff(np.signbit(scaled_waveform)).nonzero()[0] + 1
+    # construct list of slices representing each segment between zero crossings
+    slices = [slice(zero_crossings[i], zero_crossings[i+1]) for i in range(len(zero_crossings)-1)]
+    # initialize scaling array (scaling = limit for values that won't be clipped)
+    scaling = np.tile(limit, samples).flatten()
+    for sl in slices:
+        if (sl.stop - sl.start) < 2:
+            continue # skip empty slices
+        if (sl.stop % samples) + (sl.start % samples) == samples:
+            continue # edge case - skip slices that span between waveforms (since we flattened everything)
+        segment = scaled_waveform[sl]
+        abs_max = np.max(np.abs(segment))
+        if abs_max > 1:
+            # for segments that exceed the limit, scaling array set to limit * local_max
+            scaling[sl] *= abs_max
+    return scaled_waveform.reshape(shape) * limit**2 / scaling.reshape(shape)
+
 #%% Deprecated Functions
 def create_zero_padded_response_fft(spr_object, 
                                     cola_frame_length=None, 
@@ -358,16 +437,22 @@ def create_zero_padded_response_fft(spr_object,
             - pre_data_blank_frame_length - The amount of zeros that were added to 
             the beginning of the training response to enable a perfect COLA 
             reconstruction.
+
             - post_data_blank_frame_length - The amount of zeros that were added to 
             the end of the training response to enable a perfect COLA reconstruction.
+            
             - left_zero_pad_length - The amount of zeros that were used to pad the 
             left side of the COLA frames. 
+            
             - right_zero_pad_length - The amount of zeros that were used to pad the 
             right side of the COLA frames. 
+            
             - cola_frame_length - The frame length (in samples) that was use for the 
             COLA processing (corresponds to the cola_frame_length input parameter).
+            
             - cola_overlap_samples - The overlap (in samples) between the frames in 
             the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            
             - zero_padded_signal_length - The frame length (in samples) of each zero 
             padded COLA frame. 
     window : ndarray
@@ -436,16 +521,22 @@ def reconstruct_cola_frames(cola_ffts,
             - pre_data_blank_frame_length - The amount of zeros that were added to 
             the beginning of the training response to enable a perfect COLA 
             reconstruction.
+            
             - post_data_blank_frame_length - The amount of zeros that were added to 
             the end of the training response to enable a perfect COLA reconstruction.
+            
             - left_zero_pad_length - The amount of zeros that were used to pad the 
             left side of the COLA frames. 
+            
             - right_zero_pad_length - The amount of zeros that were used to pad the 
             right side of the COLA frames. 
+            
             - cola_frame_length - The frame length (in samples) that was use for the 
             COLA processing (corresponds to the cola_frame_length input parameter).
+            
             - cola_overlap_samples - The overlap (in samples) between the frames in 
             the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            
             - zero_padded_signal_length - The frame length (in samples) of each zero 
             padded COLA frame. 
     return_signal_length : int

@@ -1,0 +1,20 @@
+format: jb-book
+root: theory_api_documentation_intro
+chapters:
+- file: forcefinder_framework
+  sections:
+  - file: spr_types
+  - file: automatic_bookkeeping
+  - file: inverse_method_code
+  - file: object_attribute_definitions
+- file: method_theory_intro
+  sections:
+  - file: inverse_problem_form
+  - file: regularization_methods
+  - file: hyperparameter_tuning_methods
+  - file: transformation_theory
+  - file: miscellaneous_techniques
+  - file: error_metrics
+- file: example_utilization
+- file: autoapi/index
+  title: API Reference

@@ -140,11 +140,6 @@ def elastic_net_full_path(H, x,
         This is the regularization parameters that are used in the elastic net
         regularization.
 
-    Note
-    ----
-    This compiles all of the deprecated elastic net functions into one large 
-    function so it works well with the numba JIT compiler. 
-
     References
     ----------
     .. [1] J.H. Friedman, T. Hastie, R. Tibshirani, Regularization Paths for Generalized
