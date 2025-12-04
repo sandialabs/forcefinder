@@ -43,11 +43,10 @@ jobs:
         run: |
           which jupyter-book || echo "no jupyter-book script on PATH"
           python -m pip show jupyter-book || echo "jupyter-book not installed?"
-          python -m jupyter_book --version
           
       # Build the book
       - name: Build the book
-        run: python -m jupyter_book build docs/theory_api_documentation
+        run: python jupyter-book build docs/theory_api_documentation
       
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
