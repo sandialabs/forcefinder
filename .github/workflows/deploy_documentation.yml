@@ -46,7 +46,7 @@ jobs:
           
       # Build the book
       - name: Build the book
-        run: python jupyter-book build docs/theory_api_documentation
+        run: jupyter-book build docs/theory_api_documentation
       
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
