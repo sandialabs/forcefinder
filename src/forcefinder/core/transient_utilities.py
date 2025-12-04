@@ -22,6 +22,7 @@ import numpy as np
 from scipy.signal import get_window, check_COLA
 from scipy.fft import rfft, irfft, next_fast_len, rfftfreq
 from scipy.interpolate import interp1d
+from typing import Union
 
 def prepare_for_zero_padding(spr_object, 
                              cola_frame_length=None, 
@@ -340,7 +341,7 @@ def sinc_interpolation(original_ordinate, padded_length):
     return np.ascontiguousarray(interpolated_ordinate)
 
 def attenuate_signal(input_waveform: np.ndarray, 
-                     limit: float | np.ndarray, 
+                     limit: Union[float, np.ndarray], 
                      full_scale: float = 1.0) -> np.ndarray:
     """
     Attenuate peaks that exceed limits in time domain by scaling the region between zero 
@@ -371,9 +372,9 @@ def attenuate_signal(input_waveform: np.ndarray,
     """
     if input_waveform.ndim == 1:
         input_waveform = input_waveform[np.newaxis, :]
-    if isinstance(limit, int | float):
+    if isinstance(limit, (int, float)):
         limit = np.ones(input_waveform.shape[0]) * limit
-    elif isinstance(limit, list | tuple):
+    elif isinstance(limit, (list, tuple)):
         limit = np.array(limit)
     # pre-scale the limit value to the full scale percentage
     limit = np.abs(limit * full_scale)[:, np.newaxis]
