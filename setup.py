@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="forcefinder",
-    version="0.1.1",
+    version="0.2.0",
     author="Steven Carter",
     author_email="spcarte@sandia.gov",
     description="An advanced inverse source estimation package for Python",
@@ -38,5 +38,6 @@ setup(
         ]
     }
 )
+
 
 
