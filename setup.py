@@ -33,11 +33,12 @@ setup(
             "sdynpy>=0.18.6",
             "pytest",
             "pytest-cov",
-            "jupyter-book",
+            "jupyter-book[sphinx]",
             "sphinx-autoapi"
         ]
     }
 )
+
 
 
 
