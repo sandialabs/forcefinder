@@ -36,3 +36,4 @@ reports/**
 **/.ipynb_checkpoints/**
 *.pyc
 src/forcefinder/core/__pycache__/transient_utilities.cpython-311.pyc
+src/forcefinder/core/__pycache__/source_path_receiver.cpython-311.pyc
