@@ -51,6 +51,7 @@ import cvxpy as cp
 from joblib import delayed, Parallel
 import warnings
 from copy import deepcopy
+from typing import Union
 
 class SourcePathReceiver:
     """
@@ -3764,7 +3765,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         else:
             return work_object
         
-    def attenuate_force(self, limit: float | np.ndarray, 
+    def attenuate_force(self, limit: Union[float, np.ndarray], 
                         full_scale: float = 1.0,
                         in_place: bool =True):
         """
