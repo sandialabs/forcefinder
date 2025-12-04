@@ -16,6 +16,9 @@ The main features of ForceFinder are:
 
 The SourcePathReceiver object has also been built into a Rattlesnake control law for random vibration control, meaning that the same exact code can be used in offline predictions and online control during a multiple-input/multiple-output (MIMO) vibration test. Note that the control law is included with this package for completeness, but are not imported to the Python environment when ForceFinder is used.
 
+## Documentation 
+The [theory and API documentation](https://sandialabs.github.io/forcefinder) provides useful information for theory and programming interface that is used in ForceFinder. Examples will be added to this documentation over time. 
+
 ## Goals
 The ForceFinder project has two main goals:
 
@@ -55,6 +58,7 @@ Once installed, ForceFinder can be imported with the following alias:
 ```python3
 import forcefinder as ff
 ```
+
 
 
 
