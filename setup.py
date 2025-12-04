@@ -30,7 +30,7 @@ setup(
         ],
     extras_require={ # Extra packages that are useful for development
         "dev": [
-            "sdynpy>=0.18.4",
+            "sdynpy>=0.18.6",
             "pytest",
             "pytest-cov",
             "jupyter-book",
