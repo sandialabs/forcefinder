@@ -41,6 +41,7 @@ jobs:
 
       # Build the book
       - name: Build the book
+        working-directory: docs/theory_api_documentation
         run: |
           jupyter-book build .
       
@@ -51,7 +52,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: _build/html
+          path: docs/theory_api_documentation/_build/html
 
       # Deploy the book's HTML to GitHub Pages
       - name: Deploy to GitHub Pages
