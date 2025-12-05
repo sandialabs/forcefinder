@@ -9,6 +9,7 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/sandialabs/forcefinder",
+    project_urls={"documentation":"https://sandialabs.github.io/forcefinder"},
     packages=find_packages(where='src'),  # Tell setuptools to look in the src/ folder
     package_dir={"": "src"},  # Set the base folder for the packages to src/
     classifiers=["Programming Language :: Python :: 3.11",
@@ -33,11 +34,15 @@ setup(
             "sdynpy>=0.18.6",
             "pytest",
             "pytest-cov",
-            "jupyter-book",
+            "jupyter-book==1.0.4",
             "sphinx-autoapi"
         ]
     }
 )
+
+
+
+
 
 
 
