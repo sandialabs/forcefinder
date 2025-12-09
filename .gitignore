@@ -37,3 +37,13 @@ reports/**
 *.pyc
 src/forcefinder/core/__pycache__/transient_utilities.cpython-311.pyc
 src/forcefinder/core/__pycache__/source_path_receiver.cpython-311.pyc
+src/forcefinder/__pycache__/__init__.cpython-311.pyc
+src/forcefinder/core/__pycache__/__init__.cpython-311.pyc
+src/forcefinder/core/__pycache__/auto_regularization.cpython-311.pyc
+src/forcefinder/core/__pycache__/inverse_processing.cpython-311.pyc
+src/forcefinder/core/__pycache__/source_path_receiver.cpython-311.pyc
+src/forcefinder/core/__pycache__/sparse_functions.cpython-311.pyc
+src/forcefinder/core/__pycache__/transient_utilities.cpython-311.pyc
+src/forcefinder/core/__pycache__/utilities.cpython-311.pyc
+src/forcefinder/transient_quality_evaluation/__pycache__/transient_gui_plot.cpython-311.pyc
+src/forcefinder/transient_quality_evaluation/__pycache__/transient_quality_metrics.cpython-311.pyc
