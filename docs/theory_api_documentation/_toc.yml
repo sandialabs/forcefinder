@@ -15,6 +15,6 @@ chapters:
   - file: transformation_theory
   - file: miscellaneous_techniques
   - file: error_metrics
-- file: example_utilization
+- file: example_utilization_intro
 - file: autoapi/index
   title: API Reference
