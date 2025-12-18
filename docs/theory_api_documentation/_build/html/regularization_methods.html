@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Regularization Methods &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'regularization_methods';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Hyperparameter Tuning Methods" href="hyperparameter_tuning_methods.html" />
+    <link rel="prev" title="Inverse Problem Form" href="inverse_problem_form.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/regularization_methods.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regularization Methods</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-singular-value-decomposition">Truncated Singular Value Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tikhonov-regularization">Tikhonov Regularization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-optimization">Constrained Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penalized-optimization">Penalized Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#closed-form-solution">Closed Form Solution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-net-regularization">Elastic Net Regularization</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regularization-methods">
+<h1>Regularization Methods<a class="headerlink" href="#regularization-methods" title="Link to this heading">#</a></h1>
+<p>The advanced inverse methods in ForceFinder generally use one of three regularization types:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#sec-tsvd"><span class="std std-ref">Truncated singular value decomposition (TSVD)</span></a></p></li>
+<li><p><a class="reference internal" href="#sec-tikhonov"><span class="std std-ref">Tikhonov regularization</span></a></p></li>
+<li><p><a class="reference internal" href="#sec-elastic-net"><span class="std std-ref">Elastic net regularization</span></a>, which is a generalization of the least absolute shrinkage and selection operator (LASSO)</p></li>
+</ol>
+<p>It is important to note that the focus of many of the advanced inverse methods in ForceFinder is selecting an “optimal” hyperparameter that is used to tune the influence of the regularization, rather than the regularization itself. For example, there are multiple advanced inverse methods (for each SPR type) that use Tikhonov regularization, but with a different method to select regularization parameter (e.g., cross validation, L-curve, etc.). This section focuses on describing the fundamental formulations for the different regularization methods and will not address the techniques for selecting a hyperparameter. See the <a class="reference internal" href="hyperparameter_tuning_methods.html"><span class="doc std std-doc">hyperparameter tuning methods</span></a> section for more details on how the hyperparameters are selected.</p>
+<section id="truncated-singular-value-decomposition">
+<span id="sec-tsvd"></span><h2>Truncated Singular Value Decomposition<a class="headerlink" href="#truncated-singular-value-decomposition" title="Link to this heading">#</a></h2>
+<p>The TSVD is likely the most straightforward of the regularization techniques, since it simply uses the SVD to compute the pseudo-inverse of the FRF matrix with a restricted number of singular values:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix}H\end{bmatrix}^+=\begin{bmatrix}V\end{bmatrix}\frac{1}{diag\begin{pmatrix}\begin{Bmatrix}S(1:N)\end{Bmatrix}\end{pmatrix}}\begin{bmatrix}U\end{bmatrix}^*
+\]</div>
+<p>The practitioner simply selects the number of singular values to include in the inverse (by adjusting <span class="math notranslate nohighlight">\(N\)</span>). The general concept behind the TSVD is that the low amplitude singular values (commonly called insignificant singular values) are related to information that is insignificant and potentially counterproductive to the ISE problem. Consequentially, this insignificant information should rejected from the inverse so the estimated sources are not contaminated by noise or other errors. In general, the amplitudes of the estimated sources will shrink as <span class="math notranslate nohighlight">\(N\)</span> is reduced, since small singular values become large in the inverse problem.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The TSVD is a straightforward regularization technique to use when the practitioner is manually tuning the hyperparameter (the number of singular values to include in the inverse), since it is relatively easy to determine which singular values are significant to the inverse. However, this method can behave erratically when there are not that many singular values in the FRF matrix, since removing one singular value may remove significant information.</p>
+</div>
+</section>
+<section id="tikhonov-regularization">
+<span id="sec-tikhonov"></span><h2>Tikhonov Regularization<a class="headerlink" href="#tikhonov-regularization" title="Link to this heading">#</a></h2>
+<p>Tikhonov regularization is an extremely common technique that has been widely studied. It can be written with three different mathematical frameworks: constrained optimization (primal form), penalized optimization (Lagrangian form), and a closed form solution. Each mathematical framework provides a different perspective on how Tikhonov regularization influences the inverse problem, so they are all shown here.</p>
+<section id="constrained-optimization">
+<h3>Constrained Optimization<a class="headerlink" href="#constrained-optimization" title="Link to this heading">#</a></h3>
+<p>The constrained optimization expression of Tikhonov regularization clearly shows that the method is attempting to estimate sources that minimize the sum-squared amplitude response error with an explicit constraint on the sum-squared amplitudes of the sources. Consequently, an smaller <span class="math notranslate nohighlight">\(\tau\)</span> will result in in smaller source amplitudes. Further, an smaller <span class="math notranslate nohighlight">\(\tau\)</span> tends to shrink the source amplitudes towards each other since the larger sources will be influenced by the constraint before the smaller sources.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{gather*}
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\end{pmatrix} \\
+subject~to: \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 \le \tau
+\end{gather*}
+\end{split}\]</div>
+</section>
+<section id="penalized-optimization">
+<h3>Penalized Optimization<a class="headerlink" href="#penalized-optimization" title="Link to this heading">#</a></h3>
+<p>The penalized optimization expression of Tikhonov regularization is the Lagrangian of the constrained optimization expression, as shown in the expression below, which minimizes the sum-squared amplitude response error with a penalty on the sum-squared source amplitudes. This expression makes it obvious that Tikhonov regularization balances the response prediction error and source amplitudes. The balance between the two parameters in the minimization problem is adjusted by tuning <span class="math notranslate nohighlight">\(\lambda\)</span> (commonly called the regularization parameter). A large <span class="math notranslate nohighlight">\(\lambda\)</span> value will shift the balance towards solutions with small source amplitudes, but potentially large errors in the reconstructed response.</p>
+<div class="math notranslate nohighlight">
+\[
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 + \frac{\lambda}{2} \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\end{pmatrix}
+\]</div>
+</section>
+<section id="closed-form-solution">
+<h3>Closed Form Solution<a class="headerlink" href="#closed-form-solution" title="Link to this heading">#</a></h3>
+<p>A closed form solution for the Tikhonov regularized FRF matrix inverse can be developed from the penalized optimization expression, as shown below with the singular value components of the FRF matrix. This equation shows how <span class="math notranslate nohighlight">\(\lambda\)</span> has a nonlinear effect on the condition number of the problem since it will have a more significant impact on the smaller singular values than the larger singular values. Consequently, an appropriately chosen <span class="math notranslate nohighlight">\(\lambda\)</span> will mitigate the ill-effects of small singular values while leaving the large singular values unaffected.</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix}H\end{bmatrix}^+ = \begin{bmatrix}V\end{bmatrix}\frac{\begin{bmatrix}S\end{bmatrix}}{\begin{bmatrix}S\end{bmatrix}^2 + \lambda}\begin{bmatrix}U\end{bmatrix}^*
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some expressions for Tikhonov regularization do not divide the <span class="math notranslate nohighlight">\(\lambda\)</span> value by two in the penalized optimization expression. Excluding this division results in the <span class="math notranslate nohighlight">\(\lambda\)</span> value being multiplied by two in the closed form solution. This division is inconsequential to the inverse method (since it has a simple scaler impact on the chosen regularization parameter), but can result in a tidier closed form solution. However, it is important to know which version of the solution is being used to obtain consistent solutions between different software packages.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It can be challenging to manually tune the regularization parameter in Tikhonov regularization, since the influence of the parameter depends on the amplitude of the singular values in the FRF matrix. As such, it can be important to use a frequency dependent regularization parameter to account for the frequency dependent changes in the amplitudes of the singular values.</p>
+</div>
+</section>
+</section>
+<section id="elastic-net-regularization">
+<span id="sec-elastic-net"></span><h2>Elastic Net Regularization<a class="headerlink" href="#elastic-net-regularization" title="Link to this heading">#</a></h2>
+<p>Elastic net regularization is a generalized regularization method that combines the LASSO and Tikhonov penalties. To understand the elastic net, it is useful to first review the LASSO, where the constrained optimization expression is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{gather*}
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\end{pmatrix} \\
+subject~to: \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_1 \le \tau
+\end{gather*}
+\end{split}\]</div>
+<p>The penalized optimization expression for the LASSO is the Lagrangian of the constrained optimization expression, which is:</p>
+<div class="math notranslate nohighlight">
+\[
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 + \lambda \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_1\end{pmatrix}
+\]</div>
+<p>These two expressions make it clear that the LASSO is very similar to Tikhonov regularization except the constraint/penalty is based on the sum of the absolute values of the sources. This subtle change in the formulation has a significant impact on the outcome of the ISE problem, since the different constraint promotes a sparse solution where insignificant sources are set to zero. The sparsity effect can be particularly useful in cases where the practitioner does not know which source DOFs should be included in the ISE problem.</p>
+<p>The penalized optimization expressions for Tikhonov regularization and the LASSO can be combined to result in the elastic net, where the so-called “naive” elastic net is:</p>
+<div class="math notranslate nohighlight">
+\[
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 + \lambda_1 \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_1 + \lambda_2 \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\end{pmatrix}
+\]</div>
+<p>The naive elastic net requires the practitioner to tune two regularization parameters, one for the LASSO penalty and one for the Tikhonov penalty. This expression can be simplified to a single regularization parameter by introducing a mixing parameter, <span class="math notranslate nohighlight">\(\alpha\)</span>, which controls the balance between the LASSO and Tikhonov penalties:</p>
+<div class="math notranslate nohighlight">
+\[
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 + \lambda \begin{pmatrix} \alpha  \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_1 + (1-\alpha) \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 \end{pmatrix} \end{pmatrix}
+\]</div>
+<p>An <span class="math notranslate nohighlight">\(\alpha\)</span> of one in this expression results in a pure LASSO penalty and an alpha of zero results in a pure Tikhonov penalty. The penalized optimization form of the elastic net is the Lagrangian of the following constrained optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{gather*}
+\underset{f}{\min}\begin{pmatrix}\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\end{pmatrix} \\
+subject~to: \alpha  \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_1 + (1-\alpha) \lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2 \le \tau
+\end{gather*}
+\end{split}\]</div>
+<p>The different expressions for the elastic net regularization can be interpreted in the same manner as Tikhonov regularization, meaning that the regularization places a constraint on the amplitudes of the sources, where the regularization parameter determines the significance of the regularization in the ISE problem. Unfortunately, the use of the 1-norm in the penalty means that there isn’t a closed form solution to further analyze the regularization method and develop an intuition for manually tuning the regularization parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The ISE problem with elastic net regularization is solved as a constrained optimization problem, which is much more computationally complex than the closed form solutions for Tikhonov regularization and the TSVD. This increased computational complexity means that the solution to the ISE problem can take much longer to compute compared to the other regularization methods.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Elastic net regularization is implemented in ForceFinder using the penalized optimization expression where the practitioner tunes the <span class="math notranslate nohighlight">\(\lambda\)</span> and <span class="math notranslate nohighlight">\(\alpha\)</span> parameters.</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="inverse_problem_form.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Inverse Problem Form</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="hyperparameter_tuning_methods.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Hyperparameter Tuning Methods</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#truncated-singular-value-decomposition">Truncated Singular Value Decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tikhonov-regularization">Tikhonov Regularization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-optimization">Constrained Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penalized-optimization">Penalized Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#closed-form-solution">Closed Form Solution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-net-regularization">Elastic Net Regularization</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

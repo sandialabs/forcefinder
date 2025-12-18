@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>forcefinder.core.response_limit &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/forcefinder/core/response_limit';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for forcefinder.core.response_limit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines the ResponseLimit class which is used for response limiting in</span>
+<span class="sd">the PowerSourcePathReceiver.</span>
+
+<span class="sd">Copyright 2025 National Technology &amp; Engineering Solutions of Sandia,</span>
+<span class="sd">LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.</span>
+<span class="sd">Government retains certain rights in this software.</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sdynpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sdpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterator</span>
+
+<div class="viewcode-block" id="check_ascending">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.check_ascending">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_ascending</span><span class="p">(</span><span class="n">vector</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the supplied vector is sorted in an ascending order.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list, tuple, or ndarray</span>
+<span class="sd">        A 1d vector to evaluate. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool </span>
+<span class="sd">        True if the vector is sorted in ascending order, otherwise</span>
+<span class="sd">        False.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The supplied vector is cast as an ndarray to ensure consistent </span>
+<span class="sd">    logic for the check.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">vector</span><span class="p">[</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_nesting_depth">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.get_nesting_depth">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_nesting_depth</span><span class="p">(</span><span class="n">data</span> <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the nesting depth (akin to the number of dimensions) </span>
+<span class="sd">    for a list or tuple.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : list or tuple</span>
+<span class="sd">        The data to evaluate the nesting depth for.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nesting_depth : it</span>
+<span class="sd">        The maximum nesting depth of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Non-list elements have a depth of 0, need this for when the </span>
+    <span class="c1"># recursion hits the end of the nesting</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1"># Magical recursive function call</span>
+    <span class="n">nesting_depth</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">nesting_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nesting_depth</span><span class="p">,</span> <span class="n">get_nesting_depth</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">nesting_depth</span></div>
+
+
+<div class="viewcode-block" id="ResponseLimit">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResponseLimit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to represent a response limit as a set of breakpoints for </span>
+<span class="sd">    response limits in inverse problems. </span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    limit_coordinate : CoordinateArray</span>
+<span class="sd">        The responses DOFs that the limits are defined for.</span>
+<span class="sd">    breakpoint_frequency : list</span>
+<span class="sd">        The frequency breakpoint for the limits, formatted as a list </span>
+<span class="sd">        of 1d arrays.</span>
+<span class="sd">    breakpoint_level : list</span>
+<span class="sd">        The level breakpoint for the limits, formatted as a list of </span>
+<span class="sd">        1d arrays.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit_coordinate</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">sdpy</span><span class="o">.</span><span class="n">CoordinateArray</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> 
+                 <span class="n">breakpoint_frequency</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+                 <span class="n">breakpoint_level</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Basic set-up for the ResponseLimit class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        limit_coordinate : CoordinateArray, list, tuple, or str</span>
+<span class="sd">            The responses DOFs that the limits are defined for. This can</span>
+<span class="sd">            be defined as a SDynPy CoordinateArray, a list of strings, </span>
+<span class="sd">            a tuple of strings, or a string (when there is only one DOF </span>
+<span class="sd">            in the limit). The DOF strings should be supplied with a node</span>
+<span class="sd">            number and direction, i.e., 201X+. Note that the list, tuple, </span>
+<span class="sd">            or CoordinateArray should be one dimensional, i.e., </span>
+<span class="sd">            [&#39;1X+&#39;, &#39;2X+&#39;] not [[&#39;1X+&#39;], [&#39;2X+&#39;]]</span>
+<span class="sd">        breakpoint_frequency : list</span>
+<span class="sd">            The frequency breakpoint for the limits, formatted as a list </span>
+<span class="sd">            of lists of 1d arrays. These breakpoints must be supplied in </span>
+<span class="sd">            ascending order, i.e., [1,2,3] not [1,3,2] or [3,2,1]. </span>
+<span class="sd">        breakpoint_level : list</span>
+<span class="sd">            The level breakpoint for the limits, formatted as a list of </span>
+<span class="sd">            lists of 1d arrays.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function assumes that there is only one limit if limit_coordinate</span>
+<span class="sd">        is supplied as a string. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">limit_coordinate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">string_array</span><span class="o">=</span><span class="n">limit_coordinate</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">limit_coordinate</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">string_array</span><span class="o">=</span><span class="n">limit_coordinate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">,</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">CoordinateArray</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">limit_coordinate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">limit_coordinate</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The limit_coordinate must be supplied as a string, list, tuple, or SDynPy CoordinateArray&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Setting the breakpoint frequencies and levels, with some format checking, if they are provided as lists or tuples</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">get_nesting_depth</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_frequency must have only one dimension if there is only one limit DOF&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">get_nesting_depth</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_level must have only one dimension if there is only one limit DOF&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="c1"># Setting the breakpoint frequencies and levels, with some format checking, if they are provided as ndarrays</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">breakpoint_frequency</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_frequency must have only one dimension if there is only one limit DOF&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span> <span class="o">=</span> <span class="n">breakpoint_frequency</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">breakpoint_level</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_level must have only one dimension if there is only one limit DOF&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_level</span> <span class="o">=</span> <span class="n">breakpoint_level</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">check_ascending</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint frequencies must be supplied in ascending order&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The frequencies must be supplied as a limit or tuple of lists or 1d arrays when there are more than one limit DOF&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The levels must be supplied as a limit or tuple of lists or 1d arrays when there are more than one limit DOF&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_frequency must have the same number of breakpoint vectors as the number of limit DOFs&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint_level must have the same number of breakpoint vectors as the number of limit DOFs&#39;</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_level</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span><span class="p">):</span>
+                <span class="c1"># Things are done in this order for the function to be agnostic to the </span>
+                <span class="c1"># breakpoint frequencies and levels being lists, tuples, or ndarrays</span>
+                <span class="c1"># inside the supplied list/tuple.</span>
+                <span class="n">loop_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">breakpoint_frequency</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="n">loop_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">breakpoint_level</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">loop_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">loop_level</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The limit must have the same number of breakpoint frequencies and levels&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">check_ascending</span><span class="p">(</span><span class="n">loop_frequency</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The breakpoint frequencies must be supplied in ascending order&#39;</span><span class="p">)</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loop_frequency</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loop_level</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseLimit</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;Index </span><span class="si">{:}</span><span class="s1"> is out of bounds for ResponseLimit with size </span><span class="si">{:}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span>
+            <span class="k">else</span><span class="p">:</span>    
+                <span class="k">return</span> <span class="n">ResponseLimit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">limit_coordinate</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The ResponseLimit class can only be indexed by single integers&#39;</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ResponseLimit</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Response limit object with </span><span class="si">{:}</span><span class="s1"> limit DOFs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_limits_</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="ResponseLimit.interpolate_to_full_frequency">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit.interpolate_to_full_frequency">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpolate_to_full_frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full_frequency</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                                      <span class="n">interpolation_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;loglog&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts the limit breakpoints to a different frequency vector </span>
+<span class="sd">        via linear interpolation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        full_frequency : ndarray</span>
+<span class="sd">            A 1d array of frequencies to interpolate the limit breakpoints</span>
+<span class="sd">            over. This array must be sorted in ascending order. </span>
+<span class="sd">        interpolation_type : str, optional</span>
+<span class="sd">            The type of interpolation to use when converting the breakpoints</span>
+<span class="sd">            to full_frequencies. The options are loglog or linearlinear, </span>
+<span class="sd">            depending on if the interpolation should result in straight lines</span>
+<span class="sd">            on a log or linear scale. The default is loglog.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        full_limit : ndarray</span>
+<span class="sd">            The limit, interpolated to the supplied frequencies. It is </span>
+<span class="sd">            organized [number of limits, number of frequencies] where the </span>
+<span class="sd">            limits are ordered the same as the ResponseLimit object. </span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If full_frequency is not supplied in ascending order. </span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The interpolated limit outside at frequencies that our higher/lower</span>
+<span class="sd">        than the breakpoint frequency limits are returned as NaN. </span>
+
+<span class="sd">        Any zeros in full_frequency or the breakpoint information are converted</span>
+<span class="sd">        to machine epsilon (for floats) if loglog interpolation is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># ensuring that full_frequency is the correct format</span>
+        <span class="n">full_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">full_frequency</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_ascending</span><span class="p">(</span><span class="n">full_frequency</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;full_frequency must be supplied in ascending order&#39;</span><span class="p">)</span>
+        
+        <span class="n">full_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">full_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">limit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">interpolation_type</span> <span class="o">==</span> <span class="s1">&#39;linearlinear&#39;</span><span class="p">:</span>
+                <span class="n">full_limit</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">full_frequency</span><span class="p">,</span> 
+                                               <span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="p">,</span> 
+                                               <span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="p">,</span>
+                                               <span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">interpolation_type</span> <span class="o">==</span> <span class="s1">&#39;loglog&#39;</span><span class="p">:</span>
+                <span class="c1"># Converting zeros to machine epsilon for proper interpolation </span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">full_frequency</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                    <span class="n">full_frequency</span><span class="p">[</span><span class="n">full_frequency</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> 
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                    <span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="p">[</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+                <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                    <span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="p">[</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+
+                <span class="n">full_limit</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">full_frequency</span><span class="p">),</span> 
+                                                    <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_frequency</span><span class="p">),</span> 
+                                                    <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">limit</span><span class="o">.</span><span class="n">breakpoint_level</span><span class="p">),</span>
+                                                    <span class="n">left</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The specified interpolation type is not available.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">full_limit</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

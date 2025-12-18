@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>forcefinder.transient_quality_evaluation.transient_quality_metrics &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for forcefinder.transient_quality_evaluation.transient_quality_metrics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Defines the various response prediction quality metrics for transient</span>
+<span class="sd">source estimation problems.</span>
+
+<span class="sd">Copyright 2025 National Technology &amp; Engineering Solutions of Sandia,</span>
+<span class="sd">LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.</span>
+<span class="sd">Government retains certain rights in this software.</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sdynpy.core.sdynpy_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">data_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sdynpy.core.sdynpy_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionTypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sdynpy.core.sdynpy_coordinate</span><span class="w"> </span><span class="kn">import</span> <span class="n">coordinate_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sdynpy.signal_processing.sdynpy_correlation</span><span class="w"> </span><span class="kn">import</span> <span class="n">trac</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+
+<div class="viewcode-block" id="preprocess_data_for_quality_metric">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_data_for_quality_metric</span><span class="p">(</span><span class="n">spr_object</span><span class="p">,</span>
+                                       <span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">,</span>
+                                       <span class="n">samples_per_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">overlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">overlap_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                       <span class="n">window</span><span class="o">=</span><span class="s1">&#39;boxcar&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selects the correct datasets from an SPR object and splits the data into frames </span>
+<span class="sd">    for the transient response prediction quality metrics.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spr_object : TransientSourcePathReceiver</span>
+<span class="sd">        The SPR object to pull the data from.</span>
+<span class="sd">    channel_set : str, optional</span>
+<span class="sd">        The channel set to make the response comparisons between.</span>
+<span class="sd">        The available options are:</span>
+<span class="sd">            - training (default) - This compares the responses for the </span>
+<span class="sd">            transformed training DOFs in the SPR object.</span>
+
+<span class="sd">            - validation - This compares the responses for the validation</span>
+<span class="sd">            response DOFs in the SPR object.</span>
+
+<span class="sd">            - target - This compares the responses for all the target </span>
+<span class="sd">            response DOFs in the SPR object. </span>
+<span class="sd">    samples_per_frame : int, optional</span>
+<span class="sd">        Number of samples in each measurement frame to compute the RMS </span>
+<span class="sd">        for. Either this argument or `frame_length` must be specified.  </span>
+<span class="sd">        If both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    frame_length : float, optional</span>
+<span class="sd">        Length of each measurement frame to compute the RMS for, in the </span>
+<span class="sd">        same units as the `time_abscissa` field (`samples_per_frame` = `frame_length`/`self.time_abscissa_spacing`).</span>
+<span class="sd">        Either this argument or `samples_per_frame` must be specified. If</span>
+<span class="sd">        both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap : float, optional</span>
+<span class="sd">        Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to</span>
+<span class="sd">        overlap a quarter of the frame) for the RMS calculation. Either </span>
+<span class="sd">        this argument or `overlap_samples` must be specified. If both are</span>
+<span class="sd">        specified, a `ValueError` is raised.  If neither are specified, no</span>
+<span class="sd">        overlap is used. This argument matches the behavior of the </span>
+<span class="sd">        &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap_samples : int, optional</span>
+<span class="sd">        Number of samples in the measurement frame to overlap for the RMS</span>
+<span class="sd">        calculation. Either this argument or `overlap_samples` must be </span>
+<span class="sd">        specified.  If both are specified, a `ValueError` is raised.  If </span>
+<span class="sd">        neither are specified, no overlap is used. This argument matches </span>
+<span class="sd">        the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    window : str, optional</span>
+<span class="sd">        The window to apply to the segmented data. This should a window that </span>
+<span class="sd">        is available from the `scipy.signal.get_window` function. The default</span>
+<span class="sd">        is boxcar.  </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    truth : TimeHistoryArray</span>
+<span class="sd">        The truth response, segmented into frames per the selected options.</span>
+<span class="sd">    reconstructed : TimeHistoryArray</span>
+<span class="sd">        The reconstructed response, segmented into frames per the selected options.</span>
+<span class="sd">    </span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This returns the raw training response rather than the reconstructed training </span>
+<span class="sd">    response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">channel_set</span> <span class="o">==</span> <span class="s1">&#39;training&#39;</span><span class="p">:</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">training_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                               <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                               <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                               <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                               <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                               <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">reconstructed</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">reconstructed_training_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                                                     <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                                                     <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                                                     <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                                                     <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                                                     <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">channel_set</span> <span class="o">==</span> <span class="s1">&#39;validation&#39;</span><span class="p">:</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">validation_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                            <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                            <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                            <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                            <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                            <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">reconstructed</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">reconstructed_validation_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                                                    <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                                                    <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                                                    <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                                                    <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                                                    <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">channel_set</span> <span class="o">==</span> <span class="s1">&#39;target&#39;</span><span class="p">:</span>
+        <span class="n">truth</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">target_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">reconstructed</span> <span class="o">=</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">reconstructed_target_response</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                                                <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                                                                <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                                                                <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                                                <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                                                                <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Selected channel set is not available&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">truth</span><span class="p">,</span> <span class="n">reconstructed</span></div>
+
+
+<div class="viewcode-block" id="compute_global_rms_error">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_global_rms_error</span><span class="p">(</span><span class="n">truth_response</span><span class="p">,</span> <span class="n">check_response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the global RMS error in dB of the reconstructed response, </span>
+<span class="sd">    per the procedure in MIL-STD 810H.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    truth_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the truth response in the comparison. </span>
+<span class="sd">    check_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the check response in the comparison. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TimeHistoryArray</span>
+<span class="sd">        Returns a time history array of the global RMS error in dB. The response</span>
+<span class="sd">        coordinate for this array is made up to have a value for the DataArray</span>
+<span class="sd">        and does not correspond to anything.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError </span>
+<span class="sd">        If the response coordinate (and coordinate ordering) are not the same</span>
+<span class="sd">        for the truth and check responses. </span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the ordinate for the truth and check responses are not the same </span>
+<span class="sd">        shape.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the abscissa for the truth and check responses are not the same.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function assumes that both the truth and check responses have been </span>
+<span class="sd">    segmented using the `split_into_frames` method.</span>
+<span class="sd">    </span>
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] MIL-STD-810H: Environmental Engineering Considerations and Laboratory Tests. US Military, 2019.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="o">==</span><span class="n">check_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check responses must hav the same response coordinate (and coordinate ordering)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="o">==</span><span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same shape to perform a comparison&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">check_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same abscissa to perform a comparison&#39;</span><span class="p">)</span>
+    
+    <span class="n">truth_rms</span> <span class="o">=</span> <span class="n">truth_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">truth_rms</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">truth_rms</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">check_rms</span> <span class="o">=</span> <span class="n">check_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="n">rms_error</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">check_rms</span><span class="o">/</span><span class="n">truth_rms</span><span class="p">)</span>
+    <span class="n">rms_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">global_rms_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rms_error</span><span class="o">*</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_array</span><span class="p">(</span><span class="n">FunctionTypes</span><span class="o">.</span><span class="n">TIME_RESPONSE</span><span class="p">,</span> <span class="n">rms_time</span><span class="p">,</span> <span class="n">global_rms_error</span><span class="p">,</span> <span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="compute_average_rms_error">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_average_rms_error</span><span class="p">(</span><span class="n">truth_response</span><span class="p">,</span> <span class="n">check_response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the average RMS error in dB of the check response compared</span>
+<span class="sd">    to the truth response.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    truth_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the truth response in the comparison. </span>
+<span class="sd">    check_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the check response in the comparison. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TimeHistoryArray</span>
+<span class="sd">        Returns a time history array of the average RMS error in dB. The response</span>
+<span class="sd">        coordinate for this array is made up to have a value for the DataArray</span>
+<span class="sd">        and does not correspond to anything.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError </span>
+<span class="sd">        If the response coordinate (and coordinate ordering) are not the same</span>
+<span class="sd">        for the truth and check responses.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the ordinate for the truth and check responses are not the same </span>
+<span class="sd">        shape.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the abscissa for the truth and check responses are not the same.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function assumes that both the truth and check responses have been </span>
+<span class="sd">    segmented using the `split_into_frames` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="o">==</span><span class="n">check_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check responses must hav the same response DOFs (and DOF ordering)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="o">==</span><span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same shape to perform a comparison&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">check_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same abscissa to perform a comparison&#39;</span><span class="p">)</span>
+    
+    <span class="n">truth_rms</span> <span class="o">=</span> <span class="n">truth_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>        
+    <span class="n">check_rms</span> <span class="o">=</span> <span class="n">check_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+    <span class="n">rms_error</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">check_rms</span><span class="o">/</span><span class="n">truth_rms</span><span class="p">)</span>
+    <span class="n">rms_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">average_rms_error</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">rms_error</span><span class="o">/</span><span class="mi">20</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">data_array</span><span class="p">(</span><span class="n">FunctionTypes</span><span class="o">.</span><span class="n">TIME_RESPONSE</span><span class="p">,</span> <span class="n">rms_time</span><span class="p">,</span> <span class="n">average_rms_error</span><span class="p">,</span> <span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="compute_time_varying_trac">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_time_varying_trac</span><span class="p">(</span><span class="n">truth_response</span><span class="p">,</span> <span class="n">check_response</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the time varying time response assurance criterion (TRAC) </span>
+<span class="sd">    between the check response and truth response for all the supplied </span>
+<span class="sd">    degrees of freedom.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    truth_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the truth response in the comparison. </span>
+<span class="sd">    check_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the check response in the comparison. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TimeHistoryArray</span>
+<span class="sd">        Returns a time history array of the time varying TRAC for all the </span>
+<span class="sd">        response degrees of freedom.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError </span>
+<span class="sd">        If the response coordinate (and coordinate ordering) are not the same</span>
+<span class="sd">        for the truth and check responses.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the ordinate for the truth and check responses are not the same </span>
+<span class="sd">        shape.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the abscissa for the truth and check responses are not the same.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function assumes that both the truth and check responses have been </span>
+<span class="sd">    segmented using the `split_into_frames` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="o">==</span><span class="n">check_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check responses must hav the same response DOFs (and DOF ordering)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="o">==</span><span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same shape to perform a comparison&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">check_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same abscissa to perform a comparison&#39;</span><span class="p">)</span>
+    
+    <span class="n">response_coordinate</span> <span class="o">=</span> <span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span>
+    <span class="n">trac_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">trac_values</span> <span class="o">=</span> <span class="n">trac</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">,</span> <span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_array</span><span class="p">(</span><span class="n">FunctionTypes</span><span class="o">.</span><span class="n">TIME_RESPONSE</span><span class="p">,</span> <span class="n">trac_time</span><span class="p">,</span> <span class="n">trac_values</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">response_coordinate</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="compute_time_varying_level_error">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_time_varying_level_error</span><span class="p">(</span><span class="n">truth_response</span><span class="p">,</span> <span class="n">check_response</span><span class="p">,</span> <span class="n">level_type</span><span class="o">=</span><span class="s1">&#39;rms&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the computes the time varying error for a statistical level (rms</span>
+<span class="sd">    or max) between the check and truth responses.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    truth_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the truth response in the comparison. </span>
+<span class="sd">    check_response : TimeHistoryArray</span>
+<span class="sd">        The segmented TimeHistoryArray (from the split_into_frames method)</span>
+<span class="sd">        for the check response in the comparison. </span>
+<span class="sd">    level_type : str, optional</span>
+<span class="sd">        The type of level to be used in the comparison. The options are:</span>
+<span class="sd">            - rms - The rms level error for each frame of data in the </span>
+<span class="sd">            responses. This is the default.</span>
+<span class="sd">            - max - The error in the maximum level that is seem for each </span>
+<span class="sd">            frame of data in the responses.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TimeHistoryArray</span>
+<span class="sd">        Returns a time history array of the time varying level error in dB for </span>
+<span class="sd">        all the response degrees of freedom.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError </span>
+<span class="sd">        If the response coordinate (and coordinate ordering) are not the same</span>
+<span class="sd">        for the truth and check responses.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the ordinate for the truth and check responses are not the same </span>
+<span class="sd">        shape.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the abscissa for the truth and check responses are not the same.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function assumes that both the truth and check responses have been </span>
+<span class="sd">    segmented using the `split_into_frames` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="o">==</span><span class="n">check_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check responses must hav the same response DOFs (and DOF ordering)&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="o">==</span><span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same shape to perform a comparison&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">check_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The truth and check response must have the same abscissa to perform a comparison&#39;</span><span class="p">)</span>
+    
+    <span class="n">response_coordinate</span> <span class="o">=</span> <span class="n">truth_response</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span>
+    <span class="n">frame_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">level_type</span> <span class="o">==</span> <span class="s1">&#39;rms&#39;</span><span class="p">:</span>
+        <span class="n">level_error</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">check_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">/</span><span class="n">truth_response</span><span class="o">.</span><span class="n">rms</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">level_type</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span>
+        <span class="n">truth_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">truth_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">check_level</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">check_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">level_error</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">check_level</span><span class="o">/</span><span class="n">truth_level</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data_array</span><span class="p">(</span><span class="n">FunctionTypes</span><span class="o">.</span><span class="n">TIME_RESPONSE</span><span class="p">,</span> <span class="n">frame_times</span><span class="p">,</span> <span class="n">level_error</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">response_coordinate</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="compute_error_stft">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_error_stft</span><span class="p">(</span><span class="n">spr_object</span><span class="p">,</span>
+                       <span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">,</span>
+                       <span class="n">samples_per_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">overlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">overlap_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">,</span>
+                       <span class="n">normalize_by_rms</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the dB error short time Fourier transform (STFT) for the given SPR object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spr_object : TransientSourcePathReceiver</span>
+<span class="sd">        The SPR object to pull the data from.</span>
+<span class="sd">    channel_set : str, optional</span>
+<span class="sd">        The channel set to make the response comparisons between.</span>
+<span class="sd">        The available options are:</span>
+<span class="sd">            - training (default) - This compares the responses for the </span>
+<span class="sd">            transformed training DOFs in the SPR object.</span>
+
+<span class="sd">            - validation - This compares the responses for the validation</span>
+<span class="sd">            response DOFs in the SPR object.</span>
+<span class="sd">            </span>
+<span class="sd">            - target - This compares the responses for all the target </span>
+<span class="sd">            response DOFs in the SPR object. </span>
+<span class="sd">    samples_per_frame : int, optional</span>
+<span class="sd">        Number of samples in each measurement frame to compute the RMS </span>
+<span class="sd">        for. Either this argument or `frame_length` must be specified.  </span>
+<span class="sd">        If both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    frame_length : float, optional</span>
+<span class="sd">        Length of each measurement frame to compute the RMS for, in the </span>
+<span class="sd">        same units as the `time_abscissa` field (`samples_per_frame` = `frame_length`/`self.time_abscissa_spacing`).</span>
+<span class="sd">        Either this argument or `samples_per_frame` must be specified. If</span>
+<span class="sd">        both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap : float, optional</span>
+<span class="sd">        Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to</span>
+<span class="sd">        overlap a quarter of the frame) for the RMS calculation. Either </span>
+<span class="sd">        this argument or `overlap_samples` must be specified. If both are</span>
+<span class="sd">        specified, a `ValueError` is raised.  If neither are specified, no</span>
+<span class="sd">        overlap is used. This argument matches the behavior of the </span>
+<span class="sd">        &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap_samples : int, optional</span>
+<span class="sd">        Number of samples in the measurement frame to overlap for the RMS</span>
+<span class="sd">        calculation. Either this argument or `overlap_samples` must be </span>
+<span class="sd">        specified.  If both are specified, a `ValueError` is raised.  If </span>
+<span class="sd">        neither are specified, no overlap is used. This argument matches </span>
+<span class="sd">        the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    window : str, optional</span>
+<span class="sd">        The window to apply to the segmented data. This should a window that </span>
+<span class="sd">        is available from the `scipy.signal.get_window` function. The default</span>
+<span class="sd">        is hann.</span>
+<span class="sd">    normalize_by_rms : bool, option</span>
+<span class="sd">        Whether or not to normalize the error magnitudes (at each time slice) </span>
+<span class="sd">        by the relative magnitude of the RMS level (for each DOF) of the truth</span>
+<span class="sd">        data. The normalization can help show the relative significance of the </span>
+<span class="sd">        spectrum error based on the amplitude of the time response (the errors </span>
+<span class="sd">        are scaled down where the RMS level is small). The default is false. </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    db_error_stft : dict</span>
+<span class="sd">        A dictionary with the following keys:</span>
+<span class="sd">            - time (ndarray) - The time vector for the STFT.</span>
+<span class="sd">            - frequency (ndarray) - The frequency vector for the STFT. </span>
+<span class="sd">            - response_coordinate (coordinate_array) - The response </span>
+<span class="sd">              coordinate array for the STFT.</span>
+<span class="sd">            - amplitude (ndarray) - The dB error STFT, it is organized </span>
+<span class="sd">              [response coordinate, frequency axis, time axis].</span>
+
+<span class="sd">    Notes </span>
+<span class="sd">    -----</span>
+<span class="sd">    The dB error is computed from the magnitude of the STFT. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">truth</span><span class="p">,</span> <span class="n">reconstructed</span> <span class="o">=</span> <span class="n">preprocess_data_for_quality_metric</span><span class="p">(</span><span class="n">spr_object</span><span class="p">,</span> 
+                                                              <span class="n">channel_set</span><span class="o">=</span><span class="n">channel_set</span><span class="p">,</span>
+                                                              <span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                                              <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span>
+                                                              <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span>
+                                                              <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                                              <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="n">truth_stft</span> <span class="o">=</span> <span class="n">truth</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+    <span class="n">reconstructed_stft</span> <span class="o">=</span> <span class="n">reconstructed</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+    
+    <span class="n">stft_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">truth</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">stft_freqs</span> <span class="o">=</span> <span class="n">truth_stft</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">abscissa</span>
+    <span class="n">stft_response_coordinate</span> <span class="o">=</span> <span class="n">truth_stft</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span>
+
+    <span class="n">stft_db_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">reconstructed_stft</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">))</span> <span class="o">-</span> <span class="mi">20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">truth_stft</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)),</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">normalize_by_rms</span><span class="p">:</span>
+        <span class="n">stft_db_error</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">truth</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">/</span><span class="n">truth</span><span class="o">.</span><span class="n">rms</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]</span>
+    
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span><span class="n">stft_times</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">:</span><span class="n">stft_freqs</span><span class="p">,</span> <span class="s1">&#39;response_coordinate&#39;</span><span class="p">:</span><span class="n">stft_response_coordinate</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span><span class="n">stft_db_error</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="compute_stft">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_stft</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+                 <span class="n">samples_per_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overlap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">overlap_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the short time Fourier transform (STFT) for the given</span>
+<span class="sd">    TimeHistoryArray and packages the data into a dictionary that can be</span>
+<span class="sd">    used with the SpectrogramGUI tool.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : TimeHistoryArray</span>
+<span class="sd">        The data to compute the STFT for.</span>
+<span class="sd">    samples_per_frame : int, optional</span>
+<span class="sd">        Number of samples in each measurement frame to compute the RMS </span>
+<span class="sd">        for. Either this argument or `frame_length` must be specified.  </span>
+<span class="sd">        If both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    frame_length : float, optional</span>
+<span class="sd">        Length of each measurement frame to compute the RMS for, in the </span>
+<span class="sd">        same units as the `time_abscissa` field (`samples_per_frame` = `frame_length`/`self.time_abscissa_spacing`).</span>
+<span class="sd">        Either this argument or `samples_per_frame` must be specified. If</span>
+<span class="sd">        both or neither are specified, a `ValueError` is raised. This </span>
+<span class="sd">        argument matches the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap : float, optional</span>
+<span class="sd">        Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to</span>
+<span class="sd">        overlap a quarter of the frame) for the RMS calculation. Either </span>
+<span class="sd">        this argument or `overlap_samples` must be specified. If both are</span>
+<span class="sd">        specified, a `ValueError` is raised.  If neither are specified, no</span>
+<span class="sd">        overlap is used. This argument matches the behavior of the </span>
+<span class="sd">        &quot;split_into_frames&quot; method.</span>
+<span class="sd">    overlap_samples : int, optional</span>
+<span class="sd">        Number of samples in the measurement frame to overlap for the RMS</span>
+<span class="sd">        calculation. Either this argument or `overlap_samples` must be </span>
+<span class="sd">        specified.  If both are specified, a `ValueError` is raised.  If </span>
+<span class="sd">        neither are specified, no overlap is used. This argument matches </span>
+<span class="sd">        the behavior of the &quot;split_into_frames&quot; method.</span>
+<span class="sd">    window : str, optional</span>
+<span class="sd">        The window to apply to the segmented data. This should a window that </span>
+<span class="sd">        is available from the `scipy.signal.get_window` function. The default</span>
+<span class="sd">        is hann.  </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    stft : dict</span>
+<span class="sd">        A dictionary with the following keys:</span>
+<span class="sd">            - time (ndarray) - The time vector for the STFT.</span>
+<span class="sd">            - frequency (ndarray) - The frequency vector for the STFT. </span>
+<span class="sd">            - response_coordinate (coordinate_array) - The response </span>
+<span class="sd">              coordinate array for the STFT.</span>
+<span class="sd">            - amplitude (ndarray) - The STFT, it is organized </span>
+<span class="sd">              [response coordinate, frequency axis, time axis].</span>
+
+<span class="sd">    Notes </span>
+<span class="sd">    -----</span>
+<span class="sd">    The STFT is the linear spectrum magnitude of the Fourier transform. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">segmented_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">split_into_frames</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="n">samples_per_frame</span><span class="p">,</span>
+                                            <span class="n">frame_length</span><span class="o">=</span><span class="n">frame_length</span><span class="p">,</span> 
+                                            <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> 
+                                            <span class="n">overlap_samples</span><span class="o">=</span><span class="n">overlap_samples</span><span class="p">,</span>
+                                            <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">,</span>
+                                            <span class="n">allow_fractional_frames</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">data_stft</span> <span class="o">=</span> <span class="n">segmented_data</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span>
+    
+    <span class="n">stft_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">segmented_data</span><span class="o">.</span><span class="n">abscissa</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">stft_freqs</span> <span class="o">=</span> <span class="n">data_stft</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">abscissa</span>
+    <span class="n">stft_response_coordinate</span> <span class="o">=</span> <span class="n">data_stft</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">response_coordinate</span>
+
+    <span class="n">stft_amplitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data_stft</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span><span class="n">stft_times</span><span class="p">,</span> <span class="s1">&#39;frequency&#39;</span><span class="p">:</span><span class="n">stft_freqs</span><span class="p">,</span> <span class="s1">&#39;response_coordinate&#39;</span><span class="p">:</span><span class="n">stft_response_coordinate</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span><span class="n">stft_amplitude</span><span class="p">}</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

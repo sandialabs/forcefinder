@@ -1,0 +1,841 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hyperparameter Tuning Methods &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'hyperparameter_tuning_methods';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Transformation Theory" href="transformation_theory.html" />
+    <link rel="prev" title="Regularization Methods" href="regularization_methods.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/hyperparameter_tuning_methods.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hyperparameter Tuning Methods</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-tuning">Manual Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l-curve-methods">L-Curve Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross Validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leave-one-out-cross-validation">Leave One Out Cross Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-fold-cross-validation">K-Fold Cross Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-prediction-error">Assessing Prediction Error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criterions">Information Criterions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hyperparameter-tuning-methods">
+<h1>Hyperparameter Tuning Methods<a class="headerlink" href="#hyperparameter-tuning-methods" title="Link to this heading">#</a></h1>
+<p>Many of the advanced inverse methods in ForceFinder focus on using a specific form of regularization with an algorithm to select an “optimal” hyperparamter based on one or more metrics. For example, the <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_l_curve</span></code> methods use Tikhonov regularization and select the regularization parameter with an L-curve. This section will describe the basic concepts for the hyperparameter tuning methods. Refer to the references in the docstrings for the different methods for details.</p>
+<section id="manual-tuning">
+<h2>Manual Tuning<a class="headerlink" href="#manual-tuning" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code> inverse method allows the practitioner to manually tune the hyperparameters for the TSVD and Tikhonov regularization. There are two methods for tuning the hyperparameter in the TSVD: a condition number threshold or a discrete number of singular values. The inverse is exactly the same, regardless of the metric that is being tuned, since the condition number threshold is converted to a number of retained singular values in the FRF matrix inverse function. Only the regularization parameter (the <span class="math notranslate nohighlight">\(\lambda\)</span> value) can be tuned for Tikhonov regularization.</p>
+<p>There are many strategies for manually tuning the hyperparameters and the practitioner should develop a method that suits the ISE problem at hand. Some common strategies include:</p>
+<ul class="simple">
+<li><p>Determine the effective rank of the <code class="docutils literal notranslate"><span class="pre">training_frfs</span></code> and adjust the hyperparameter accordingly</p></li>
+<li><p>Adjust the hyperparameter until the estimated sources have amplitudes that seem reasonable or are within the capabilities of the test system (for MIMO vibration testing)</p></li>
+<li><p>Determine the noise floor of the <code class="docutils literal notranslate"><span class="pre">training_frfs</span></code> and/or <code class="docutils literal notranslate"><span class="pre">training_response</span></code> and adjust the hyperparameter to make the ISE problem robust to that noise level</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The quantities of interest for various hyperparameter tuning strategies are typically frequency dependent, so the <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code> method has been designed to allow for frequency dependent hyperparameters.</p>
+</div>
+</section>
+<section id="l-curve-methods">
+<h2>L-Curve Methods<a class="headerlink" href="#l-curve-methods" title="Link to this heading">#</a></h2>
+<p>L-curve methods, which are sometimes referred to as trade-off curves, have been implemented for the TSVD and Tikhonov regularization in the <code class="docutils literal notranslate"><span class="pre">auto_truncation_by_l_curve</span></code> and <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_l_curve</span></code> inverse methods. These methods solve the ISE problem for many different regularization parameters and construct the so-called L-curve, which is named because of the characteristic shape of the curve. An example L-curve with the selected regularization parameter is shown in the image below:</p>
+<figure class="align-center">
+<img alt="Example L-curve" src="_images/sample_l_curve.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The L-curve methods in ForceFinder construct a curve for every frequency line (and every <a class="reference internal" href="inverse_problem_form.html#sec-cola-method"><span class="std std-ref">COLA segment</span></a>) in the ISE problem.</p>
+</div>
+<p>In general, the L-curve inverse methods define the optimal regularization as the knee of curve. The meaning of this point can be interpreted differently, depending on the type of L-curve that is being used. Two types of L-curves have been implemented in ForceFinder, where the labels here are the same as the optional kwargs in the inverse methods:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">standard</span></code> - This method constructs the L-curve with the “size” of the residual squared error on the X-axis and the size of the sources on the Y-axis. The size of the residual squared error is computed with <span class="math notranslate nohighlight">\(\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\)</span> and the size of the sources is computed with <span class="math notranslate nohighlight">\(\lVert \begin{Bmatrix}F\end{Bmatrix} \rVert_2^2\)</span> (the Frobenius norm is used for CPSDs). This is the classical version of the L-curve and assumes that the optimal regularization shrinks the sources as much as possible before there is significant error in the response reconstruction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">forces</span></code> - This method constructs the L-curve with the regularization parameter on the X-axis and the size of the sources on the Y-axis (using the same definition as above). This version of the L-curve attempts to find the maximum regularization parameter that has a significant effect on the size of the sources.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By convention of the vector/matrix norm, these methods only consider the amplitude of the response and source spectra.</p>
+</div>
+<p>ForceFinder generates an L-curve and attempts to identify an optimal regularization at every frequency line. Given, the typical number of frequency lines, it is unreasonable to manually identify the knee of the L-curve. As such, automatic methods must be used and two methods are available in ForceFinder, where the labels here are the same as the optional kwargs in the inverse methods:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">curvature</span></code> - This method assumes that the knee of the L-curve is at the location with maximum curvature.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">distance</span></code> - This method assumes that the knee of the L-curve is at the location that is the closest to the origin of the plot of the L-curve. The distance method may be useful for situations where the L-curve is poorly defined and the curvature method might lead to erratic results. An example of one such situation is the TSVD where there are few singular values to search over. The distance is computed by first offsetting and scaling the X and Y axes of the curve, so the values fall between zero and one. Then the optimal regularization is determined by finding the point with the minimum distance to the [0,0] point. The plot below shows how the L-curve is changed when making the adjustments for the distance method.</p></li>
+</ol>
+<figure class="align-center">
+<img alt="Example L-curves for the Curvature and Distance Methods" src="_images/sample_l_curve_distance.png" />
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The L-curve methods assume that the ISE problem follows the discrete picard condition and that an appropriate range of regularization parameters were searched over to generate a properly shaped curve. The <code class="docutils literal notranslate"><span class="pre">auto_truncation_by_l_curve</span></code> or <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_l_curve</span></code> inverse methods do not check if these conditions are met.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Experience has shown that the methods for constructing the L-curve will have erratic results for underdetermined problems (when there are fewer response DOFs than source DOFs), which can lead to the selection of sub-optimal regularization values.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By definition, L-curve methods will attempt to regularize the ISE problem as much as possible. As such they may over regularize the problem if it is already well posed. It is up to the practitioner to determine if these methods are appropriate for the problem at hand.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The L-curve methods exhaustively search through a specified number of regularization parameters, where the default is 100 values. The computation time is directly related to the number of regularization parameters. As such, fewer regularization parameters will lead to reduced solve times.</p>
+</div>
+</section>
+<section id="cross-validation">
+<h2>Cross Validation<a class="headerlink" href="#cross-validation" title="Link to this heading">#</a></h2>
+<p>Cross validation (CV) has been implemented in ForceFinder for Tikhonov regularization in the <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_cv_rse</span></code> method. As a general technique, CV attempts to select a regularization parameter, which estimates sources that minimize the corresponding response prediction error. This is done by iteratively solving the ISE problem with different regularization parameters and different DOFs (or DOF sets) left out of the source estimation.</p>
+<p>The prediction error, for the DOF(s) that were left out, is computed at every iteration and the optimal regularization parameter is the one that has the lowest average prediction error over all the held-out DOF(s). There are several sample splitting strategies in CV and two have been implemented in ForceFinder: leave one out CV (LOOCV) and k-fold CV. An example curve showing the prediction error vs. regularization parameter for an ISE problem with LOOCV is shown in the image below:</p>
+<figure class="align-center">
+<img alt="Example Cross Validation Prediction Error Curve" src="_images/sample_cv_curve.png" />
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The CV methods in ForceFinder construct a prediction error curve for every frequency line (and every <a class="reference internal" href="inverse_problem_form.html#sec-cola-method"><span class="std std-ref">COLA segment</span></a>) in the ISE problem.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>CV assumes that the sample splitting strategies provide <em>independent</em> datasets for each iteration, where the predicted response for the held-out DOF(s) can be treated as predictions on unseen data. For ISE problems, this translates to assuming that the held-out DOF(s) observe unique dynamics and/or unique sources of error compared to the DOFs that are being used for the source estimation. The CV may lead to sub-optimal regularization parameters and corresponding sources if this assumption is not true.</p>
+</div>
+<section id="leave-one-out-cross-validation">
+<h3>Leave One Out Cross Validation<a class="headerlink" href="#leave-one-out-cross-validation" title="Link to this heading">#</a></h3>
+<p>LOOCV uses a relatively basic sample splitting strategy, where the number of iterations matches the number of DOFs in the <code class="docutils literal notranslate"><span class="pre">training_response_coordinate</span></code>, holding a single DOF out to compute the prediction error in each iteration. An example of this scheme is shown in the table below.</p>
+<div style="font-size: 0.7em">
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>CV Iteration</p></th>
+<th class="head text-center"><p>DOF1</p></th>
+<th class="head text-center"><p>DOF2</p></th>
+<th class="head text-center"><p>DOF3</p></th>
+<th class="head text-center"><p>DOF4</p></th>
+<th class="head text-center"><p>DOF5</p></th>
+<th class="head text-center"><p>DOF6</p></th>
+<th class="head text-center"><p>DOF7</p></th>
+<th class="head text-center"><p>DOF8</p></th>
+<th class="head text-center"><p>DOF9</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>6</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>7</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>8</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>9</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>LOOCV can suffer from two main issues:</p>
+<ul class="simple">
+<li><p>LOOCV can be computationally expensive since it exhaustively searches over all the possible DOFs and regularization parameters. For example, LOOCV with 30 training DOFs while searching over 100 regularization parameters (the default in many ForceFinder methods) will result in 3,000 iterations for each frequency line in the ISE problem.</p></li>
+<li><p>The sample splitting in LOOCV may not result in independent datasets since only one DOF is being changed for each iteration. As such, LOOCV may not appropriately assess the prediction error, leading it to pick a sub-optimal regularization parameter.</p></li>
+</ul>
+</section>
+<section id="k-fold-cross-validation">
+<h3>K-Fold Cross Validation<a class="headerlink" href="#k-fold-cross-validation" title="Link to this heading">#</a></h3>
+<p>In k-fold CV, the practitioner specifies that the <code class="docutils literal notranslate"><span class="pre">training_response_coordinate</span></code> should be evenly split into k “folds”, where each fold is an iteration in the CV. As such, <span class="math notranslate nohighlight">\(\frac{n}{k}\)</span> samples are held-out in each fold to compute the prediction error, if there are <span class="math notranslate nohighlight">\(n\)</span> DOFs in the <code class="docutils literal notranslate"><span class="pre">training_response_coordinate</span></code>. An example of this sample splitting scheme is shown in the table below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The DOFs are randomly shuffled prior to the sample splitting to reduce any potential bias in how the <code class="docutils literal notranslate"><span class="pre">training_response_coordinate</span></code> is organized (e.g., DOFs on similar portions of the structure having similar node numbers). This shuffling is shown in the table below.</p>
+</div>
+<div style="font-size: 0.7em">
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>CV Iteration</p></th>
+<th class="head text-center"><p>DOF6</p></th>
+<th class="head text-center"><p>DOF4</p></th>
+<th class="head text-center"><p>DOF2</p></th>
+<th class="head text-center"><p>DOF5</p></th>
+<th class="head text-center"><p>DOF1</p></th>
+<th class="head text-center"><p>DOF9</p></th>
+<th class="head text-center"><p>DOF7</p></th>
+<th class="head text-center"><p>DOF3</p></th>
+<th class="head text-center"><p>DOF8</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟩 Left in</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+<td class="text-center"><p>🟥 Held-out</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The number of folds should be selected to balance having a significant number of folds while also having a significant difference in data between the folds. These goals are in contrast with each other since more held-out DOFs will typically lead to greater independence between each fold, but this will obviously reduce the number of folds, which makes it difficult to assess the prediction error for each regularization parameter.</p>
+</div>
+</section>
+<section id="assessing-prediction-error">
+<h3>Assessing Prediction Error<a class="headerlink" href="#assessing-prediction-error" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_cv_rse</span></code> method assesses the prediction error via the mean squared error (MSE) in the predicted response for each CV iteration:</p>
+<div class="math notranslate nohighlight">
+\[
+mse = \frac{1}{n} \Sigma \lvert X^{predicted} - X^{training} \rvert^2
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\lvert \cdot \rvert\)</span> indicates the absolute value of the error and there are <span class="math notranslate nohighlight">\(n\)</span> DOFs in the held-out sample. The prediction error for each regularization parameter is computed as the sum of the MSEs for each CV iteration. Although it is not shown here, only the errors in the PSDs are considered if the responses are CPSD matrices.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">auto_tikhonov_by_cv_rse</span></code> methods only use the MSE as an error metric, but the <code class="docutils literal notranslate"><span class="pre">leave_one_out_cv</span></code> and <code class="docutils literal notranslate"><span class="pre">k_fold_cv</span></code> functions in the <code class="docutils literal notranslate"><span class="pre">auto_regularization</span></code> module can take a generic function to assess the prediction error.</p>
+</div>
+</section>
+</section>
+<section id="information-criterions">
+<h2>Information Criterions<a class="headerlink" href="#information-criterions" title="Link to this heading">#</a></h2>
+<p>The Akaike information criterion (AIC), Akaike corrected information criterion (AICC), and Bayesian information criterion (BIC) have been implemented in ForceFinder for selecting the optimal regularization parameter in the <code class="docutils literal notranslate"><span class="pre">elastic_net_by_information_criterion</span></code> method. The definition for the different information criterions is:</p>
+<div class="math notranslate nohighlight">
+\[
+AIC = 2k - 2ln\begin{pmatrix}\hat{L}\end{pmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+AICC = AIC + \frac{2k^2+2k}{n-k-1}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+BIC = 2ln\begin{pmatrix}k\end{pmatrix} - 2ln\begin{pmatrix}\hat{L}\end{pmatrix}
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The information criterions have only been implemented for linear spectra in ForceFinder and the <code class="docutils literal notranslate"><span class="pre">elastic_net_by_information_criterion</span></code> has only been implemented for the <code class="docutils literal notranslate"><span class="pre">LinearSourcePathReceiver</span></code>.</p>
+</div>
+<p>Where <span class="math notranslate nohighlight">\(k\)</span> is the number of active (non-zero) source DOFs in the estimate, <span class="math notranslate nohighlight">\(n\)</span> is the number of response DOFs in the source estimation, and <span class="math notranslate nohighlight">\(\hat{L}\)</span> is the maximized value for the likelihood function of the source estimation. The likelihood value in these expressions is computed with:</p>
+<div class="math notranslate nohighlight">
+\[
+2ln\begin{pmatrix}\hat{L}\end{pmatrix} = ln\begin{pmatrix}2\pi\sigma\end{pmatrix}n+\frac{\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2}{\sigma}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\sigma\)</span> is computed with:</p>
+<div class="math notranslate nohighlight">
+\[
+\sigma = \frac{\lVert \begin{Bmatrix}X\end{Bmatrix} - \begin{bmatrix}H\end{bmatrix}\begin{Bmatrix}F\end{Bmatrix} \rVert_2^2}{n-p}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(p\)</span> is the number of reference DOFs in the FRFs. The above expressions make it clear that the information criterions attempt to balance the number of active sources with the accuracy of the <code class="docutils literal notranslate"><span class="pre">reconstructed_training_response</span></code> (computed as a likelihood function). This effect makes the information criterions especially useful for inverse methods that promote sparse solutions, such as the elastic net. Conversely, the information criterions are not well suited to methods like the TSVD or Tikhonov regularization, where <span class="math notranslate nohighlight">\(k\)</span> remains that same for the whole range of hyperparameters, meaning that the method will only consider the error in the <code class="docutils literal notranslate"><span class="pre">reconstructed_training_response</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The information criterions could be applied to Tikhonov regularization by computing an “effective” number of source DOFs, but this has not been implemented.</p>
+</div>
+<p>Like the L-curve and CV methods, the information criterion is computed for a range of regularization parameters at each frequency. The optimal regularization parameter is defined as the parameter that minimizes the information criterion (for the specific frequency). An example curve showing the AICC vs. regularization parameter is shown in the image below. This was computed from an ISE problem that that utilized the <code class="docutils literal notranslate"><span class="pre">elastic_net_by_information_criterion</span></code> inverse method. The sudden jumps in the curve are likely the result of a source being set to zero by the solver at that regularization parameter.</p>
+<figure class="align-center">
+<img alt="Example Information Criterion Curve" src="_images/sample_aicc_curve.png" />
+</figure>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="regularization_methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Regularization Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="transformation_theory.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Transformation Theory</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-tuning">Manual Tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#l-curve-methods">L-Curve Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross Validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#leave-one-out-cross-validation">Leave One Out Cross Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-fold-cross-validation">K-Fold Cross Validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#assessing-prediction-error">Assessing Prediction Error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#information-criterions">Information Criterions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

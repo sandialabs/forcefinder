@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>forcefinder.transient_quality_evaluation.transient_quality_metrics &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="prev" title="forcefinder.transient_quality_evaluation.transient_gui_plot" href="../transient_gui_plot/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../../index.html">forcefinder</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="../index.html">forcefinder.transient_quality_evaluation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4 current active"><a class="current reference internal" href="#">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../../_sources/autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>forcefinder.transient_quality_evaluation.transient_quality_metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric"><code class="docutils literal notranslate"><span class="pre">preprocess_data_for_quality_metric()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error"><code class="docutils literal notranslate"><span class="pre">compute_global_rms_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error"><code class="docutils literal notranslate"><span class="pre">compute_average_rms_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac"><code class="docutils literal notranslate"><span class="pre">compute_time_varying_trac()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error"><code class="docutils literal notranslate"><span class="pre">compute_time_varying_level_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft"><code class="docutils literal notranslate"><span class="pre">compute_error_stft()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft"><code class="docutils literal notranslate"><span class="pre">compute_stft()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-forcefinder.transient_quality_evaluation.transient_quality_metrics">
+<span id="forcefinder-transient-quality-evaluation-transient-quality-metrics"></span><h1>forcefinder.transient_quality_evaluation.transient_quality_metrics<a class="headerlink" href="#module-forcefinder.transient_quality_evaluation.transient_quality_metrics" title="Link to this heading">#</a></h1>
+<p>Defines the various response prediction quality metrics for transient
+source estimation problems.</p>
+<p>Copyright 2025 National Technology &amp; Engineering Solutions of Sandia,
+LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.
+Government retains certain rights in this software.</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>&gt;.</p>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess_data_for_quality_metric</span></code></a>(spr_object[, ...])</p></td>
+<td><p>Selects the correct datasets from an SPR object and splits the data into frames</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_global_rms_error</span></code></a>(truth_response, check_response)</p></td>
+<td><p>Computes the global RMS error in dB of the reconstructed response,</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_average_rms_error</span></code></a>(truth_response, check_response)</p></td>
+<td><p>Computes the average RMS error in dB of the check response compared</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_time_varying_trac</span></code></a>(truth_response, check_response)</p></td>
+<td><p>Computes the time varying time response assurance criterion (TRAC)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_time_varying_level_error</span></code></a>(truth_response, ...)</p></td>
+<td><p>Computes the computes the time varying error for a statistical level (rms</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_error_stft</span></code></a>(spr_object[, channel_set, ...])</p></td>
+<td><p>Computes the dB error short time Fourier transform (STFT) for the given SPR object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft" title="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_stft</span></code></a>(data[, samples_per_frame, frame_length, ...])</p></td>
+<td><p>Computes the short time Fourier transform (STFT) for the given</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric">
+<span class="sig-name descname"><span class="pre">preprocess_data_for_quality_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spr_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'training'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_per_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'boxcar'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#preprocess_data_for_quality_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric" title="Link to this definition">#</a></dt>
+<dd><p>Selects the correct datasets from an SPR object and splits the data into frames
+for the transient response prediction quality metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spr_object</strong> (<a class="reference internal" href="../../core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver" title="forcefinder.core.source_path_receiver.TransientSourcePathReceiver"><em>TransientSourcePathReceiver</em></a>) – The SPR object to pull the data from.</p></li>
+<li><p><strong>channel_set</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The channel set to make the response comparisons between.
+The available options are:</p>
+<blockquote>
+<div><ul>
+<li><p>training (default) - This compares the responses for the</p></li>
+</ul>
+<p>transformed training DOFs in the SPR object.</p>
+<ul>
+<li><p>validation - This compares the responses for the validation</p></li>
+</ul>
+<p>response DOFs in the SPR object.</p>
+<ul>
+<li><p>target - This compares the responses for all the target</p></li>
+</ul>
+<p>response DOFs in the SPR object.</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>samples_per_frame</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in each measurement frame to compute the RMS
+for. Either this argument or <cite>frame_length</cite> must be specified.
+If both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>frame_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Length of each measurement frame to compute the RMS for, in the
+same units as the <cite>time_abscissa</cite> field (<cite>samples_per_frame</cite> = <cite>frame_length</cite>/<cite>self.time_abscissa_spacing</cite>).
+Either this argument or <cite>samples_per_frame</cite> must be specified. If
+both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>overlap</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to
+overlap a quarter of the frame) for the RMS calculation. Either
+this argument or <cite>overlap_samples</cite> must be specified. If both are
+specified, a <cite>ValueError</cite> is raised.  If neither are specified, no
+overlap is used. This argument matches the behavior of the
+“split_into_frames” method.</p></li>
+<li><p><strong>overlap_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in the measurement frame to overlap for the RMS
+calculation. Either this argument or <cite>overlap_samples</cite> must be
+specified.  If both are specified, a <cite>ValueError</cite> is raised.  If
+neither are specified, no overlap is used. This argument matches
+the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>window</strong> (<em>str</em><em>, </em><em>optional</em>) – The window to apply to the segmented data. This should a window that
+is available from the <cite>scipy.signal.get_window</cite> function. The default
+is boxcar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>truth</strong> (<em>TimeHistoryArray</em>) – The truth response, segmented into frames per the selected options.</p></li>
+<li><p><strong>reconstructed</strong> (<em>TimeHistoryArray</em>) – The reconstructed response, segmented into frames per the selected options.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This returns the raw training response rather than the reconstructed training
+response.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error">
+<span class="sig-name descname"><span class="pre">compute_global_rms_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_global_rms_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error" title="Link to this definition">#</a></dt>
+<dd><p>Computes the global RMS error in dB of the reconstructed response,
+per the procedure in MIL-STD 810H.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the truth response in the comparison.</p></li>
+<li><p><strong>check_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the check response in the comparison.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a time history array of the global RMS error in dB. The response
+coordinate for this array is made up to have a value for the DataArray
+and does not correspond to anything.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TimeHistoryArray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the response coordinate (and coordinate ordering) are not the same
+for the truth and check responses.</p></li>
+<li><p><strong>ValueError</strong> – If the ordinate for the truth and check responses are not the same
+shape.</p></li>
+<li><p><strong>ValueError</strong> – If the abscissa for the truth and check responses are not the same.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function assumes that both the truth and check responses have been
+segmented using the <cite>split_into_frames</cite> method.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>MIL-STD-810H: Environmental Engineering Considerations and Laboratory Tests. US Military, 2019.</p>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error">
+<span class="sig-name descname"><span class="pre">compute_average_rms_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_average_rms_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error" title="Link to this definition">#</a></dt>
+<dd><p>Computes the average RMS error in dB of the check response compared
+to the truth response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the truth response in the comparison.</p></li>
+<li><p><strong>check_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the check response in the comparison.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a time history array of the average RMS error in dB. The response
+coordinate for this array is made up to have a value for the DataArray
+and does not correspond to anything.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TimeHistoryArray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the response coordinate (and coordinate ordering) are not the same
+for the truth and check responses.</p></li>
+<li><p><strong>ValueError</strong> – If the ordinate for the truth and check responses are not the same
+shape.</p></li>
+<li><p><strong>ValueError</strong> – If the abscissa for the truth and check responses are not the same.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function assumes that both the truth and check responses have been
+segmented using the <cite>split_into_frames</cite> method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac">
+<span class="sig-name descname"><span class="pre">compute_time_varying_trac</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_time_varying_trac"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac" title="Link to this definition">#</a></dt>
+<dd><p>Computes the time varying time response assurance criterion (TRAC)
+between the check response and truth response for all the supplied
+degrees of freedom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the truth response in the comparison.</p></li>
+<li><p><strong>check_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the check response in the comparison.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a time history array of the time varying TRAC for all the
+response degrees of freedom.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TimeHistoryArray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the response coordinate (and coordinate ordering) are not the same
+for the truth and check responses.</p></li>
+<li><p><strong>ValueError</strong> – If the ordinate for the truth and check responses are not the same
+shape.</p></li>
+<li><p><strong>ValueError</strong> – If the abscissa for the truth and check responses are not the same.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function assumes that both the truth and check responses have been
+segmented using the <cite>split_into_frames</cite> method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error">
+<span class="sig-name descname"><span class="pre">compute_time_varying_level_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">truth_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_response</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rms'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_time_varying_level_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error" title="Link to this definition">#</a></dt>
+<dd><p>Computes the computes the time varying error for a statistical level (rms
+or max) between the check and truth responses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>truth_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the truth response in the comparison.</p></li>
+<li><p><strong>check_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
+for the check response in the comparison.</p></li>
+<li><p><strong>level_type</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl>
+<dt>The type of level to be used in the comparison. The options are:</dt><dd><ul>
+<li><p>rms - The rms level error for each frame of data in the</p></li>
+</ul>
+<p>responses. This is the default.
+- max - The error in the maximum level that is seem for each
+frame of data in the responses.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns a time history array of the time varying level error in dB for
+all the response degrees of freedom.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TimeHistoryArray</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the response coordinate (and coordinate ordering) are not the same
+for the truth and check responses.</p></li>
+<li><p><strong>ValueError</strong> – If the ordinate for the truth and check responses are not the same
+shape.</p></li>
+<li><p><strong>ValueError</strong> – If the abscissa for the truth and check responses are not the same.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function assumes that both the truth and check responses have been
+segmented using the <cite>split_into_frames</cite> method.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft">
+<span class="sig-name descname"><span class="pre">compute_error_stft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spr_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_set</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'training'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_per_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_by_rms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_error_stft"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft" title="Link to this definition">#</a></dt>
+<dd><p>Computes the dB error short time Fourier transform (STFT) for the given SPR object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spr_object</strong> (<a class="reference internal" href="../../core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver" title="forcefinder.core.source_path_receiver.TransientSourcePathReceiver"><em>TransientSourcePathReceiver</em></a>) – The SPR object to pull the data from.</p></li>
+<li><p><strong>channel_set</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The channel set to make the response comparisons between.
+The available options are:</p>
+<blockquote>
+<div><ul>
+<li><p>training (default) - This compares the responses for the</p></li>
+</ul>
+<p>transformed training DOFs in the SPR object.</p>
+<ul>
+<li><p>validation - This compares the responses for the validation</p></li>
+</ul>
+<p>response DOFs in the SPR object.</p>
+<ul>
+<li><p>target - This compares the responses for all the target</p></li>
+</ul>
+<p>response DOFs in the SPR object.</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>samples_per_frame</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in each measurement frame to compute the RMS
+for. Either this argument or <cite>frame_length</cite> must be specified.
+If both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>frame_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Length of each measurement frame to compute the RMS for, in the
+same units as the <cite>time_abscissa</cite> field (<cite>samples_per_frame</cite> = <cite>frame_length</cite>/<cite>self.time_abscissa_spacing</cite>).
+Either this argument or <cite>samples_per_frame</cite> must be specified. If
+both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>overlap</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to
+overlap a quarter of the frame) for the RMS calculation. Either
+this argument or <cite>overlap_samples</cite> must be specified. If both are
+specified, a <cite>ValueError</cite> is raised.  If neither are specified, no
+overlap is used. This argument matches the behavior of the
+“split_into_frames” method.</p></li>
+<li><p><strong>overlap_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in the measurement frame to overlap for the RMS
+calculation. Either this argument or <cite>overlap_samples</cite> must be
+specified.  If both are specified, a <cite>ValueError</cite> is raised.  If
+neither are specified, no overlap is used. This argument matches
+the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>window</strong> (<em>str</em><em>, </em><em>optional</em>) – The window to apply to the segmented data. This should a window that
+is available from the <cite>scipy.signal.get_window</cite> function. The default
+is hann.</p></li>
+<li><p><strong>normalize_by_rms</strong> (<em>bool</em><em>, </em><em>option</em>) – Whether or not to normalize the error magnitudes (at each time slice)
+by the relative magnitude of the RMS level (for each DOF) of the truth
+data. The normalization can help show the relative significance of the
+spectrum error based on the amplitude of the time response (the errors
+are scaled down where the RMS level is small). The default is false.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>db_error_stft</strong> –</p>
+<dl class="simple">
+<dt>A dictionary with the following keys:</dt><dd><ul class="simple">
+<li><p>time (ndarray) - The time vector for the STFT.</p></li>
+<li><p>frequency (ndarray) - The frequency vector for the STFT.</p></li>
+<li><p>response_coordinate (coordinate_array) - The response
+coordinate array for the STFT.</p></li>
+<li><p>amplitude (ndarray) - The dB error STFT, it is organized
+[response coordinate, frequency axis, time axis].</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The dB error is computed from the magnitude of the STFT.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft">
+<span class="sig-name descname"><span class="pre">compute_stft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples_per_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlap_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/forcefinder/transient_quality_evaluation/transient_quality_metrics.html#compute_stft"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft" title="Link to this definition">#</a></dt>
+<dd><p>Computes the short time Fourier transform (STFT) for the given
+TimeHistoryArray and packages the data into a dictionary that can be
+used with the SpectrogramGUI tool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>TimeHistoryArray</em>) – The data to compute the STFT for.</p></li>
+<li><p><strong>samples_per_frame</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in each measurement frame to compute the RMS
+for. Either this argument or <cite>frame_length</cite> must be specified.
+If both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>frame_length</strong> (<em>float</em><em>, </em><em>optional</em>) – Length of each measurement frame to compute the RMS for, in the
+same units as the <cite>time_abscissa</cite> field (<cite>samples_per_frame</cite> = <cite>frame_length</cite>/<cite>self.time_abscissa_spacing</cite>).
+Either this argument or <cite>samples_per_frame</cite> must be specified. If
+both or neither are specified, a <cite>ValueError</cite> is raised. This
+argument matches the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>overlap</strong> (<em>float</em><em>, </em><em>optional</em>) – Fraction of the measurement frame to overlap (i.e. 0.25 not 25 to
+overlap a quarter of the frame) for the RMS calculation. Either
+this argument or <cite>overlap_samples</cite> must be specified. If both are
+specified, a <cite>ValueError</cite> is raised.  If neither are specified, no
+overlap is used. This argument matches the behavior of the
+“split_into_frames” method.</p></li>
+<li><p><strong>overlap_samples</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in the measurement frame to overlap for the RMS
+calculation. Either this argument or <cite>overlap_samples</cite> must be
+specified.  If both are specified, a <cite>ValueError</cite> is raised.  If
+neither are specified, no overlap is used. This argument matches
+the behavior of the “split_into_frames” method.</p></li>
+<li><p><strong>window</strong> (<em>str</em><em>, </em><em>optional</em>) – The window to apply to the segmented data. This should a window that
+is available from the <cite>scipy.signal.get_window</cite> function. The default
+is hann.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>stft</strong> –</p>
+<dl class="simple">
+<dt>A dictionary with the following keys:</dt><dd><ul class="simple">
+<li><p>time (ndarray) - The time vector for the STFT.</p></li>
+<li><p>frequency (ndarray) - The frequency vector for the STFT.</p></li>
+<li><p>response_coordinate (coordinate_array) - The response
+coordinate array for the STFT.</p></li>
+<li><p>amplitude (ndarray) - The STFT, it is organized
+[response coordinate, frequency axis, time axis].</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The STFT is the linear spectrum magnitude of the Fourier transform.</p>
+</dd></dl>
+
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../transient_gui_plot/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">forcefinder.transient_quality_evaluation.transient_gui_plot</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric"><code class="docutils literal notranslate"><span class="pre">preprocess_data_for_quality_metric()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error"><code class="docutils literal notranslate"><span class="pre">compute_global_rms_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error"><code class="docutils literal notranslate"><span class="pre">compute_average_rms_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac"><code class="docutils literal notranslate"><span class="pre">compute_time_varying_trac()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error"><code class="docutils literal notranslate"><span class="pre">compute_time_varying_level_error()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft"><code class="docutils literal notranslate"><span class="pre">compute_error_stft()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft"><code class="docutils literal notranslate"><span class="pre">compute_stft()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

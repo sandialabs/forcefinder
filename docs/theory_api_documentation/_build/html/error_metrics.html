@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Error Metrics &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'error_metrics';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example Utilization" href="example_utilization_intro.html" />
+    <link rel="prev" title="Theory for Miscellaneous Techniques" href="miscellaneous_techniques.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/error_metrics.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Error Metrics</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-for-spectral-ise-problems">Error Metrics for Spectral ISE Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-asd-error">Global ASD Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-asd-error">Average ASD Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-asd-error">RMS ASD Error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-for-transient-problems">Error Metrics for Transient Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-rms-error">Global RMS Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-rms-error">Average RMS Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-varying-trac">Time Varying TRAC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-varying-level-error">Time Varying Level Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrogram-error">Spectrogram Error</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="error-metrics">
+<h1>Error Metrics<a class="headerlink" href="#error-metrics" title="Link to this heading">#</a></h1>
+<p>Several error metrics have been implemented in ForceFinder to evaluate the accuracy of the source estimation via the accuracy of the reconstructed response compared to a truth response. Most of these metrics compute a summary curve that attempts to represent the errors for all the DOFs in a single spectra or time trace. Additional methods are available to <em>plot</em> the errors in the reconstructed responses, but they are not described here.</p>
+<p>Each of the error metric methods in ForceFinder have an optional kwarg that is called <code class="docutils literal notranslate"><span class="pre">channel_set</span></code>, which determines the DOFs for the truth and reconstructed responses that the metric is computed for. The options for this kwarg are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">training</span></code> - This computes the error metric between the <code class="docutils literal notranslate"><span class="pre">transformed_training_response</span></code> and <code class="docutils literal notranslate"><span class="pre">transformed_reconstructed_response</span></code> attributes of the SPR object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validation</span></code> - This computes the error metric between the <code class="docutils literal notranslate"><span class="pre">validation_response</span></code> and <code class="docutils literal notranslate"><span class="pre">reconstructed_validation_response</span></code> attributes of the SPR object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target</span></code> - This computes the error metric between the <code class="docutils literal notranslate"><span class="pre">target_response</span></code> and <code class="docutils literal notranslate"><span class="pre">reconstructed_target_response</span></code> attributes of the SPR object.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The error metrics in ForceFinder are used to understand how well the estimated sources reconstruct the training/validation/target responses, which may not be indicative of the sources ability to predict responses at unseen locations or on unseen systems (in the case of component based TPA)</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Unless otherwise noted, the error metrics are implemented as class methods in ForceFinder and are used with method call on the SPR object, such as: <code class="docutils literal notranslate"><span class="pre">spr_object.error_metric()</span></code>.</p>
+</div>
+<section id="error-metrics-for-spectral-ise-problems">
+<h2>Error Metrics for Spectral ISE Problems<a class="headerlink" href="#error-metrics-for-spectral-ise-problems" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">LinearSourcePathReceiver</span></code> and <code class="docutils literal notranslate"><span class="pre">PowerSourcePathReceiver</span></code> use the same metrics, which evaluate the error in the PSDs for the different DOF sets. The responses for the <code class="docutils literal notranslate"><span class="pre">LinearSourcePathReceiver</span></code> must be converted from linear spectra to PSDs prior to computing the error metric. This is done with the following operation:</p>
+<div class="math notranslate nohighlight">
+\[
+G_{xx} = \frac{1}{\Delta f}\lvert X \rvert^2
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(G_{xx}\)</span> is a PSD for a single DOF, <span class="math notranslate nohighlight">\(X\)</span> is a spectra for a single DOF, and <span class="math notranslate nohighlight">\(\Delta f\)</span> is the frequency resolution of the SPR object, which is given by the <code class="docutils literal notranslate"><span class="pre">abscissa_spacing</span></code> attribute.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The error metrics for spectral ISE problems commonly use the ASD acronym, which stands for auto-spectral density and is equivalent to a PSD. The ASD acronym is used here to follow the convention for MIMO vibration testing standards.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the equations for spectral ISE problems have a frequency dependency, but this has been left ouf for brevity.</p>
+</div>
+<section id="global-asd-error">
+<span id="sec-global-asd-error"></span><h3>Global ASD Error<a class="headerlink" href="#global-asd-error" title="Link to this heading">#</a></h3>
+<p>The global ASD error, which is computed with the <code class="docutils literal notranslate"><span class="pre">global_asd_error</span></code> method, is a summary metric that is defined in MIL-STD 810. It sums the dB error for all the response DOFs while applying weights that are based on the relative response amplitudes. These weights are used to make the metric sensitive to errors in responses with large amplitudes and insensitive to errors in responses that have small amplitudes. As such, the global ASD error metric helps determine if the estimated sources apply sufficient vibration energy to a system in MIMO vibration testing, but may not be useful for a detailed investigation of the errors, since low responding DOFs may be ignored.</p>
+<p>The global ASD error is computed via a four step process:</p>
+<ol class="arabic simple">
+<li><p>A normalizing factor, <span class="math notranslate nohighlight">\(\eta\)</span>, is first computed, by taking the L2 norm of the truth response PSDs:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\eta = \lVert diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{truth} \end{bmatrix}\end{pmatrix} \rVert_2
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>A weighting vector, <span class="math notranslate nohighlight">\(\begin{Bmatrix}W\end{Bmatrix}\)</span> is computed by dividing the PSD amplitude for each DOF by <span class="math notranslate nohighlight">\(\eta\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix}W\end{Bmatrix} = \frac{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{truth} \end{bmatrix}\end{pmatrix}^2}{\eta^2}
+\]</div>
+<ol class="arabic simple" start="3">
+<li><p>The dB error is computed for each DOF:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix}E_{dB}\end{Bmatrix} = 10*log_{10}\begin{pmatrix} \frac{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{reconstructed} \end{bmatrix}\end{pmatrix}}{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{truth} \end{bmatrix}\end{pmatrix}} \end{pmatrix}
+\]</div>
+<ol class="arabic simple" start="4">
+<li><p>Finally, the global ASD error is computed by summing the element wise multiplication of <span class="math notranslate nohighlight">\(\begin{Bmatrix}E_{dB}\end{Bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\begin{Bmatrix}W\end{Bmatrix}\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+E_{global} = \sum{\begin{Bmatrix}E_{dB}\end{Bmatrix}*\begin{Bmatrix}W\end{Bmatrix}}
+\]</div>
+</section>
+<section id="average-asd-error">
+<h3>Average ASD Error<a class="headerlink" href="#average-asd-error" title="Link to this heading">#</a></h3>
+<p>The average ASD error, which is computed with the <code class="docutils literal notranslate"><span class="pre">average_asd_error</span></code> method, is a simple average of the dB error spectra for the all the response DOFs. The metric is computed with:</p>
+<div class="math notranslate nohighlight">
+\[
+E_{average} = 10*log_{10}\begin{pmatrix} \frac{1}{n}\sum{\frac{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{reconstructed} \end{bmatrix}\end{pmatrix}}{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{truth} \end{bmatrix}\end{pmatrix}}} \end{pmatrix}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(n\)</span> is the number of response DOFs for the metric computation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Decibel values are averaged on the corresponding linear values, which is why the average is done on the ratio of the reconstructed and truth PSDs.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Many ISE problems are computed as least squares problems, which tend to result in an similar quantities of positive and negative errors. Consequently, the average ASD error may show less error than a subjective perception of the DOF by DOF error. However, it can be useful for quickly identifying large bias errors.</p>
+</div>
+</section>
+<section id="rms-asd-error">
+<h3>RMS ASD Error<a class="headerlink" href="#rms-asd-error" title="Link to this heading">#</a></h3>
+<p>The RMS ASD error, which is computed with a <code class="docutils literal notranslate"><span class="pre">rms_asd_error</span></code> method, is summary metric that computes the RMS value of the dB error spectra for all the response DOFs. This is done to have an error metric that treats the positive and negative errors the same, which may potentially be a better match to a subjective perception of the DOF by DOF error that the <code class="docutils literal notranslate"><span class="pre">average_asd_error</span></code>. The metric is computed with:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix}E_{dB}\end{Bmatrix} = 10*log_{10}\begin{pmatrix} \frac{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{reconstructed} \end{bmatrix}\end{pmatrix}}{diag \begin{pmatrix}\begin{bmatrix} G_{xx}^{truth} \end{bmatrix}\end{pmatrix}} \end{pmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[ 
+E_{rms} = \sqrt{\frac{1}{n}\sum{\begin{Bmatrix}E_{dB}\end{Bmatrix}^2}}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\begin{Bmatrix} E_{dB} \end{Bmatrix}\)</span> is the DOF by DOF dB error spectra and <span class="math notranslate nohighlight">\(n\)</span> is the number of response DOFs for the metric computation.</p>
+</section>
+</section>
+<section id="error-metrics-for-transient-problems">
+<h2>Error Metrics for Transient Problems<a class="headerlink" href="#error-metrics-for-transient-problems" title="Link to this heading">#</a></h2>
+<p>Several error metrics have been implemented for transient problems, which attempt to evaluate the errors in response level, waveform shape, and spectral content. All of these metrics are time varying and are computed by splitting the full time trace into segments and computing the error on a segment-by-segment basis. The segmentation is specified with two parameters:</p>
+<ul class="simple">
+<li><p>Segment duration - This is the duration of the segment, which is specified as a time with the <code class="docutils literal notranslate"><span class="pre">frame_length</span></code> kwarg or an integer number of samples with the <code class="docutils literal notranslate"><span class="pre">samples_per_frame</span></code> kwarg.</p></li>
+<li><p>Overlap between segments - This is the overlap between the segments, which is specified as a percentage (in decimal format) with the <code class="docutils literal notranslate"><span class="pre">overlap</span></code> kwarg or as an integer number of samples with the <code class="docutils literal notranslate"><span class="pre">overlap_samples</span></code> kwarg.</p></li>
+</ul>
+<section id="global-rms-error">
+<h3>Global RMS Error<a class="headerlink" href="#global-rms-error" title="Link to this heading">#</a></h3>
+<p>The global RMS error, which is computed with the <code class="docutils literal notranslate"><span class="pre">global_rms_error</span></code> method, is a summary metric that is defined in MIL-STD 810. It sums the RMS errors for all the response DOFs while applying weights that are based on the relative response amplitudes. These weights are used to make the metric sensitive to errors in responses with large amplitudes and insensitive to errors in responses that have small amplitudes. As such, the global RMS error metric helps determine if the estimated sources apply sufficient vibration energy to a system in MIMO vibration testing, but may not be useful for a detailed investigation of the errors, since low responding DOFs may be ignored.</p>
+<p>The global RMS error is computed with the same four step process that is used for the <a class="reference internal" href="#sec-global-asd-error"><span class="std std-ref">global ASD error</span></a>, but applied to RMS levels vs. time instead of PSD amplitudes vs. frequency:</p>
+<ol class="arabic simple">
+<li><p>A normalizing factor, <span class="math notranslate nohighlight">\(\eta\)</span>, is first computed, by taking the L2 norm of the time varying RMS level for the truth response, <span class="math notranslate nohighlight">\(\begin{Bmatrix} {RMS}^{truth} \end{Bmatrix}\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\eta = \lVert \begin{Bmatrix} {RMS}^{truth} \end{Bmatrix} \rVert_2
+\]</div>
+<ol class="arabic simple" start="2">
+<li><p>A weighting vector, <span class="math notranslate nohighlight">\(\begin{Bmatrix}W\end{Bmatrix}\)</span> is computed by dividing the time varying RMS level for the truth response, <span class="math notranslate nohighlight">\(\begin{Bmatrix} {RMS}^{truth} \end{Bmatrix}\)</span>, by <span class="math notranslate nohighlight">\(\eta\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix}W\end{Bmatrix} = \frac{\begin{Bmatrix} {RMS}^{truth} \end{Bmatrix}^2}{\eta^2}
+\]</div>
+<ol class="arabic simple" start="3">
+<li><p>The dB error between the time varying RMS level for the truth response, <span class="math notranslate nohighlight">\(\begin{Bmatrix} RMS^{truth} \end{Bmatrix}\)</span>, and reconstructed response, <span class="math notranslate nohighlight">\(\begin{Bmatrix} RMS^{reconstructed} \end{Bmatrix}\)</span>, is computed for each DOF:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix}E_{dB}\end{Bmatrix} = 20*log_{10}\begin{pmatrix} \frac{\begin{Bmatrix} {RMS}^{reconstructed} \end{Bmatrix}}{\begin{Bmatrix} {RMS}^{truth} \end{Bmatrix}} \end{pmatrix}
+\]</div>
+<ol class="arabic simple" start="4">
+<li><p>Finally, the global RMS error is computed by summing the element wise multiplication of <span class="math notranslate nohighlight">\(\begin{Bmatrix}E_{dB}\end{Bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\begin{Bmatrix}W\end{Bmatrix}\)</span>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+E_{global} = \sum{\begin{Bmatrix}E_{dB}\end{Bmatrix}*\begin{Bmatrix}W\end{Bmatrix}}
+\]</div>
+</section>
+<section id="average-rms-error">
+<h3>Average RMS Error<a class="headerlink" href="#average-rms-error" title="Link to this heading">#</a></h3>
+<p>The average RMS error, which is computed with the <code class="docutils literal notranslate"><span class="pre">average_rms_error</span></code> method, is a simple average of the dB RMS level error time traces for the all the response DOFs. The metric is computed for each time segment with the following expression:</p>
+<div class="math notranslate nohighlight">
+\[
+E_{average} = 20*log_{10}\begin{pmatrix} \frac{1}{n}\sum{\frac{\begin{Bmatrix} {RMS}^{reconstructed} \end{Bmatrix}}{\begin{Bmatrix} {RMS}^{truth} \end{Bmatrix}}} \end{pmatrix}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(n\)</span> is the number of response DOFs for the metric computation, <span class="math notranslate nohighlight">\(\begin{Bmatrix}RMS^{reconstructed}\end{Bmatrix}\)</span> is the time varying RMS level for the reconstructed response, and <span class="math notranslate nohighlight">\(\begin{Bmatrix}RMS^{truth}\end{Bmatrix}\)</span> is the time varying RMS level for the truth response.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Decibel values are averaged on the corresponding linear values, which is why the average is done on the ratio of the reconstructed and truth RMS level errors.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Many ISE problems are computed as least squares problems, which tend to result in an similar quantities of positive and negative errors. Consequently, the average RMS error may show less error than a subjective perception of the DOF by DOF error. However, it can be useful for quickly identifying large bias errors.</p>
+</div>
+</section>
+<section id="time-varying-trac">
+<h3>Time Varying TRAC<a class="headerlink" href="#time-varying-trac" title="Link to this heading">#</a></h3>
+<p>As the name implies, this metric computes a TRAC error time trace (based on the segmentation) for all the response DOFs and is computed with the <code class="docutils literal notranslate"><span class="pre">time_varying_trac</span></code> method. The TRAC error is computed for each DOF (at each segment) with:</p>
+<div class="math notranslate nohighlight">
+\[
+{TRAC} = \frac{\begin{pmatrix}\begin{Bmatrix}x_n^{truth}\end{Bmatrix} \cdot \begin{Bmatrix}x_n^{reconstructed}\end{Bmatrix}\end{pmatrix}^2}{\begin{pmatrix}\begin{Bmatrix}x_n^{truth}\end{Bmatrix} \cdot \begin{Bmatrix}x_n^{truth}\end{Bmatrix}\end{pmatrix}*\begin{pmatrix}\begin{Bmatrix}x_n^{reconstructed}\end{Bmatrix} \cdot \begin{Bmatrix}x_n^{reconstructed}\end{Bmatrix}\end{pmatrix}}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(n\)</span> represents the response DOF index and the response vectors, <span class="math notranslate nohighlight">\(\begin{Bmatrix}x_n^{truth}\end{Bmatrix}\)</span> and <span class="math notranslate nohighlight">\(\begin{Bmatrix}x_n^{reconstructed}\end{Bmatrix}\)</span>, are the time traces for a specific time segment and DOF (i.e., each entry in the vector is a different time sample).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">time_varying_trac</span></code> method returns a SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> with the time varying TRAC for each DOF and does not attempt to summarize the TRACs for the different DOFs into a single curve.</p>
+</div>
+</section>
+<section id="time-varying-level-error">
+<h3>Time Varying Level Error<a class="headerlink" href="#time-varying-level-error" title="Link to this heading">#</a></h3>
+<p>The time varying level error, which is computed with the <code class="docutils literal notranslate"><span class="pre">time_varying_level_error</span></code> method, computes the response level error in dB for all the DOFs rather than computing a single summary curve (like the <code class="docutils literal notranslate"><span class="pre">global_rms_error</span></code>, etc.). Currently, two types of levels are supported: the segment RMS level error and the segment maximum level error.</p>
+</section>
+<section id="spectrogram-error">
+<h3>Spectrogram Error<a class="headerlink" href="#spectrogram-error" title="Link to this heading">#</a></h3>
+<p>The spectrogram error computes a short-time Fourier transform (STFT) PSD for all the DOFs, then computes the dB error between the truth and reconstructed STFTs. This metric is computed with the <code class="docutils literal notranslate"><span class="pre">compute_error_stft</span></code> function that is in the <code class="docutils literal notranslate"><span class="pre">transient_quality_metrics</span></code> module. The spectrogram error attempts to show the spectral errors as a function of time and can be useful to develop a thorough understanding of the errors in the ISE problem.</p>
+<p>It can be difficult to interpret the spectrograms to determine if the errors are significant to the overall response. This is because the dB error calculation makes it impossible to understand the response amplitude vs. time. For example, the spectrogram error could show high error but that error might occur at a time or frequency that has a low response amplitude, meaning that the error is insignificant to the overall response. An RMS level normalization, which is called with the <code class="docutils literal notranslate"><span class="pre">normalize_by_rms</span></code> kwarg, was added to the <code class="docutils literal notranslate"><span class="pre">compute_error_stft</span></code> function in an attempt to mitigate this issue.</p>
+<p>The normalization is computed for a specific DOF with:</p>
+<div class="math notranslate nohighlight">
+\[
+\eta = \frac{{RMS}^{truth}}{max\begin{pmatrix} {RMS}^{truth} \end{pmatrix}}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\eta\)</span> is the time varying normalization factor (for a specific DOF), <span class="math notranslate nohighlight">\({RMS}^{truth}\)</span> is the RMS value vs. time (based on the segmentation), and <span class="math notranslate nohighlight">\(max\begin{pmatrix} {RMS}^{truth} \end{pmatrix}\)</span> computes the maximum RMS value for the whole time trace. This normalization is applied to the spectrogram error for a specific DOF with:</p>
+<div class="math notranslate nohighlight">
+\[
+E_{STFT, normalized} = E_{STFT} * \eta
+\]</div>
+<p>Where the normalization for each segment is computed for the dB error spectrum for each time segment.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="miscellaneous_techniques.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Theory for Miscellaneous Techniques</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_utilization_intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Example Utilization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-for-spectral-ise-problems">Error Metrics for Spectral ISE Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-asd-error">Global ASD Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-asd-error">Average ASD Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rms-asd-error">RMS ASD Error</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-metrics-for-transient-problems">Error Metrics for Transient Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-rms-error">Global RMS Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-rms-error">Average RMS Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-varying-trac">Time Varying TRAC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-varying-level-error">Time Varying Level Error</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spectrogram-error">Spectrogram Error</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
