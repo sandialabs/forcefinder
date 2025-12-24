@@ -16,5 +16,7 @@ chapters:
   - file: miscellaneous_techniques
   - file: error_metrics
 - file: example_utilization_intro
+  sections:
+  - file: basic_spr_utilization
 - file: autoapi/index
   title: API Reference

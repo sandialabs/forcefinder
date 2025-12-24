@@ -75,7 +75,7 @@ Decibel values are averaged on the corresponding linear values, which is why the
 ```{note}
 Many ISE problems are computed as least squares problems, which tend to result in an similar quantities of positive and negative errors. Consequently, the average ASD error may show less error than a subjective perception of the DOF by DOF error. However, it can be useful for quickly identifying large bias errors. 
 ```
-
+(sec:rms_asd_error)=
 ### RMS ASD Error
 The RMS ASD error, which is computed with a `rms_asd_error` method, is summary metric that computes the RMS value of the dB error spectra for all the response DOFs. This is done to have an error metric that treats the positive and negative errors the same, which may potentially be a better match to a subjective perception of the DOF by DOF error that the `average_asd_error`. The metric is computed with:
 
