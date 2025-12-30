@@ -18,5 +18,6 @@ chapters:
 - file: example_utilization_intro
   sections:
   - file: basic_spr_utilization
+  - file: spr_utilization_response_limit
 - file: autoapi/index
   title: API Reference

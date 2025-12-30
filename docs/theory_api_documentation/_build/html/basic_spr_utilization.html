@@ -61,7 +61,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'basic_spr_utilization';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="next" title="MIMO Drive Prediction with Response Limiting" href="spr_utilization_response_limit.html" />
     <link rel="prev" title="Example Utilization" href="example_utilization_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -193,6 +193,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Basic Use of the SourcePathReceiver Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -418,17 +419,21 @@ document.write(`
 <section id="example-beam-system">
 <h2>Example Beam System<a class="headerlink" href="#example-beam-system" title="Link to this heading">#</a></h2>
 <p>This example uses the beam system that was developed <a class="reference internal" href="example_utilization_intro.html#sec-example-beam-system"><span class="std std-ref">here</span></a>. As a reminder, an image of the beam system is shown below, where the blue arrows (above the beam) are the response DOFs for the source estimation and the red arrows (below the beam) are the source DOFs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The nodes are labeled 101-109 from left to right. The translating direction on the beam (vertical on the page) is Z+ and the rotating direction is RY+.</p>
+</div>
 <figure class="align-center">
-<img alt="Example L-curve" src="_images/beam_system.svg" />
+<img alt="Example Beam System" src="_images/beam_system.svg" />
 </figure>
 <p>The example data for this beam system is generated using the following process:</p>
 <ol class="arabic simple">
 <li><p>The SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> object for the beam is imported</p></li>
 <li><p>White noise excitation is created for the source DOFs on the beam</p></li>
-<li><p>Time responses to the white noise excitation (as SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> objects) are computed for the beam using the <code class="docutils literal notranslate"><span class="pre">time_integrate</span></code> method for the <code class="docutils literal notranslate"><span class="pre">Source</span></code> object</p></li>
+<li><p>Time responses to the white noise excitation (as SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> objects) are computed for the beam using the <code class="docutils literal notranslate"><span class="pre">time_integrate</span></code> method for the beams <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
 <li><p>Random measurement errors are added to the time response</p></li>
 <li><p>The CPSD response is computed using the <code class="docutils literal notranslate"><span class="pre">cpsd</span></code> method for the SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> object</p></li>
-<li><p>FRFs are computed for the beam system using the <code class="docutils literal notranslate"><span class="pre">frequency_response</span></code> method for the <code class="docutils literal notranslate"><span class="pre">Source</span></code> object</p></li>
+<li><p>FRFs are computed for the beam system using the <code class="docutils literal notranslate"><span class="pre">frequency_response</span></code> method for the beams <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -476,7 +481,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/92898ea65562973f2c78c8737322c3298a2ac65a0959457c8b4ffcecc4def86b.png" src="_images/92898ea65562973f2c78c8737322c3298a2ac65a0959457c8b4ffcecc4def86b.png" />
+<img alt="_images/708a7276803fa0cd0cf931b3d5b0ff21ac2dc74f0f563db232f7faebb250961a.png" src="_images/708a7276803fa0cd0cf931b3d5b0ff21ac2dc74f0f563db232f7faebb250961a.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -490,7 +495,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/39d8f0e89ec17dcb3b24928c18a297e997dcdb00f38f266f2ba6161a56eef457.png" src="_images/39d8f0e89ec17dcb3b24928c18a297e997dcdb00f38f266f2ba6161a56eef457.png" />
+<img alt="_images/4ed29514633ed3a076af8851748e68f56dbfc95c6ed13671e87d1faafa70f8b7.png" src="_images/4ed29514633ed3a076af8851748e68f56dbfc95c6ed13671e87d1faafa70f8b7.png" />
 </div>
 </div>
 </section>
@@ -667,7 +672,7 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 500.0)
 </pre></div>
 </div>
-<img alt="_images/e5d1b85d172d9f0a76108fa1db4b5e2e8f5cc7004ffa428b2b146fd2e7f78829.png" src="_images/e5d1b85d172d9f0a76108fa1db4b5e2e8f5cc7004ffa428b2b146fd2e7f78829.png" />
+<img alt="_images/5e7aa43a3bbff1ad45754e16c0d6d21d8c5f7097fe858e9c649fa309c3db1f13.png" src="_images/5e7aa43a3bbff1ad45754e16c0d6d21d8c5f7097fe858e9c649fa309c3db1f13.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -691,7 +696,7 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.0, 500.0)
 </pre></div>
 </div>
-<img alt="_images/e0437917e9aa7e269e1d6592056e6245d41be59564e891a0c028140747a5ebeb.png" src="_images/e0437917e9aa7e269e1d6592056e6245d41be59564e891a0c028140747a5ebeb.png" />
+<img alt="_images/7ca397780a865651c5ac1300fc3b3138ac5647f9c632c6698f85438b899b9506.png" src="_images/7ca397780a865651c5ac1300fc3b3138ac5647f9c632c6698f85438b899b9506.png" />
 </div>
 </div>
 <p>The reconstructed response errors can also be evaluated on a DOF-DOF basis using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method where the target response is the black curve and the reconstructed responses are in blue. This plot shows the DOF-DOF comparison plots in the upper section, the lower left plot compares the PSD sums and the lower right plot is the RMS ASD error. Like the other error metrics, the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> can be shown for the different DOF sets, as described <a class="reference internal" href="error_metrics.html"><span class="doc std std-doc">here</span></a>.</p>
@@ -706,7 +711,7 @@ document.write(`
   def dB_pow(x): return 10 * np.log10(x)
 </pre></div>
 </div>
-<img alt="_images/9b08598a01304df52fd300976b266e8ab69cb8ac77a2b67321bb02211f82a2bd.png" src="_images/9b08598a01304df52fd300976b266e8ab69cb8ac77a2b67321bb02211f82a2bd.png" />
+<img alt="_images/7b8a63dedd2df99a0bd7ffc9c17d3b4beb91f055c0ec93db02e27e3e8d07e287.png" src="_images/7b8a63dedd2df99a0bd7ffc9c17d3b4beb91f055c0ec93db02e27e3e8d07e287.png" />
 </div>
 </div>
 </section>
@@ -753,11 +758,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="autoapi/index.html"
+       href="spr_utilization_response_limit.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Reference</p>
+        <p class="prev-next-title">MIMO Drive Prediction with Response Limiting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

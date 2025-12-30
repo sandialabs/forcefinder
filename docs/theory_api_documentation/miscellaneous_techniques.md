@@ -110,6 +110,7 @@ The attenuation may have a more dramatic impact on the frequency content of the 
 The force attenuation has only been defined for time signals and is only implemented for the `TransientSourcePathReceiver` object with the `attenuate_force` method.
 ```
 
+(sec:response_limiting)=
 ## Response Limiting
 Response limiting is a common technique in vibration testing that is used to limit the vibration levels at DOFs that are not included in the `training_response`. The responses at these so-called "limit DOFs" are not directly controlled. Rather, the forces are modified to ensure that the levels at the limit DOFs do not exceed a specified limit. 
 
