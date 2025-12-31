@@ -3,8 +3,8 @@
 
 <svg
    width="132.38608mm"
-   height="30.608625mm"
-   viewBox="0 0 132.38608 30.608626"
+   height="19.129492mm"
+   viewBox="0 0 132.38608 19.129492"
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
@@ -23,193 +23,78 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.8008909"
-     inkscape:cx="293.18822"
-     inkscape:cy="93.564801"
-     inkscape:window-width="1512"
-     inkscape:window-height="916"
+     inkscape:zoom="1.5517906"
+     inkscape:cx="263.56649"
+     inkscape:cy="41.887095"
+     inkscape:window-width="1440"
+     inkscape:window-height="847"
      inkscape:window-x="0"
-     inkscape:window-y="38"
-     inkscape:window-maximized="1"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg1" />
   <defs
-     id="defs1">
-    <marker
-       style="overflow:visible"
-       id="Triangle"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle-2"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-3" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle-3"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-9" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle-6"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-2" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle-2-9"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-3-9" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="Triangle-2-9-6"
-       refX="0"
-       refY="0"
-       orient="auto-start-reverse"
-       inkscape:stockid="Triangle arrow"
-       markerWidth="0.5"
-       markerHeight="0.5"
-       viewBox="0 0 1 1"
-       inkscape:isstock="true"
-       inkscape:collect="always"
-       preserveAspectRatio="xMidYMid">
-      <path
-         transform="scale(0.5)"
-         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
-         d="M 5.77,0 -2.88,5 V -5 Z"
-         id="path135-3-9-5" />
-    </marker>
-  </defs>
+     id="defs1" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 7.3550964,24.764241 2.7881656,-0.84664"
+     d="m 7.3550968,13.285107 2.7881652,-0.84664"
      id="path3-9-1" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 4.5986264,18.747268 2.788166,-0.846633"
+     d="M 4.5986268,7.268134 7.3867928,6.421501"
      id="path3-62-0-1" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 4.5981064,22.220205 5.5456756,1.677376"
+     d="m 4.5981068,10.741071 5.5456752,1.677376"
      id="path4-5-4" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="M 4.5993304,22.204542 10.142557,20.517469"
+     d="M 4.5993308,10.725408 10.142557,9.038335"
      id="path3-6-5-9" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 4.5981064,18.824433 5.5456756,1.677373"
+     d="M 4.5981068,7.345299 10.143782,9.022672"
      id="path4-4-6-5" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="M 7.4410924,18.349925 V 15.719144"
+     d="M 7.4410928,6.870791 V 4.24001"
      id="path5-3-9" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 7.4410924,26.920991 v -2.63078"
+     d="m 7.4410928,15.441857 v -2.63078"
      id="path5-6-2-0" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 127.12081,24.750776 2.78817,-0.84664"
+     d="m 127.12081,13.271642 2.78817,-0.84664"
      id="path3-9-1-0" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 124.36434,18.733803 2.78817,-0.846633"
+     d="m 124.36434,7.254669 2.78817,-0.846633"
      id="path3-62-0-1-7" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 124.36382,22.20674 5.54568,1.677376"
+     d="m 124.36382,10.727606 5.54568,1.677376"
      id="path4-5-4-5" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 124.36505,22.191077 5.54322,-1.687073"
+     d="M 124.36505,10.711943 129.90827,9.02487"
      id="path3-6-5-9-7" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 124.36382,18.810968 5.54568,1.677373"
+     d="m 124.36382,7.331834 5.54568,1.677373"
      id="path4-4-6-5-5" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="M 127.20681,18.33646 V 15.705679"
+     d="M 127.20681,6.857326 V 4.226545"
      id="path5-3-9-0" />
   <path
      style="fill:#a05a2c;stroke:#c8ab37;stroke-width:1;stroke-dasharray:none"
-     d="m 127.20681,26.907526 v -2.63078"
+     d="m 127.20681,15.428392 v -2.63078"
      id="path5-6-2-0-6" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-24.287599,-71.077829)">
+     transform="translate(-24.287599,-82.556963)">
     <path
        style="fill:#a05a2c;stroke:#502d16;stroke-width:1.7;stroke-dasharray:none"
        d="M 31.364219,85.006073 151.56393,85.278636"
@@ -385,28 +270,4 @@
        d="m 153.88429,101.3329 2.43584,-2.43584"
        id="path6-5-3-2-3-2" />
   </g>
-  <path
-     style="fill:#00ffff;stroke:#000080;stroke-width:1.5;marker-end:url(#Triangle)"
-     d="M 22.404475,11.259619 V 2.6633063"
-     id="path1" />
-  <path
-     style="fill:#00ffff;stroke:#000080;stroke-width:1.5;marker-end:url(#Triangle-2)"
-     d="M 52.351248,11.259619 V 2.663306"
-     id="path1-9" />
-  <path
-     style="fill:#00ffff;stroke:#d40000;stroke-width:1.21929;marker-end:url(#Triangle-2-9)"
-     d="M 37.377863,24.80533 V 19.125349"
-     id="path1-9-7" />
-  <path
-     style="fill:#00ffff;stroke:#d40000;stroke-width:1.21929;marker-end:url(#Triangle-2-9-6)"
-     d="M 112.24478,24.80533 V 19.125349"
-     id="path1-9-7-8" />
-  <path
-     style="fill:#00ffff;stroke:#000080;stroke-width:1.5;marker-end:url(#Triangle-3)"
-     d="M 82.298011,11.259619 V 2.6633062"
-     id="path1-6" />
-  <path
-     style="fill:#00ffff;stroke:#000080;stroke-width:1.5;marker-end:url(#Triangle-6)"
-     d="M 112.24478,11.259619 V 2.6633064"
-     id="path1-0" />
 </svg>

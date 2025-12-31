@@ -413,10 +413,10 @@ document.write(`
 <p>All the examples use the simple beam system that is shown in the image below. Each dot in the image represents a node in the beam model. It is connected to the ground via translating and torsion springs (note that the torsion springs aren’t shown in the image). The red arrows (below the beam) are the excitation locations and directions. The blue arrows (above the beam) are the response locations and directions that are used in the force estimation.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The nodes are labeled 101-109 from left to right and the translating direction (vertical on the page) is Z+.</p>
+<p>The nodes are labeled 101-109 from left to right. The translating direction on the beam (vertical on the page) is Z+ and the rotating direction is RY+.</p>
 </div>
 <figure class="align-center">
-<img alt="Example L-curve" src="_images/beam_system.svg" />
+<img alt="Example Beam System" src="_images/beam_system.svg" />
 </figure>
 <p>The beam is modeled with standard functions in SDynPy using Euler-Bernoulli beam elements, where the axial degrees of freedom (DOFs) have been excluded. The beam properties are:</p>
 <ul class="simple">

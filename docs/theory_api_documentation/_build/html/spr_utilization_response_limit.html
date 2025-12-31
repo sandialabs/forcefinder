@@ -533,12 +533,12 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_limit_spr</span><span class="o">.</span><span class="n">error_summary</span><span class="p">(</span><span class="n">figure_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">)})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_limit_spr</span><span class="o">.</span><span class="n">error_summary</span><span class="p">(</span><span class="n">figure_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">)},</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/43ae63706eaeb1f270432f2c4309cc80522c9465d7a10b173a03a937843ca6e2.png" src="_images/43ae63706eaeb1f270432f2c4309cc80522c9465d7a10b173a03a937843ca6e2.png" />
+<img alt="_images/8bfc10c5e33a20065d9274acea3918fa22f96e112b15ecc162cc8335dfea76bd.png" src="_images/8bfc10c5e33a20065d9274acea3918fa22f96e112b15ecc162cc8335dfea76bd.png" />
 </div>
 </div>
 <p>The predicted responses (from the estimated drives) are compared to the response limits, showing that there are several frequencies where the limits are exceeded.</p>
@@ -601,12 +601,12 @@ document.write(`
 <p>It is generally good practice to evaluate how <a class="reference internal" href="miscellaneous_techniques.html#sec-response-limiting"><span class="std std-ref">scaling the drives</span></a> to enforce the response limit effects the accuracy of the test. This is done below with the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method. These plots show that enforcing the response limits cause significant errors in the frequency bands that exceed the limit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">limit_spr</span><span class="o">.</span><span class="n">error_summary</span><span class="p">(</span><span class="n">figure_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">)})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">limit_spr</span><span class="o">.</span><span class="n">error_summary</span><span class="p">(</span><span class="n">figure_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">)},</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8beffbc9ccdad2ffd9357a82e7dcb4af8c5c6b3b5ba9554f02b245bde82eec54.png" src="_images/8beffbc9ccdad2ffd9357a82e7dcb4af8c5c6b3b5ba9554f02b245bde82eec54.png" />
+<img alt="_images/1af124d7223b4fa03a354e02c061fea3cffb8a646373c214dfbaec6da2a905be.png" src="_images/1af124d7223b4fa03a354e02c061fea3cffb8a646373c214dfbaec6da2a905be.png" />
 </div>
 </div>
 <p>The predicted responses from the drives with the limits enforced show that the updated prediction is compliant with the limits. This plot also shows how a limit on one DOF can supersede the limit on another DOF, since the 300 Hz peak in 105RY+ is dramatically reduced by the limit that is applied to 107RY+.</p>
