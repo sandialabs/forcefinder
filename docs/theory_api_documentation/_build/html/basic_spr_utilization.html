@@ -194,6 +194,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Basic Use of the SourcePathReceiver Object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -486,7 +487,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/359d54143f843403e54ee2893ccb70a94e61feb31d1398c185c5cca917482401.png" src="_images/359d54143f843403e54ee2893ccb70a94e61feb31d1398c185c5cca917482401.png" />
+<img alt="_images/db84a800b64644dd175cd2ff3d7292988ce9b5e9b7092543facb6812f295d87d.png" src="_images/db84a800b64644dd175cd2ff3d7292988ce9b5e9b7092543facb6812f295d87d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -500,7 +501,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e910c5009e9315ed8842b8a24459ba9a66b905a2b4dd023f397659da8c65d786.png" src="_images/e910c5009e9315ed8842b8a24459ba9a66b905a2b4dd023f397659da8c65d786.png" />
+<img alt="_images/ca6357ed383fceacd2abb89429b6a7f965092a35711ec4a5a3e0476d2ef7c889.png" src="_images/ca6357ed383fceacd2abb89429b6a7f965092a35711ec4a5a3e0476d2ef7c889.png" />
 </div>
 </div>
 </section>
@@ -683,7 +684,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ac61d014e0fae0f52114f6ee73e7fa90aa38b6406b8171b38458a5c8f017254d.png" src="_images/ac61d014e0fae0f52114f6ee73e7fa90aa38b6406b8171b38458a5c8f017254d.png" />
+<img alt="_images/aa77f46b8afc06e14bab2690f57f591f2d766ab00fe21e451c5c3dc325e1814f.png" src="_images/aa77f46b8afc06e14bab2690f57f591f2d766ab00fe21e451c5c3dc325e1814f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -698,7 +699,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e6f2757a45aa0171d8ae62c04b0ee299d0da838ff473cf5a23fbd7d30553c5ae.png" src="_images/e6f2757a45aa0171d8ae62c04b0ee299d0da838ff473cf5a23fbd7d30553c5ae.png" />
+<img alt="_images/fa56af7ad643e19c1bc7f53b9399591d2afede23dcfdfeca130251558d33e260.png" src="_images/fa56af7ad643e19c1bc7f53b9399591d2afede23dcfdfeca130251558d33e260.png" />
 </div>
 </div>
 <p>The reconstructed response errors can also be evaluated on a DOF-DOF basis using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method where the target response is the black curve and the reconstructed responses are in blue. This plot shows the DOF-DOF comparison plots in the upper section, the lower left plot compares the PSD sums and the lower right plot is the RMS ASD error. Like the other error metrics, the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> can be shown for the different DOF sets, as described <a class="reference internal" href="error_metrics.html"><span class="doc std std-doc">here</span></a>.</p>
@@ -709,12 +710,12 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a5862a74cba28183dfede15f6b7009c24aae3e4c8a931c28e3617984db00ce49.png" src="_images/a5862a74cba28183dfede15f6b7009c24aae3e4c8a931c28e3617984db00ce49.png" />
+<img alt="_images/ca58087ad1fb1f41505baa1ec38d0f5261e20434f9a2286ca526af38a48ee1a3.png" src="_images/ca58087ad1fb1f41505baa1ec38d0f5261e20434f9a2286ca526af38a48ee1a3.png" />
 </div>
 </div>
 <section id="comparing-the-estimated-sources-to-the-truth-sources">
 <h3>Comparing the Estimated Sources to the Truth Sources<a class="headerlink" href="#comparing-the-estimated-sources-to-the-truth-sources" title="Link to this heading">#</a></h3>
-<p>This section compares the PSDs for the estimated and truth sources. The below plot shows that the estimated sources are very accurate, except for an overestimation at high frequencies (where the truth sources are near zero) and an overestimation of the 103Z+ force at ~150 Hz.</p>
+<p>This section compares the PSDs for the estimated and truth sources, where the truth sources are the <code class="docutils literal notranslate"><span class="pre">force</span></code> attribute of the SPR object. The below plot shows that the estimated sources are very accurate, except for an overestimation at high frequencies (where the truth sources are near zero) and an overestimation of the 103Z+ force at ~150 Hz.</p>
 <p>Both of these issues were indicated in the on-board validation. However, it is interesting to note that the reconstructed responses are lower than the training responses in the problematic frequency bands. The under predicted responses would imply that the sources were also under predicted, which is the opposite of what actually happened.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -748,7 +749,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f2962b93220100085527fb63d41756996262bd5d256188b946c6a70b1eafec7e.png" src="_images/f2962b93220100085527fb63d41756996262bd5d256188b946c6a70b1eafec7e.png" />
+<img alt="_images/48305a7617c95c6a557b38e361a6235ace284ceb294e7ebe58422079e7b4687b.png" src="_images/48305a7617c95c6a557b38e361a6235ace284ceb294e7ebe58422079e7b4687b.png" />
 </div>
 </div>
 </section>
