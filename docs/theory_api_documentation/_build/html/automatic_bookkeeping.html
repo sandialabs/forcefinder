@@ -191,7 +191,12 @@
 <li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -386,7 +391,7 @@ document.write(`
 <p>Individual pieces of data (FRFs, response, etc.) are recalled as class attributes for the SPR object, which are returned as SDynPy arrays. For example, <code class="docutils literal notranslate"><span class="pre">spr_object.frfs</span></code> will return a SDynPy <code class="docutils literal notranslate"><span class="pre">TransferFunctionArray</span></code> of the FRFs in the SPR object.</p>
 </div>
 <section id="sample-splitting">
-<h2>Sample Splitting<a class="headerlink" href="#sample-splitting" title="Link to this heading">#</a></h2>
+<span id="sec-sample-splitting"></span><h2>Sample Splitting<a class="headerlink" href="#sample-splitting" title="Link to this heading">#</a></h2>
 <p>The SPR object initializer function includes methods for splitting the response degrees of freedom (DOFs) into so-called “training” and “validation” DOFs. This allows the practitioner to split the response and FRF data so only the training data is used for the ISE and the validation data is held out for optional quality evaluations. The training and validation DOFs are concatenated to create a superset of “target” response DOFs, which are DOFs in the FRFs that have accompanying response data. The difference between the training and validation DOFs is intuited by the initializer function with one of two ways:</p>
 <ol class="arabic simple">
 <li><p>The practitioner can supply the target and training response data as separate SDynPy objects. The function will determine the validation DOFs based on the DOFs that are not in the intersection between the target and training data.</p></li>

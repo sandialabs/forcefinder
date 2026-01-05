@@ -5,6 +5,7 @@ In most cases, the data for the SPR object is passed to the initializer/construc
 Individual pieces of data (FRFs, response, etc.) are recalled as class attributes for the SPR object, which are returned as SDynPy arrays. For example, `spr_object.frfs` will return a SDynPy `TransferFunctionArray` of the FRFs in the SPR object.
 ```
 
+(sec:sample_splitting)=
 ## Sample Splitting
 The SPR object initializer function includes methods for splitting the response degrees of freedom (DOFs) into so-called "training" and "validation" DOFs. This allows the practitioner to split the response and FRF data so only the training data is used for the ISE and the validation data is held out for optional quality evaluations. The training and validation DOFs are concatenated to create a superset of "target" response DOFs, which are DOFs in the FRFs that have accompanying response data. The difference between the training and validation DOFs is intuited by the initializer function with one of two ways:
 

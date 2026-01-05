@@ -193,8 +193,8 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -392,17 +392,9 @@ document.write(`
 <p>This section demonstrates the basic utilization of ForceFinder on a basic beam example. The examples cover:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="basic_spr_utilization.html"><span class="doc std std-doc">Basic use and workflow with the SPR object</span></a></p></li>
-<li><p>The virtual point transformation</p></li>
-<li><p>DOF weightings and normalization</p></li>
-<li><p>Using some of the miscellaneous techniques:</p>
-<ul>
-<li><p>The buzz method</p></li>
-<li><p>Match trace updating</p></li>
-<li><p>The reduce drives update</p></li>
-<li><p>Transient drive attenuation</p></li>
+<li><p><a class="reference internal" href="spr_utilization_transformations.html"><span class="doc std std-doc">The virtual point transformation</span></a></p></li>
 <li><p><a class="reference internal" href="spr_utilization_response_limit.html"><span class="doc std std-doc">Response limiting</span></a></p></li>
-</ul>
-</li>
+<li><p>Using the different transient error metrics and plotting tools</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -414,7 +406,7 @@ document.write(`
 </div>
 <section id="creating-the-example-beam-system">
 <span id="sec-example-beam-system"></span><h2>Creating the Example Beam System<a class="headerlink" href="#creating-the-example-beam-system" title="Link to this heading">#</a></h2>
-<p>All the examples use the simple beam system that is shown in the image below. Each dot in the image represents a node in the beam model. It is connected to the ground via translating and torsion springs (note that the torsion springs aren’t shown in the image). The red arrows (below the beam) are the excitation locations and directions. The blue arrows (above the beam) are the response locations and directions that are used in the force estimation.</p>
+<p>All the examples use a finite element model of the simple beam system that is shown in the image below. Each dot in the image represents a node in the beam model. It is connected to the ground via translating and torsion springs (note that the torsion springs aren’t shown in the image).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The nodes are labeled 101-109 from left to right. The translating direction on the beam (vertical on the page) is Z+ and the rotating direction is RY+.</p>
@@ -430,9 +422,13 @@ document.write(`
 <li><p>Material properties - aluminum</p></li>
 <li><p>Translating spring stiffness to ground - 1e9 N/m</p></li>
 <li><p>Torsion spring stiffness to ground - 1e2 Nm/radian</p></li>
-<li><p>Beam damping ratio - 4% modal damping, note that the modal damping is added to the beam prior to adding the springs to ground, meaning that the damping ratio for the system will be different than this damping ratio</p></li>
+<li><p>Beam damping ratio - 4% modal damping for the free-free beam</p></li>
 </ul>
 <p>The resulting stiffness matrices saved in a SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> object, which includes the mass, damping, and stiffness matrices.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>DOFs are defined in SDynPy as a <code class="docutils literal notranslate"><span class="pre">CoordinateArray</span></code> and will be referred to as “coordinates” in the code blocks. The numbers three and five correspond to the Z+ and RY+ directions.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">youngs_modulus</span> <span class="o">=</span> <span class="mf">69.8e9</span> <span class="c1"># pascals</span>
@@ -448,20 +444,26 @@ document.write(`
 <span class="n">beam_height</span> <span class="o">=</span> <span class="mf">0.015</span> <span class="c1"># meters</span>
 <span class="n">number_nodes</span> <span class="o">=</span> <span class="mi">9</span>
 
-<span class="n">beam_coordinate</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">number_nodes</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">+</span><span class="mi">101</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">beam_coordinate</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">number_nodes</span><span class="p">)</span><span class="o">+</span><span class="mi">101</span><span class="p">,</span> 
+                                        <span class="n">direction</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">force_broadcast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">beam_stiffness</span><span class="p">,</span> <span class="n">beam_mass</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">beam</span><span class="o">.</span><span class="n">beamkm_2d</span><span class="p">(</span><span class="n">beam_length</span><span class="p">,</span> <span class="n">beam_width</span><span class="p">,</span> <span class="n">beam_height</span><span class="p">,</span> 
-                                                <span class="n">number_nodes</span><span class="p">,</span> <span class="n">youngs_modulus</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> 
+<span class="n">beam_stiffness</span><span class="p">,</span> <span class="n">beam_mass</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">beam</span><span class="o">.</span><span class="n">beamkm_2d</span><span class="p">(</span><span class="n">beam_length</span><span class="p">,</span> <span class="n">beam_width</span><span class="p">,</span> 
+                                                <span class="n">beam_height</span><span class="p">,</span> <span class="n">number_nodes</span><span class="p">,</span> 
+                                                <span class="n">youngs_modulus</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> 
                                                 <span class="n">poissons_ratio</span><span class="p">,</span> <span class="n">axial</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">beam_system</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">System</span><span class="p">(</span><span class="n">beam_coordinate</span><span class="p">,</span> <span class="n">beam_mass</span><span class="p">,</span> <span class="n">beam_stiffness</span><span class="p">)</span>
 <span class="n">beam_system</span><span class="o">.</span><span class="n">assign_modal_damping</span><span class="p">(</span><span class="n">beam_damping_ratio</span><span class="p">)</span>
-    
-<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translating_spring</span> <span class="c1"># N/m, translating spring to ground on left side</span>
-<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">torsion_spring</span> <span class="c1"># Nm/rad, torsion spring to ground on left side </span>
 
-<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translating_spring</span> <span class="c1"># N/m, translating spring to ground on right side</span>
-<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">torsion_spring</span> <span class="c1"># Nm/rad, torsion spring to ground on right side </span>
+<span class="c1"># Translating spring to ground on left side</span>
+<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translating_spring</span> <span class="c1"># N/m</span>
+<span class="c1"># Torsion spring to ground on left side </span>
+<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">torsion_spring</span> <span class="c1"># Nm/rad </span>
+
+<span class="c1"># Translating spring to ground on right side</span>
+<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translating_spring</span> <span class="c1"># N/m</span>
+<span class="c1"># Torsion spring to ground on right side </span>
+<span class="n">beam_system</span><span class="o">.</span><span class="n">stiffness</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">torsion_spring</span> <span class="c1"># Nm/rad</span>
 </pre></div>
 </div>
 </div>
@@ -503,7 +505,7 @@ document.write(`
 </section>
 <section id="beam-system-geometry">
 <h2>Beam System Geometry<a class="headerlink" href="#beam-system-geometry" title="Link to this heading">#</a></h2>
-<p>The beam geometry is saved into a SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code>.</p>
+<p>The beam geometry is saved into a SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> and the acronym “FEM” is used to refer to the geometry object.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span>   <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> 
@@ -518,8 +520,9 @@ document.write(`
 
 <span class="n">system_cs</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">coordinate_system_array</span><span class="p">()</span>
 
-<span class="n">beam_nodes</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">node_array</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">beam_coordinate</span><span class="o">.</span><span class="n">node</span><span class="p">),</span> <span class="n">coordinate</span> <span class="o">=</span> <span class="n">beam_locations</span><span class="p">)</span>
-<span class="n">beam_fem</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Geometry</span><span class="p">(</span><span class="n">node</span> <span class="o">=</span> <span class="n">beam_nodes</span><span class="p">,</span> <span class="n">coordinate_system</span> <span class="o">=</span> <span class="n">system_cs</span><span class="p">)</span>
+<span class="n">beam_nodes</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">node_array</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">beam_coordinate</span><span class="o">.</span><span class="n">node</span><span class="p">),</span> 
+                                      <span class="n">coordinate</span><span class="o">=</span><span class="n">beam_locations</span><span class="p">)</span>
+<span class="n">beam_fem</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">Geometry</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">beam_nodes</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="n">system_cs</span><span class="p">)</span>
 
 <span class="n">beam_fem</span><span class="o">.</span><span class="n">add_traceline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">beam_coordinate</span><span class="o">.</span><span class="n">node</span><span class="p">))</span>
 </pre></div>
@@ -529,7 +532,11 @@ document.write(`
 </section>
 <section id="saving-the-sdynpy-objects">
 <h2>Saving the SDynPy Objects<a class="headerlink" href="#saving-the-sdynpy-objects" title="Link to this heading">#</a></h2>
-<p>The SDynPy System and Geometry objects are saved into the documentation folder of the package, so they can be used in several examples.</p>
+<p>The SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> and <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> objects are saved into the documentation folder of the package, so they can be used in several examples.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The documentation and example content is not installed with a standard pip installation. This content must be acquired from the <a class="reference external" href="https://github.com/sandialabs/forcefinder">ForceFinder Github</a> page.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_system</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;./example_system/example_system.npz&#39;</span><span class="p">)</span>

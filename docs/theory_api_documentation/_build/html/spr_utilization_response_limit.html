@@ -61,8 +61,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'spr_utilization_response_limit';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Source Estimation with the Virtual Point Transformation" href="spr_utilization_transformations.html" />
-    <link rel="prev" title="Basic Use of the SourcePathReceiver Object" href="basic_spr_utilization.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="prev" title="Source Estimation with the Virtual Point Transformation" href="spr_utilization_transformations.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -193,8 +193,8 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">MIMO Drive Prediction with Response Limiting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">MIMO Drive Prediction with Response Limiting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -443,7 +443,7 @@ document.write(`
 </section>
 <section id="specification">
 <h2>Specification<a class="headerlink" href="#specification" title="Link to this heading">#</a></h2>
-<p>The specification for this example is based off the unknonwn orientation “common carrier (US highway truck vibration exposure)” single DOF vibration specification that is defined in method 514.8, annex C of MIL-STD 810H. This example problem is treating the beam as a shaker table, meaning that the goal is to control the beam as a rigid body. This is specified by applying same single axis specification PSD to each control DOF. The cross-terms for the specification CPSD is defined by a coherence 0.9 between each DOF and zero phase between each DOF.</p>
+<p>The specification for this example is based off the unknonwn orientation “common carrier (US highway truck vibration exposure)” single DOF vibration specification that is defined in method 514.8, annex C of MIL-STD 810H. This example problem is treating the beam as a shaker table, where the goal is to control the beam as a rigid body. The rigid behavior is specified by applying same single axis specification PSD to each control DOF. The cross-terms for the specification CPSD is defined by a coherence 0.9 between each DOF and zero phase between each DOF.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The approach of applying a single axis vibration specification equally to all the control DOFs is for demonstration purposes only and should not be treated as an endorsement of the method. It is up to the practitioner to determine an optimal approach for developing a MIMO vibration specification.</p>
@@ -521,7 +521,7 @@ document.write(`
 <p>This section creates the basic SPR object and estimates the drives with the basic pseudo-inverse method without enforcing the response limits. The control accuracy is evaluated using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method, which shows that the PSDs are controlled with line-on-line accuracy. Although it is not shown here, the phase and coherence is controlled with similar accuracy.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>While the specification and control is enforcing rigid behavior between the control DOFs, it is important to recognize that the problem set-up is not forcing the whole beam to behave as a rigid body. Further inspection of the predicted response of the beam would show how the nodes between the control DOFs have elastic motion. This detailed inspection is not the point of this example and will not be explored here.</p>
+<p>While the specification and control is enforcing rigid behavior between the control DOFs, it is important to recognize that the problem set-up is not forcing the whole beam to behave as a rigid body. Further inspection of the predicted response of the beam would show how the nodes between the control DOFs have elastic motion. This detailed inspection is not the point of this example and will not be explored.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -546,7 +546,7 @@ document.write(`
 <img alt="_images/8bfc10c5e33a20065d9274acea3918fa22f96e112b15ecc162cc8335dfea76bd.png" src="_images/8bfc10c5e33a20065d9274acea3918fa22f96e112b15ecc162cc8335dfea76bd.png" />
 </div>
 </div>
-<p>The predicted responses (from the estimated drives) are compared to the response limits, showing that there are several frequencies where the limits are exceeded.</p>
+<p>The predicted responses (from the estimated drives without the limits enforced) are also compared to the response limits, showing that there are several frequencies where the limits are exceeded.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The predicted responses are compared to the limits on log-log plots since that is how limits are commonly specified in vibration testing.</p>
@@ -682,20 +682,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="basic_spr_utilization.html"
+       href="spr_utilization_transformations.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Basic Use of the SourcePathReceiver Object</p>
+        <p class="prev-next-title">Source Estimation with the Virtual Point Transformation</p>
       </div>
     </a>
     <a class="right-next"
-       href="spr_utilization_transformations.html"
+       href="autoapi/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Source Estimation with the Virtual Point Transformation</p>
+        <p class="prev-next-title">API Reference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

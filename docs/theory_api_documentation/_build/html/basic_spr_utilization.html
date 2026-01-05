@@ -61,7 +61,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'basic_spr_utilization';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MIMO Drive Prediction with Response Limiting" href="spr_utilization_response_limit.html" />
+    <link rel="next" title="Source Estimation with the Virtual Point Transformation" href="spr_utilization_transformations.html" />
     <link rel="prev" title="Example Utilization" href="example_utilization_intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -193,8 +193,8 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Basic Use of the SourcePathReceiver Object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -406,9 +406,9 @@ document.write(`
 <li><p>Estimate sources with the SPR object</p></li>
 <li><p>Evaluate the accuracy of the reconstructed responses, compared to the target responses</p></li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This example demonstrates the basic use of ForceFinder with the PowerSourcePathReceiver object type. However, all the SPR object types have a common look and feel. As a result, all the SPR object types use the same commands for object initialization and source estimation. The main differences in the API between the SPR object types are the pre-implemented error metrics.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This example demonstrates the basic use of ForceFinder with the PowerSourcePathReceiver object type. However, all the SPR object types have a common look and feel. As a result, all the SPR object types use the same commands for object initialization and source estimation. The main differences in the API for the different SPR object types are the pre-implemented error metrics.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -471,7 +471,7 @@ document.write(`
 <span class="n">filtered_signal</span> <span class="o">=</span> <span class="n">sosfiltfilt</span><span class="p">(</span><span class="n">sos_filter</span><span class="p">,</span> <span class="n">raw_signal</span><span class="p">)</span><span class="o">*</span><span class="n">tukey</span><span class="p">(</span><span class="n">number_samples</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
 
 <span class="n">sdynpy_signal</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">time_history_array</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">filtered_signal</span><span class="p">,</span> 
-                                        <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="p">[</span><span class="mi">103</span><span class="p">,</span><span class="mi">108</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+                    <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="p">[</span><span class="mi">103</span><span class="p">,</span><span class="mi">108</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -487,7 +487,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/db84a800b64644dd175cd2ff3d7292988ce9b5e9b7092543facb6812f295d87d.png" src="_images/db84a800b64644dd175cd2ff3d7292988ce9b5e9b7092543facb6812f295d87d.png" />
+<img alt="_images/df3bd56db2c3b26e15cdf39fea6263ad72f12f4e3aa57bf708f03fbd8fff1bf7.png" src="_images/df3bd56db2c3b26e15cdf39fea6263ad72f12f4e3aa57bf708f03fbd8fff1bf7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -501,7 +501,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ca6357ed383fceacd2abb89429b6a7f965092a35711ec4a5a3e0476d2ef7c889.png" src="_images/ca6357ed383fceacd2abb89429b6a7f965092a35711ec4a5a3e0476d2ef7c889.png" />
+<img alt="_images/0d6b37a7001975b47fdef843705b501a7bb68381e853036982389b9d3299bde3.png" src="_images/0d6b37a7001975b47fdef843705b501a7bb68381e853036982389b9d3299bde3.png" />
 </div>
 </div>
 </section>
@@ -514,7 +514,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_response</span><span class="p">,</span> <span class="n">forces</span> <span class="o">=</span> <span class="n">beam_system</span><span class="o">.</span><span class="n">time_integrate</span><span class="p">(</span><span class="n">sdynpy_signal</span><span class="p">,</span> <span class="n">integration_oversample</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_response</span><span class="p">,</span> <span class="n">forces</span> <span class="o">=</span> <span class="n">beam_system</span><span class="o">.</span><span class="n">time_integrate</span><span class="p">(</span><span class="n">sdynpy_signal</span><span class="p">,</span> 
+                                                   <span class="n">integration_oversample</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
                                                    <span class="n">displacement_derivative</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> 
 
 <span class="n">noise_multiplier</span> <span class="o">=</span> <span class="n">time_response</span><span class="o">.</span><span class="n">rms</span><span class="p">()[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="o">/</span><span class="mi">20</span><span class="p">))</span>
@@ -534,11 +535,13 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpsd_force</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span><span class="o">.</span><span class="n">cpsd</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                                                            <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpsd_settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;samples_per_frame&#39;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span>
+                 <span class="s1">&#39;overlap&#39;</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span>
+                 <span class="s1">&#39;window&#39;</span><span class="p">:</span><span class="s1">&#39;hann&#39;</span><span class="p">}</span>
 
-<span class="n">cpsd_response</span> <span class="o">=</span> <span class="n">time_response</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span><span class="o">.</span><span class="n">cpsd</span><span class="p">(</span><span class="n">samples_per_frame</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                                                                      <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="s1">&#39;hann&#39;</span><span class="p">)</span>
+<span class="n">cpsd_force</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span><span class="o">.</span><span class="n">cpsd</span><span class="p">(</span><span class="o">**</span><span class="n">cpsd_settings</span><span class="p">)</span>
+
+<span class="n">cpsd_response</span> <span class="o">=</span> <span class="n">time_response</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span><span class="o">.</span><span class="n">cpsd</span><span class="p">(</span><span class="o">**</span><span class="n">cpsd_settings</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -563,7 +566,7 @@ document.write(`
 <p>The example SPR object is created using the standard initialization function. The training response DOFs are explicitly defined, since CPSD responses were computed fo all the DOFs in the beam.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The training response DOFs were selected to demonstrate the sample splitting capabilities of ForceFinder and are not necessarily representative of good response DOFs for a source estimation problem.</p>
+<p>The training response DOFs were selected to demonstrate the sample splitting capabilities of ForceFinder and do not necessarily represent a good set of response DOFs for a source estimation problem.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -574,7 +577,7 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_response_dofs</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="p">[</span><span class="mi">102</span><span class="p">,</span><span class="mi">104</span><span class="p">,</span><span class="mi">106</span><span class="p">,</span><span class="mi">108</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="n">example_spr</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">PowerSourcePathReceiver</span><span class="p">(</span><span class="n">frfs</span><span class="o">=</span><span class="n">frfs</span><span class="p">,</span> <span class="n">target_response</span><span class="o">=</span><span class="n">cpsd_response</span><span class="p">,</span>
-                                         <span class="n">training_response_coordinate</span><span class="o">=</span><span class="n">training_response_dofs</span><span class="p">)</span>
+                                <span class="n">training_response_coordinate</span><span class="o">=</span><span class="n">training_response_dofs</span><span class="p">)</span>
 
 <span class="n">example_spr</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="n">min_abscissa</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -588,7 +591,7 @@ document.write(`
 </div>
 <section id="sample-splitting">
 <h3>Sample Splitting<a class="headerlink" href="#sample-splitting" title="Link to this heading">#</a></h3>
-<p>Since the training response coordinate was explicitly defined, the target response DOFs were split into a validation and training DOF set.</p>
+<p>Since the training response coordinate was explicitly defined, the target response DOFs were split into a validation and training DOF set, as described <a class="reference internal" href="automatic_bookkeeping.html#sec-sample-splitting"><span class="std std-ref">here</span></a>. The sample splitting can be confirmed by reviewing the different DOF sets in the SPR object.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The target response DOFs are: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">example_spr</span><span class="o">.</span><span class="n">target_response_coordinate</span><span class="o">.</span><span class="n">string_array</span><span class="p">()))</span>
@@ -631,10 +634,20 @@ document.write(`
 </section>
 <section id="evaluating-the-frfs">
 <h3>Evaluating the FRFs<a class="headerlink" href="#evaluating-the-frfs" title="Link to this heading">#</a></h3>
-<p>Most of the SPR object attributes are SDynPy objects, which means that SDynPy plotting functions can be used to evaluate and analyze the data. As such, it is simple to evaluate the conditioning of the training FRF matrix.</p>
+<p>Most of the SPR object attributes are SDynPy objects, which means that SDynPy plotting functions can be used to evaluate and analyze the data. As such, it is simple to evaluate the conditioning of the training FRF matrix. There are three distinct segments of the code for reviewing the FRF condition, a sample breakdown of these segments for the <code class="docutils literal notranslate"><span class="pre">example_spr.training_frfs.plot_cond_num()</span></code> code is:</p>
+<ol class="arabic simple">
+<li><p><strong><u>example_spr</u>.training_frfs.plot_cond_num()</strong> - <code class="docutils literal notranslate"><span class="pre">example_spr</span></code> indicates that we are looking at the data in the example SPR object.</p></li>
+<li><p><strong>example_spr.<u>training_frfs</u>.plot_cond_num()</strong> - <code class="docutils literal notranslate"><span class="pre">training_frfs</span></code> is the <a class="reference internal" href="object_attribute_definitions.html"><span class="doc std std-doc">attribute</span></a> that returns the training FRFs as a SDynPy <code class="docutils literal notranslate"><span class="pre">TransferFunctionArray</span></code>.</p></li>
+<li><p><strong>example_spr.training_frfs.<u>plot_cond_num()</u></strong> - <code class="docutils literal notranslate"><span class="pre">plot_cond_num</span></code> is a method for the SDynPy <code class="docutils literal notranslate"><span class="pre">TransferFunctionArray</span></code>, which plots the (frequency dependent) condition number of the given FRFs.</p></li>
+</ol>
+<p>This method chaining strategy is valid for any of the SPR object attributes, assuming that the method exists for the SDynPy object that is returned by the ForceFinder attribute.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In general, the SPR object attributes should be treated as read-only variables once it is created. Technically, some attributes can be overwritten or modified, but this is considered bad practice. Further, some operations, which may seem logical for a SDynPy user will not work in ForceFinder. For example, the <code class="docutils literal notranslate"><span class="pre">spr_object.frfs.ordinate</span> <span class="pre">=</span> <span class="pre">data</span></code> command will not write or modify any data into the SPR object.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">example_spr</span><span class="o">.</span><span class="n">training_frfs</span><span class="o">.</span><span class="n">extract_elements_by_abscissa</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">plot_cond_num</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">example_spr</span><span class="o">.</span><span class="n">training_frfs</span><span class="o">.</span><span class="n">plot_cond_num</span><span class="p">();</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">500</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -659,7 +672,7 @@ document.write(`
 </section>
 <section id="estimating-the-sources-and-evaluating-the-reconstructed-response-error">
 <h2>Estimating the Sources and Evaluating the Reconstructed Response Error<a class="headerlink" href="#estimating-the-sources-and-evaluating-the-reconstructed-response-error" title="Link to this heading">#</a></h2>
-<p>This section shows how to estimate the sources with a SPR object and evaluate the errors in the reconstructed response (sometimes referred to as on-board validation). In this case, the sources are estimated using the standard pseudo-inverse method. The errors in the reconstructed response are evaluated with the <a class="reference internal" href="error_metrics.html#sec-rms-asd-error"><span class="std std-ref">RMS ASD error</span></a> metric for the training DOF set and validation DOF set. As expected, the error is higher for the validation DOFs compared to the training DOFs.</p>
+<p>This section shows how to estimate the sources with a SPR object and evaluate the errors in the reconstructed response (sometimes referred to as on-board validation). In this case, the sources are estimated using the standard pseudo-inverse method, which is called with the <code class="docutils literal notranslate"><span class="pre">manual_inverse</span></code> method and setting the <code class="docutils literal notranslate"><span class="pre">method</span></code> kwarg to <code class="docutils literal notranslate"><span class="pre">standard</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_spr</span><span class="o">.</span><span class="n">manual_inverse</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;standard&#39;</span><span class="p">)</span>
@@ -672,6 +685,7 @@ document.write(`
 </div>
 </div>
 </div>
+<p>The errors in the reconstructed response are evaluated with the <a class="reference internal" href="error_metrics.html#sec-rms-asd-error"><span class="std std-ref">RMS ASD error</span></a> metric for the training DOF set and validation DOF set by toggling the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg in the error method. As expected, the error is higher for the validation DOFs compared to the training DOFs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">example_spr</span><span class="o">.</span><span class="n">rms_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;linewidth&#39;</span><span class="p">:</span><span class="mi">5</span><span class="p">})</span>
@@ -684,7 +698,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aa77f46b8afc06e14bab2690f57f591f2d766ab00fe21e451c5c3dc325e1814f.png" src="_images/aa77f46b8afc06e14bab2690f57f591f2d766ab00fe21e451c5c3dc325e1814f.png" />
+<img alt="_images/7c419833656f392a6bf5960fb5597402d5d45e4549cb966298d204cd4cf5ff39.png" src="_images/7c419833656f392a6bf5960fb5597402d5d45e4549cb966298d204cd4cf5ff39.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -699,10 +713,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fa56af7ad643e19c1bc7f53b9399591d2afede23dcfdfeca130251558d33e260.png" src="_images/fa56af7ad643e19c1bc7f53b9399591d2afede23dcfdfeca130251558d33e260.png" />
+<img alt="_images/4ed71b26276d73d2573b374aef8a2a0ab9688203f08db3f58446e878f6c041ea.png" src="_images/4ed71b26276d73d2573b374aef8a2a0ab9688203f08db3f58446e878f6c041ea.png" />
 </div>
 </div>
-<p>The reconstructed response errors can also be evaluated on a DOF-DOF basis using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method where the target response is the black curve and the reconstructed responses are in blue. This plot shows the DOF-DOF comparison plots in the upper section, the lower left plot compares the PSD sums and the lower right plot is the RMS ASD error. Like the other error metrics, the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> can be shown for the different DOF sets, as described <a class="reference internal" href="error_metrics.html"><span class="doc std std-doc">here</span></a>.</p>
+<p>The reconstructed response errors can also be evaluated on a DOF-DOF basis using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method where the target response is the black curve and the reconstructed responses are in blue. This plot shows the DOF-DOF comparison plots in the upper section, the lower left plot compares the PSD sums and the lower right plot is the RMS ASD error. Like the other error metrics, the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> can be shown for the different DOF sets using the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_spr</span><span class="o">.</span><span class="n">error_summary</span><span class="p">(</span><span class="n">figure_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">)},</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -710,12 +724,33 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ca58087ad1fb1f41505baa1ec38d0f5261e20434f9a2286ca526af38a48ee1a3.png" src="_images/ca58087ad1fb1f41505baa1ec38d0f5261e20434f9a2286ca526af38a48ee1a3.png" />
+<img alt="_images/f61aaa2c6d975556a9f8ed340427234700d279f408fae46508e16fadbf908cf0.png" src="_images/f61aaa2c6d975556a9f8ed340427234700d279f408fae46508e16fadbf908cf0.png" />
 </div>
 </div>
+<p>Lastly, it may be useful to compare the PSDs DOF-DOF, one at a time, which is easily accomplished with the <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool in SDynPy. The code block below uses the <code class="docutils literal notranslate"><span class="pre">get_asd</span></code> method for SDynPy <code class="docutils literal notranslate"><span class="pre">PowerSpectralDensityArrays</span></code> to only plot the PSDs, but this is not necessary.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool will not directly plot in Jupyter Notebooks. The magic command <code class="docutils literal notranslate"><span class="pre">%matplotlib</span> <span class="pre">qt</span></code> must be used to open the <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool separate in a separate window. Refer to IDE help documents to set the appropriate plotting backend.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sdpy</span><span class="o">.</span><span class="n">GUIPlot</span><span class="p">(</span><span class="n">truth</span><span class="o">=</span><span class="n">example_spr</span><span class="o">.</span><span class="n">target_response</span><span class="o">.</span><span class="n">get_asd</span><span class="p">(),</span>
+             <span class="n">reconstructed</span><span class="o">=</span><span class="n">example_spr</span><span class="o">.</span><span class="n">reconstructed_target_response</span><span class="o">.</span><span class="n">get_asd</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sdynpy.core.sdynpy_data.GUIPlot at 0x16e7fdfc0&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<figure class="align-center">
+<img alt="Example GUI Plot Window" src="_images/example_gui_plot.png" />
+</figure>
 <section id="comparing-the-estimated-sources-to-the-truth-sources">
 <h3>Comparing the Estimated Sources to the Truth Sources<a class="headerlink" href="#comparing-the-estimated-sources-to-the-truth-sources" title="Link to this heading">#</a></h3>
-<p>This section compares the PSDs for the estimated and truth sources, where the truth sources are the <code class="docutils literal notranslate"><span class="pre">force</span></code> attribute of the SPR object. The below plot shows that the estimated sources are very accurate, except for an overestimation at high frequencies (where the truth sources are near zero) and an overestimation of the 103Z+ force at ~150 Hz.</p>
+<p>This section compares the PSDs for the estimated and truth sources, where the estimated sources are the <code class="docutils literal notranslate"><span class="pre">force</span></code> attribute of the SPR object. The plot below shows that the estimated sources are very accurate, except for an overestimation at high frequencies (where the truth sources are near zero) and an overestimation of the 103Z+ force at ~150 Hz.</p>
 <p>Both of these issues were indicated in the on-board validation. However, it is interesting to note that the reconstructed responses are lower than the training responses in the problematic frequency bands. The under predicted responses would imply that the sources were also under predicted, which is the opposite of what actually happened.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -749,7 +784,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/48305a7617c95c6a557b38e361a6235ace284ceb294e7ebe58422079e7b4687b.png" src="_images/48305a7617c95c6a557b38e361a6235ace284ceb294e7ebe58422079e7b4687b.png" />
+<img alt="_images/447b6ce85a288b88a365595061739062ceb48f3d6f25b02ac3b79e6a9bb2913f.png" src="_images/447b6ce85a288b88a365595061739062ceb48f3d6f25b02ac3b79e6a9bb2913f.png" />
 </div>
 </div>
 </section>
@@ -796,11 +831,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="spr_utilization_response_limit.html"
+       href="spr_utilization_transformations.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">MIMO Drive Prediction with Response Limiting</p>
+        <p class="prev-next-title">Source Estimation with the Virtual Point Transformation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

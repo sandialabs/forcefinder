@@ -61,8 +61,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'spr_utilization_transformations';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="autoapi/index.html" />
-    <link rel="prev" title="MIMO Drive Prediction with Response Limiting" href="spr_utilization_response_limit.html" />
+    <link rel="next" title="MIMO Drive Prediction with Response Limiting" href="spr_utilization_response_limit.html" />
+    <link rel="prev" title="Basic Use of the SourcePathReceiver Object" href="basic_spr_utilization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -193,8 +193,8 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -399,8 +399,8 @@ document.write(`
 <ol class="arabic simple">
 <li><p>The SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> object for the beam is imported</p></li>
 <li><p>FRFs are computed for the beam system using the <code class="docutils literal notranslate"><span class="pre">frequency_response</span></code> method for the beams <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
-<li><p>A CPSD specification is made from a single DOF vibration specification from MIL-STD 810H</p></li>
-<li><p>The response and reference transformations will be manually created to demonstrate the full process</p></li>
+<li><p>A CPSD specification is made from a single DOF vibration test specification from MIL-STD 810H</p></li>
+<li><p>The response and reference transformations will be manually created from the rigid body modes of the beam</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -438,7 +438,7 @@ document.write(`
 </section>
 <section id="specification">
 <h2>Specification<a class="headerlink" href="#specification" title="Link to this heading">#</a></h2>
-<p>The specification for this example is based off the unknonwn orientation “common carrier (US highway truck vibration exposure)” single DOF vibration specification that is defined in method 514.8, annex C of MIL-STD 810H. This example problem is treating the beam as a shaker table, meaning that the goal is to control the beam as a rigid body. This is specified by applying same single axis specification PSD to each control DOF and using kinematic transformations to enforce the rigid behavior. The cross-terms for the specification CPSD is defined by a coherence 0.9 between each DOF and zero phase between each DOF.</p>
+<p>The specification for this example is based off the unknonwn orientation “common carrier (US highway truck vibration exposure)” single DOF vibration test specification that is defined in MIL-STD 810H, method 514.8, annex C. This example problem is treating the beam as a shaker table, where the goal is to vibrate the beam as a rigid body. This is specified by applying same single axis specification PSD to each control DOF and using kinematic transformations to enforce the rigid behavior. The cross-terms for the specification CPSD is defined by a coherence 0.9 between each DOF and zero phase between each DOF.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The approach of applying a single axis vibration specification equally to all the control DOFs is for demonstration purposes only and should not be treated as an endorsement of the method.</p>
@@ -456,7 +456,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The coherence and phase for the specification are manually defined. Note that several extra steps are used in this code block to shape the arrays for the necessary operations.</p>
+<p>The coherence and phase for the specification are manually defined, as described above. Note that several extra steps are used in this code block to shape the arrays for the necessary operations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">specification_psd</span> <span class="o">=</span> <span class="n">narrowband_specification</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span><span class="o">*</span><span class="n">frf_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
@@ -490,11 +490,11 @@ document.write(`
 </section>
 <section id="creating-the-transformation-arrays">
 <h2>Creating the Transformation Arrays<a class="headerlink" href="#creating-the-transformation-arrays" title="Link to this heading">#</a></h2>
-<p>This section creates the reference and response transformations that will be used in the source estimation, where the physical sources will be transformed into a two DOF virtual point with Z+ and RY+ directions. This virtual point is shown as the red highlighted node with the arrows (representing the translating and rotation DOFs) in the image below.</p>
+<p>This section creates the reference and response transformations that will be used in the source estimation, where the physical sources and specification will be transformed into a two DOF virtual point with Z+ and RY+ directions. This virtual point is shown as the red highlighted node with the arrows (representing the translating and rotation DOFs) in the image below.</p>
 <figure class="align-center">
 <img alt="Example Beam System with Virtual Point" src="_images/beam_system_virtual_point.svg" />
 </figure>
-<p>The transformations are developed from the rigid body modes of the beam system using the geometry from the beam. The rigid body shapes are created <code class="docutils literal notranslate"><span class="pre">rigid_body_shapes</span></code> method for the SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> object and set to have a center of gravity at the virtual point node. These shapes are then indexed to extract the Z+ and RY+ mode shape.</p>
+<p>The transformations are developed from the rigid body modes of the beam system using the geometry from the beam. The rigid body shapes are created <code class="docutils literal notranslate"><span class="pre">rigid_body_shapes</span></code> method for the SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> object and are set-up to have a center of gravity at the virtual point node. These shapes are then indexed to extract the Z+ and RY+ mode shape (since the <code class="docutils literal notranslate"><span class="pre">rigid_body_shapes</span></code> method returns shapes for all six directions).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_fem</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;./example_system/example_geometry.npz&#39;</span><span class="p">)</span>
@@ -510,9 +510,9 @@ document.write(`
 <img alt="Translating Shape for Animation" src="_images/rigid_body_transformation_shape_1.gif" />
 </figure>
 <figure class="align-center">
-<img alt="Translating Shape for Animation" src="_images/rigid_body_transformation_shape_2.gif" />
+<img alt="Rotating Shape for Animation" src="_images/rigid_body_transformation_shape_2.gif" />
 </figure>
-<p>The reference transformation (for the excitation) directly uses the rigid body shape matrix, which will be put into a SDynPy <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object. This object takes the rigid body shape matrix as the numeric data and then SDynPy <code class="docutils literal notranslate"><span class="pre">CoordinateArrays</span></code> to label the row and column DOFs, which correspond to the virtual point and physical DOFs respectively. The virtual point DOFs will use 1001 as the node number.</p>
+<p>The reference transformation (for the sources) directly uses the rigid body shape matrix, which must be put into a SDynPy <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object to be compatible with the ForceFinder methods. This <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object is created with the rigid body shape matrix as the numeric data and SDynPy <code class="docutils literal notranslate"><span class="pre">CoordinateArrays</span></code> to label the row and column DOFs, which correspond to the virtual point and physical DOFs respectively. The virtual point DOFs will use 1001 as the node number.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">virtual_point_dofs</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="mi">1001</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
@@ -524,7 +524,11 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The response transformation is a modal filter on the transformations, which is the inverse of the transpose of the rigid body shape matrix.</p>
+<p>The response transformation is a modal filter on the responses, which is created by inverting of the transpose of the rigid body shape matrix (since the SDynPy shape matrix puts the different shapes on different rows instead of columns). The modal filter is then put into a SDynPy <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object for compatibility with the ForceFinder methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The row and column <code class="docutils literal notranslate"><span class="pre">CoordinateArrays</span></code> are the same for the reference and response transformations in this example because the excitation and control DOFs are on the same nodes. This DOF layout is not always the case and is not a requirement in ForceFinder.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rigid_body_modal_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">rigid_body_shapes</span><span class="o">.</span><span class="n">shape_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
@@ -536,16 +540,20 @@ document.write(`
 </div>
 </div>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This example showed how to make the transformations manually. However, it may be useful to use the <code class="docutils literal notranslate"><span class="pre">force_kinematic_transformation</span></code> and <code class="docutils literal notranslate"><span class="pre">response_kinematic_transformation</span></code> methods in SDynPy to automatically create the transformation <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> objects from a SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> object.</p>
+</div>
 </section>
 <section id="computing-sources-with-and-without-transformations">
 <h2>Computing Sources with and without Transformations<a class="headerlink" href="#computing-sources-with-and-without-transformations" title="Link to this heading">#</a></h2>
-<p>This section creates the basic SPR object and estimates the drives with the basic pseudo-inverse method with and without the transformations. Note that the the same SPR object can be used to estimate the sources with and without the transformations by toggling the <code class="docutils literal notranslate"><span class="pre">use_transformation</span></code> kwarg to either <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>. This is shown below by making a copy of the SPR object (using the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method) and estimating with and without the transformations.</p>
+<p>This section creates the basic SPR object and estimates the drives with the basic pseudo-inverse method with and without the transformations. The the same SPR object can be used to estimate the sources with and without the transformations by toggling the <code class="docutils literal notranslate"><span class="pre">use_transformation</span></code> kwarg to either <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> (the default is <code class="docutils literal notranslate"><span class="pre">True</span></code>). This is shown below by making a copy of the SPR object with the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method and estimating the sources with and without the transformations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformation_spr</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">PowerSourcePathReceiver</span><span class="p">(</span><span class="n">frfs</span><span class="o">=</span><span class="n">frfs</span><span class="p">,</span> 
-                                                   <span class="n">target_response</span><span class="o">=</span><span class="n">specification</span><span class="p">,</span>
-                                                   <span class="n">response_transformation</span><span class="o">=</span><span class="n">response_transformation</span><span class="p">,</span>
-                                                   <span class="n">reference_transformation</span><span class="o">=</span><span class="n">reference_transformation</span><span class="p">)</span>
+                                        <span class="n">target_response</span><span class="o">=</span><span class="n">specification</span><span class="p">,</span>
+                                        <span class="n">response_transformation</span><span class="o">=</span><span class="n">response_transformation</span><span class="p">,</span>
+                                        <span class="n">reference_transformation</span><span class="o">=</span><span class="n">reference_transformation</span><span class="p">)</span>
 <span class="n">transformation_spr</span><span class="o">.</span><span class="n">manual_inverse</span><span class="p">(</span><span class="n">use_transformation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -569,7 +577,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>As expected, the sources that were estimated with the transformations have much lower amplitudes than the sources that were estimated without the transformations.</p>
+<p>As expected, the sources that were estimated with the transformations have lower amplitudes than the sources that were estimated without the transformations. This plot compares the physical sources, but the transformed sources could have easily been compared by using the corresponding “transformed” attributes. Refer to the <a class="reference internal" href="object_attribute_definitions.html"><span class="doc std std-doc">attribute definitions</span></a> for a full list of the SPR object attributes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -590,7 +598,7 @@ document.write(`
 <img alt="_images/34907ba956b5efadfb9637f8170c7a0e4de9a8d01cbaccafe19522a3d5613032.png" src="_images/34907ba956b5efadfb9637f8170c7a0e4de9a8d01cbaccafe19522a3d5613032.png" />
 </div>
 </div>
-<p>Interestingly, both sets of estimated sources (with and without the transformations) reconstruct the same training response with the response transformation applied. This similarity is shown through a passing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">transformed_reconstructed_response</span></code> attribute of the different SPR objects.</p>
+<p>Interestingly, both sets of estimated sources (with and without the transformations) reconstruct the same transformed training response. This similarity is shown through a passing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">transformed_reconstructed_response</span></code> attribute of the different SPR objects.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">transformation_spr</span><span class="o">.</span><span class="n">transformed_reconstructed_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">,</span> 
@@ -604,7 +612,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>However, the different sets of estimated sources reconstruct different target responses, which are the training responses without the response transformation applied. This difference is shown through a failing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">reconstructed_target_response</span></code>.</p>
+<p>However, this similarity is not true for the reconstructed target responses, which are the training responses without the response transformation applied. This difference is shown through a failing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">reconstructed_target_response</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">transformation_spr</span><span class="o">.</span><span class="n">reconstructed_target_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">,</span> 
@@ -616,6 +624,39 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
 </pre></div>
 </div>
+</div>
+</div>
+<p>It is also important to check that the estimated sources (with the transformations) reconstruct the expected response at both the virtual point and physical DOFs. This can be easily checked through one of the error metrics in ForceFinder. In this case, the <a class="reference internal" href="error_metrics.html#sec-global-asd-error"><span class="std std-ref">global ASD error</span></a> metric was used to evaluate the control accuracy. It is easy to compute this error metric for both the virtual point and physical DOFs by changing the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg for the error metric to <code class="docutils literal notranslate"><span class="pre">training</span></code> (which computes the error for the virtual point) and <code class="docutils literal notranslate"><span class="pre">target</span></code> (which computes the error for the physical DOFs).</p>
+<p>This metric shows that there are significant errors in the responses at the physical DOFs even though the virtual point DOFs show zero error. The reason for this difference in error is because the transformation assumes that the beam behaves as a rigid system, which is obviously not the case. As such, the source estimation with the transformation is not able to move the excitation and response DOFs independently to eliminate the elastic behavior and achieve the goal of the specification.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Transformations can lead non-intuitive results if the source estimation problem is not closely inspected or if the transformations are used in an inappropriate fashion. This example was developed to show these non-intuitive results, which is why there are such significant errors.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformed_global_asd_error</span> <span class="o">=</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">global_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">physical_global_asd_error</span> <span class="o">=</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">global_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;target&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">transformed_global_asd_error</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">transformed_global_asd_error</span><span class="o">.</span><span class="n">ordinate</span><span class="p">),</span> 
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Virtual Point DOFs&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">physical_global_asd_error</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">physical_global_asd_error</span><span class="o">.</span><span class="n">ordinate</span><span class="p">),</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Physical DOFs&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Global ASD Error (dB)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3dd73b118145400560dfceb1909661a65e4f31e05554a26d57ce7554683a40da.png" src="_images/3dd73b118145400560dfceb1909661a65e4f31e05554a26d57ce7554683a40da.png" />
 </div>
 </div>
 </section>
@@ -652,20 +693,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="spr_utilization_response_limit.html"
+       href="basic_spr_utilization.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">MIMO Drive Prediction with Response Limiting</p>
+        <p class="prev-next-title">Basic Use of the SourcePathReceiver Object</p>
       </div>
     </a>
     <a class="right-next"
-       href="autoapi/index.html"
+       href="spr_utilization_response_limit.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Reference</p>
+        <p class="prev-next-title">MIMO Drive Prediction with Response Limiting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
