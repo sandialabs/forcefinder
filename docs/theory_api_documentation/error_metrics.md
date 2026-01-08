@@ -142,6 +142,7 @@ Decibel values are averaged on the corresponding linear values, which is why the
 Many ISE problems are computed as least squares problems, which tend to result in an similar quantities of positive and negative errors. Consequently, the average RMS error may show less error than a subjective perception of the DOF by DOF error. However, it can be useful for quickly identifying large bias errors. 
 ```
 
+(sec:time_varying_trac)=
 ### Time Varying TRAC
 As the name implies, this metric computes a TRAC error time trace (based on the segmentation) for all the response DOFs and is computed with the `time_varying_trac` method. The TRAC error is computed for each DOF (at each segment) with:  
 
@@ -155,6 +156,7 @@ Where $n$ represents the response DOF index and the response vectors, $\begin{Bm
 The `time_varying_trac` method returns a SDynPy `TimeHistoryArray` with the time varying TRAC for each DOF and does not attempt to summarize the TRACs for the different DOFs into a single curve.
 ```
 
+(sec:time_varying_level_error)=
 ### Time Varying Level Error
 The time varying level error, which is computed with the `time_varying_level_error` method, computes the response level error in dB for all the DOFs rather than computing a single summary curve (like the `global_rms_error`, etc.). Currently, two types of levels are supported: the segment RMS level error and the segment maximum level error. 
 
