@@ -15,6 +15,11 @@ chapters:
   - file: transformation_theory
   - file: miscellaneous_techniques
   - file: error_metrics
-- file: example_utilization
+- file: example_utilization_intro
+  sections:
+  - file: basic_spr_utilization
+  - file: spr_utilization_transformations
+  - file: spr_utilization_response_limit
+  - file: spr_utilization_transient_metrics
 - file: autoapi/index
   title: API Reference

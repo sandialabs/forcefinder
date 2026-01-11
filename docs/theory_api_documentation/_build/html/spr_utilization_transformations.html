@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Source Estimation with the Virtual Point Transformation &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'spr_utilization_transformations';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MIMO Drive Prediction with Response Limiting" href="spr_utilization_response_limit.html" />
+    <link rel="prev" title="Basic Use of the SourcePathReceiver Object" href="basic_spr_utilization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transient_metrics.html">Using Transient Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/spr_utilization_transformations.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Source Estimation with the Virtual Point Transformation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-frfs">Computing the FRFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specification">Specification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-transformation-arrays">Creating the Transformation Arrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-sources-with-and-without-transformations">Computing Sources with and without Transformations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="source-estimation-with-the-virtual-point-transformation">
+<h1>Source Estimation with the Virtual Point Transformation<a class="headerlink" href="#source-estimation-with-the-virtual-point-transformation" title="Link to this heading">#</a></h1>
+<p>This notebook demonstrates how ForceFinder can be used for source estimation problems with the virtual point transformation, where the source estimation problem is posed as a simulated MIMO vibration test. This example uses the beam system that was developed <a class="reference internal" href="example_utilization_intro.html#sec-example-beam-system"><span class="std std-ref">here</span></a> with a random vibration specification that is developed from a single DOF vibration specification in MIL-STD 810H. An image of the beam system is shown below, the blue arrows (the straight arrows above the beam) are the training response DOFs and the red arrows (below the beam) are the physical source DOFs.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The nodes are labeled 101-109 from left to right. The translating direction on the beam (vertical on the page) is Z+ and the rotating direction is RY+.</p>
+</div>
+<figure class="align-center">
+<img alt="Example Beam System" src="_images/beam_system_four_control_dofs.svg" />
+</figure>
+<p>The example data for this beam system is generated using the following process:</p>
+<ol class="arabic simple">
+<li><p>The SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> object for the beam is imported</p></li>
+<li><p>FRFs are computed for the beam system using the <code class="docutils literal notranslate"><span class="pre">frequency_response</span></code> method for the beams <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
+<li><p>A CPSD specification is made from a single DOF vibration test specification from MIL-STD 810H</p></li>
+<li><p>The response and reference transformations will be manually created from the rigid body modes of the beam</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sdynpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sdpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">forcefinder</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ff</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_system</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">System</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;./example_system/example_system.npz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="computing-the-frfs">
+<h2>Computing the FRFs<a class="headerlink" href="#computing-the-frfs" title="Link to this heading">#</a></h2>
+<p>The FRFs are computed using a bandwidth of 5-500 Hz (which matches the specification that is defined below) and a frequency resolution 1 Hz. The displacement derivative is set to two, meaning the the FRFs are in accelerance format. The ordinate of the FRFs is divided by 9.81 to convert the FRFs from SI units to SI-G units (acceleration in Gs) to match the specification unit system.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The FRFs are computed in acceleration/force units, based on limitations of the model. This is being used as an analog for the acceleration/voltage units that are common in MIMO vibration testing.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">frf_frequency</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">496</span><span class="p">)</span><span class="o">+</span><span class="mi">5</span>
+<span class="n">drive_coordinate</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="p">[</span><span class="mi">102</span><span class="p">,</span><span class="mi">104</span><span class="p">,</span><span class="mi">106</span><span class="p">,</span><span class="mi">108</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">frfs</span> <span class="o">=</span> <span class="n">beam_system</span><span class="o">.</span><span class="n">frequency_response</span><span class="p">(</span><span class="n">frf_frequency</span><span class="p">,</span>
+                                      <span class="n">references</span><span class="o">=</span><span class="n">drive_coordinate</span><span class="p">,</span> 
+                                      <span class="n">displacement_derivative</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">frfs</span><span class="o">.</span><span class="n">ordinate</span> <span class="o">/=</span> <span class="mf">9.81</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Link to this heading">#</a></h2>
+<p>The specification for this example is based off the unknonwn orientation “common carrier (US highway truck vibration exposure)” single DOF vibration test specification that is defined in MIL-STD 810H, method 514.8, annex C. This example problem is treating the beam as a shaker table, where the goal is to vibrate the beam as a rigid body. This is specified by applying the same single axis specification PSD to each control DOF and using kinematic transformations to enforce the rigid behavior. The cross-terms for the specification CPSD is defined by a coherence 0.9 between each DOF and zero phase between each DOF.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The approach of applying a single axis vibration specification equally to all the control DOFs is for demonstration purposes only and should not be treated as an endorsement of the method.</p>
+</div>
+<p>The specification from MIL-STD 810H is provided as a set of PSD breakpoints, which must be converted to a narrow band PSD before it can be turned into a MIMO specification. This conversion is done using log-log interpolation on the frequency axis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">breakpoint_frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span>     <span class="mi">40</span><span class="p">,</span>    <span class="mi">120</span><span class="p">,</span>      <span class="mi">121</span><span class="p">,</span>   <span class="mi">200</span><span class="p">,</span>   <span class="mi">240</span><span class="p">,</span>    <span class="mi">266</span><span class="p">,</span>      <span class="mi">500</span><span class="p">]</span>
+<span class="n">breakpoint_amplitudes</span> <span class="o">=</span>  <span class="p">[</span><span class="mf">0.015</span><span class="p">,</span> <span class="mf">0.015</span><span class="p">,</span> <span class="mf">0.002025</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.003</span><span class="p">,</span> <span class="mf">0.0015</span><span class="p">,</span> <span class="mf">0.000475</span><span class="p">,</span> <span class="mf">0.00015</span><span class="p">]</span>
+
+<span class="n">narrowband_specification</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">frf_frequency</span><span class="p">),</span> 
+                                          <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">breakpoint_frequencies</span><span class="p">),</span> 
+                                          <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">breakpoint_amplitudes</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The coherence and phase for the specification are manually defined, as described above. Note that several extra steps are used in this code block to shape the arrays for the necessary operations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">specification_psd</span> <span class="o">=</span> <span class="n">narrowband_specification</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span><span class="o">*</span><span class="n">frf_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">specification_phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">frf_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">specification_coherence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">*</span><span class="mf">0.9</span>
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">specification_coherence</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">specification_coherence</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">specification_coherence</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> 
+                                          <span class="p">(</span><span class="n">frf_frequency</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The PSDs, coherence, and phase are used to generate the full specification CPSD matrix for the simulated MIMO test using the <code class="docutils literal notranslate"><span class="pre">cpsd_from_coh_phs</span></code> function in SDynPy. The specification CPSD is initially generated as an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> in <code class="docutils literal notranslate"><span class="pre">specification_cpsd</span></code>. This <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> is then populated into a SDynPy <code class="docutils literal notranslate"><span class="pre">PowerSpectralDensityArray</span></code> in <code class="docutils literal notranslate"><span class="pre">specification</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">specification_dofs</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="p">[</span><span class="mi">102</span><span class="p">,</span><span class="mi">104</span><span class="p">,</span><span class="mi">106</span><span class="p">,</span><span class="mi">108</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">specification_cpsd</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">signal_processing</span><span class="o">.</span><span class="n">cpsd</span><span class="o">.</span><span class="n">cpsd_from_coh_phs</span><span class="p">(</span><span class="n">specification_psd</span><span class="p">,</span> 
+                                                                <span class="n">specification_coherence</span><span class="p">,</span> 
+                                                                <span class="n">specification_phase</span><span class="p">)</span>
+
+<span class="n">specification</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">power_spectral_density_array</span><span class="p">(</span><span class="n">frf_frequency</span><span class="p">,</span> 
+                                                  <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">specification_cpsd</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                 <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate</span><span class="o">.</span><span class="n">outer_product</span><span class="p">(</span><span class="n">specification_dofs</span><span class="p">,</span> <span class="n">specification_dofs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-the-transformation-arrays">
+<h2>Creating the Transformation Arrays<a class="headerlink" href="#creating-the-transformation-arrays" title="Link to this heading">#</a></h2>
+<p>This section creates the reference and response transformations that will be used in the source estimation, where the physical sources and specification will be transformed into a two DOF virtual point with Z+ and RY+ directions. This virtual point is at the red highlighted node with the arrows (representing the translating and rotation DOFs) in the image below.</p>
+<figure class="align-center">
+<img alt="Example Beam System with Virtual Point" src="_images/beam_system_virtual_point.svg" />
+</figure>
+<p>The transformations are developed from the rigid body modes of the beam system using the geometry from the beam. The rigid body shapes are created <code class="docutils literal notranslate"><span class="pre">rigid_body_shapes</span></code> method for the SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> object and are set-up to have a center of gravity at the virtual point node. These shapes are then indexed to extract the Z+ and RY+ mode shape (since the <code class="docutils literal notranslate"><span class="pre">rigid_body_shapes</span></code> method returns shapes for all six directions).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beam_fem</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;./example_system/example_geometry.npz&#39;</span><span class="p">)</span>
+
+<span class="c1"># Indexing the shapes from the method to extract only the Z+ and RY+ mode shapes</span>
+<span class="n">rigid_body_shapes</span> <span class="o">=</span> <span class="n">beam_fem</span><span class="o">.</span><span class="n">rigid_body_shapes</span><span class="p">(</span><span class="n">drive_coordinate</span><span class="p">,</span> <span class="n">cg</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])[[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Animations of the shapes that are used to define the transformations are shown below.</p>
+<figure class="align-center">
+<img alt="Translating Shape for Animation" src="_images/rigid_body_transformation_shape_1.gif" />
+</figure>
+<figure class="align-center">
+<img alt="Rotating Shape for Animation" src="_images/rigid_body_transformation_shape_2.gif" />
+</figure>
+<p>The reference transformation (for the sources) directly uses the rigid body shape matrix, which must be put into a SDynPy <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object to be compatible with the ForceFinder methods. This <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object is created with the rigid body shape matrix as the numeric data and SDynPy <code class="docutils literal notranslate"><span class="pre">CoordinateArrays</span></code> to label the row and column DOFs, which correspond to the virtual point and physical DOFs. The virtual point DOFs will use 1001 as the node number.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">virtual_point_dofs</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">coordinate_array</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="mi">1001</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="n">reference_transformation</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">rigid_body_shapes</span><span class="o">.</span><span class="n">shape_matrix</span><span class="p">,</span> 
+                                       <span class="n">row_coordinate</span><span class="o">=</span><span class="n">virtual_point_dofs</span><span class="p">,</span> 
+                                       <span class="n">column_coordinate</span><span class="o">=</span><span class="n">drive_coordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The response transformation is a modal filter on the responses, which is created by inverting of the transpose of the rigid body shape matrix (since the SDynPy shape matrix puts the different shapes on different rows instead of columns). The modal filter is then put into a SDynPy <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> object for compatibility with the ForceFinder methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The row and column <code class="docutils literal notranslate"><span class="pre">CoordinateArrays</span></code> are the same for the reference and response transformations in this example because the excitation and control DOFs are on the same nodes. This DOF layout is not always the case and is not a requirement in ForceFinder.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rigid_body_modal_filter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">rigid_body_shapes</span><span class="o">.</span><span class="n">shape_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="n">response_transformation</span> <span class="o">=</span> <span class="n">sdpy</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">matrix</span><span class="o">=</span><span class="n">rigid_body_modal_filter</span><span class="p">,</span> 
+                                      <span class="n">row_coordinate</span><span class="o">=</span><span class="n">virtual_point_dofs</span><span class="p">,</span> 
+                                      <span class="n">column_coordinate</span><span class="o">=</span><span class="n">drive_coordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This example showed how to make the transformations manually. However, it may be useful to use the <code class="docutils literal notranslate"><span class="pre">force_kinematic_transformation</span></code> and <code class="docutils literal notranslate"><span class="pre">response_kinematic_transformation</span></code> methods in SDynPy to automatically create the transformation <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> objects from a SDynPy <code class="docutils literal notranslate"><span class="pre">Geometry</span></code> object.</p>
+</div>
+</section>
+<section id="computing-sources-with-and-without-transformations">
+<h2>Computing Sources with and without Transformations<a class="headerlink" href="#computing-sources-with-and-without-transformations" title="Link to this heading">#</a></h2>
+<p>This section creates the basic SPR object and estimates the drives with the basic pseudo-inverse method with and without the transformations. The the same SPR object can be used to estimate the sources with and without the transformations by toggling the <code class="docutils literal notranslate"><span class="pre">use_transformation</span></code> kwarg to either <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> (the default is <code class="docutils literal notranslate"><span class="pre">True</span></code>). This is shown below by making a copy of the SPR object with the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method and estimating the sources with and without the transformations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformation_spr</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">PowerSourcePathReceiver</span><span class="p">(</span><span class="n">frfs</span><span class="o">=</span><span class="n">frfs</span><span class="p">,</span> 
+                                       <span class="n">target_response</span><span class="o">=</span><span class="n">specification</span><span class="p">,</span>
+                                       <span class="n">response_transformation</span><span class="o">=</span><span class="n">response_transformation</span><span class="p">,</span>
+                                       <span class="n">reference_transformation</span><span class="o">=</span><span class="n">reference_transformation</span><span class="p">)</span>
+<span class="n">transformation_spr</span><span class="o">.</span><span class="n">manual_inverse</span><span class="p">(</span><span class="n">use_transformation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;PowerSourcePathReceiver object with 4 reference coordinates, 4 target response coordinates, and 4 training response coordinates&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">no_transformation_spr</span> <span class="o">=</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">no_transformation_spr</span><span class="o">.</span><span class="n">manual_inverse</span><span class="p">(</span><span class="n">use_transformation</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;PowerSourcePathReceiver object with 4 reference coordinates, 4 target response coordinates, and 4 training response coordinates&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>As expected, the sources that were estimated with the transformations have lower amplitudes than the sources that were estimated without the transformations, as shown in the plot below. This plot compares the physical sources, but the transformed sources could have easily been compared by using the corresponding “transformed” attributes. Refer to the <a class="reference internal" href="object_attribute_definitions.html"><span class="doc std std-doc">attribute definitions</span></a> for a full list of the SPR object attributes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">force</span><span class="o">.</span><span class="n">rms</span><span class="p">(),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sources with Transformations&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">no_transformation_spr</span><span class="o">.</span><span class="n">force</span><span class="o">.</span><span class="n">rms</span><span class="p">(),</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sources without Transformations&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">reference_coordinate</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Source DOF&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Source RMS Level&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/34907ba956b5efadfb9637f8170c7a0e4de9a8d01cbaccafe19522a3d5613032.png" src="_images/34907ba956b5efadfb9637f8170c7a0e4de9a8d01cbaccafe19522a3d5613032.png" />
+</div>
+</div>
+<p>Interestingly, both sets of estimated sources (with and without the transformations) reconstruct the same transformed training response. This similarity is shown with a passing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">transformed_reconstructed_response</span></code> attribute of the different SPR objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">transformation_spr</span><span class="o">.</span><span class="n">transformed_reconstructed_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">,</span> 
+            <span class="n">no_transformation_spr</span><span class="o">.</span><span class="n">transformed_reconstructed_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, the different sources (that were estimated with and without the transformations) produce different reconstructed target responses, which are the training responses without the response transformation applied. This difference is shown with a failing NumPy <code class="docutils literal notranslate"><span class="pre">allclose</span></code> comparison of the <code class="docutils literal notranslate"><span class="pre">reconstructed_target_response</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">reconstructed_target_response</span></code> can be used to evaluate the untransformed reconstructed response at training response in this example since there are not any validation responses. This scheme may not be possible in every case.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">transformation_spr</span><span class="o">.</span><span class="n">reconstructed_target_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">,</span> 
+            <span class="n">no_transformation_spr</span><span class="o">.</span><span class="n">reconstructed_target_response</span><span class="o">.</span><span class="n">ordinate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is also important to check that the estimated sources (with the transformations) reconstruct the expected response at both the virtual point and physical DOFs. This can be easily checked through one of the error metrics in ForceFinder. In this case, the <a class="reference internal" href="error_metrics.html#sec-global-asd-error"><span class="std std-ref">global ASD error</span></a> metric was used to evaluate the control accuracy. It is easy to compute this error metric for both the virtual point and physical DOFs by changing the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg for the error metric to <code class="docutils literal notranslate"><span class="pre">training</span></code> (which computes the error for the virtual point) and <code class="docutils literal notranslate"><span class="pre">target</span></code> (which computes the error for the physical DOFs in this example since there are not any validation responses).</p>
+<p>This metric shows that there are significant errors in the responses at the physical DOFs even though the virtual point DOFs show zero error. The reason for this difference in error is because the transformation assumes that the beam behaves as a rigid system, which is obviously not the case. As such, the source estimation with the transformation is not able to move the excitation and response DOFs independently to eliminate the elastic behavior and achieve the goal of the specification.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Transformations can lead non-intuitive results if the source estimation problem is not closely inspected or if the transformations are used in an inappropriate fashion. This example was developed to show these non-intuitive results, which is why there are significant errors.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">transformed_global_asd_error</span> <span class="o">=</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">global_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span>
+<span class="n">physical_global_asd_error</span> <span class="o">=</span> <span class="n">transformation_spr</span><span class="o">.</span><span class="n">global_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;target&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">transformed_global_asd_error</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">transformed_global_asd_error</span><span class="o">.</span><span class="n">ordinate</span><span class="p">),</span> 
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Virtual Point DOFs&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">physical_global_asd_error</span><span class="o">.</span><span class="n">abscissa</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">physical_global_asd_error</span><span class="o">.</span><span class="n">ordinate</span><span class="p">),</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Physical DOFs&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Global ASD Error (dB)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3dd73b118145400560dfceb1909661a65e4f31e05554a26d57ce7554683a40da.png" src="_images/3dd73b118145400560dfceb1909661a65e4f31e05554a26d57ce7554683a40da.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="basic_spr_utilization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Basic Use of the SourcePathReceiver Object</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="spr_utilization_response_limit.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MIMO Drive Prediction with Response Limiting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-frfs">Computing the FRFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specification">Specification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-the-transformation-arrays">Creating the Transformation Arrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-sources-with-and-without-transformations">Computing Sources with and without Transformations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

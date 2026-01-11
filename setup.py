@@ -35,7 +35,8 @@ setup(
             "pytest",
             "pytest-cov",
             "jupyter-book==1.0.4",
-            "sphinx-autoapi"
+            "sphinx-autoapi",
+            "nbconvert"
         ]
     }
 )

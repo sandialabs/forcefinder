@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Transformation Theory &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'transformation_theory';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory for Miscellaneous Techniques" href="miscellaneous_techniques.html" />
+    <link rel="prev" title="Hyperparameter Tuning Methods" href="hyperparameter_tuning_methods.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/transformation_theory.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Transformation Theory</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformations-on-power-spectra">Transformations on Power Spectra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dof-weightings">DOF Weightings</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="transformation-theory">
+<h1>Transformation Theory<a class="headerlink" href="#transformation-theory" title="Link to this heading">#</a></h1>
+<p>Transformations have been implemented for every SPR object type in ForceFinder for two main purposes:</p>
+<ul class="simple">
+<li><p>Virtual point transformations (VPT), like what is common in TPA, substructuring, and MIMO vibration testing</p></li>
+<li><p>DOF weightings and normalizations</p></li>
+</ul>
+<p>The most basic transformations are applied to time traces or linear spectra of the responses or sources, as shown below:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix} \hat{X} \end{Bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{Bmatrix} X \end{Bmatrix}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix} \hat{F} \end{Bmatrix} = \begin{bmatrix} T_{ref} \end{bmatrix} \begin{Bmatrix} F \end{Bmatrix}
+\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\begin{Bmatrix} \hat{X} \end{Bmatrix}\)</span> is the transformed response and <span class="math notranslate nohighlight">\(\begin{Bmatrix} \hat{F} \end{Bmatrix}\)</span> is the transformed source. The transformations convert the responses and sources from physical quantities to transformed quantities. The response transformation is applied to the FRFs by inserting the FRF equation of motion (EoM) into the response transformation equation:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix} \hat{X} \end{Bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{Bmatrix} X \end{Bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{bmatrix} H \end{bmatrix} \begin{Bmatrix} F \end{Bmatrix}
+\]</div>
+<p>Where the transformed FRFs can be explicitly extracted as:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} \hat{H} \end{bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{bmatrix} H \end{bmatrix}
+\]</div>
+<p>The source transformation transformation is applied by first inverting the source transformation equation to convert a transformed source to a physical quantity:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix} F \end{Bmatrix} = \begin{bmatrix} T_{ref} \end{bmatrix}^+ \begin{Bmatrix} \hat{F} \end{Bmatrix}
+\]</div>
+<p>This expression for the physical source is then applied to the FRF EoM:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{Bmatrix} X \end{Bmatrix} = \begin{bmatrix} H \end{bmatrix} \begin{Bmatrix} F \end{Bmatrix} = \begin{bmatrix} H \end{bmatrix} \begin{bmatrix} T_{ref} \end{bmatrix}^+ \begin{Bmatrix} \hat{F} \end{Bmatrix}
+\]</div>
+<p>Where the transformed FRFs are extracted as:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} \hat{H} \end{bmatrix} = \begin{bmatrix} H \end{bmatrix} \begin{bmatrix} T_{ref} \end{bmatrix}^+
+\]</div>
+<p>The expressions for the response and reference transformed FRFs can be combined, to simultaneously apply the response and reference transforms:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} \hat{H} \end{bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{bmatrix} H \end{bmatrix} \begin{bmatrix} T_{ref} \end{bmatrix}^+
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Transformations have been implemented in ForceFinder so the <code class="docutils literal notranslate"><span class="pre">reference_transformation</span></code> and <code class="docutils literal notranslate"><span class="pre">response_transformation</span></code> are simultaneously applied or not applied at all. Practitioners will need to create separate SPR objects if they wish to apply transformations one at a time.</p>
+</div>
+<section id="transformations-on-power-spectra">
+<h2>Transformations on Power Spectra<a class="headerlink" href="#transformations-on-power-spectra" title="Link to this heading">#</a></h2>
+<p>The transformation equations can be easily adapted to power spectra by first defining how power spectra are computed from linear spectra (using transformed quantities):</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} \hat{G}_{xx} \end{bmatrix} = \begin{Bmatrix} \hat{X} \end{Bmatrix} \begin{Bmatrix} \hat{X} \end{Bmatrix}^*
+\]</div>
+<p>The expression for the linear spectra transformation can then be inserted into the equation for computing the power spectra and manipulated to obtain the expression for transformed power spectra:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{gather*}
+\begin{bmatrix} \hat{G}_{xx} \end{bmatrix} = \begin{pmatrix} \begin{bmatrix} T_{res} \end{bmatrix} \begin{Bmatrix} X \end{Bmatrix} \end{pmatrix} \begin{pmatrix}  \begin{bmatrix} T_{res} \end{bmatrix} \begin{Bmatrix} X \end{Bmatrix}\end{pmatrix}^*
+\\
+\downarrow
+\\
+\begin{bmatrix} \hat{G}_{xx} \end{bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{Bmatrix} X \end{Bmatrix} \begin{Bmatrix} X \end{Bmatrix}^* \begin{bmatrix} T_{res} \end{bmatrix}^*
+\\
+\downarrow
+\\
+\begin{bmatrix} \hat{G}_{xx} \end{bmatrix} = \begin{bmatrix} T_{res} \end{bmatrix} \begin{bmatrix} G_{xx} \end{bmatrix} \begin{bmatrix} T_{res} \end{bmatrix}^*
+\end{gather*}
+\end{split}\]</div>
+<p>The source power spectra use the same expression as the responses to convert from physical to transformed quantities:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} \hat{G}_{ff} \end{bmatrix} = \begin{bmatrix} T_{ref} \end{bmatrix} \begin{bmatrix} G_{ff} \end{bmatrix} \begin{bmatrix} T_{ref} \end{bmatrix}^*
+\]</div>
+</section>
+<section id="dof-weightings">
+<h2>DOF Weightings<a class="headerlink" href="#dof-weightings" title="Link to this heading">#</a></h2>
+<p>DOF weightings are implemented in ForceFinder through the transformations, where a default (identity) transformation would have weightings on the diagonal. In most cases, the weightings should be applied to the transformations with the <code class="docutils literal notranslate"><span class="pre">apply_response_weighting</span></code> or <code class="docutils literal notranslate"><span class="pre">apply_reference_weighting</span></code> method, which uses the following expression:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{bmatrix} T^{weighted} \end{bmatrix} = diag\begin{pmatrix}\begin{Bmatrix} W_{transformed} \end{Bmatrix}\end{pmatrix} \begin{bmatrix} T^{original} \end{bmatrix} diag\begin{pmatrix}\begin{Bmatrix} W_{untransformed} \end{Bmatrix}\end{pmatrix}
+\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Unlike most methods in ForceFinder, the <code class="docutils literal notranslate"><span class="pre">apply_response_weighting</span></code> and <code class="docutils literal notranslate"><span class="pre">apply_reference_weighting</span></code> methods take <code class="docutils literal notranslate"><span class="pre">ndarrays</span></code> as arguments and don’t check that the weighting organization matches the DOFs in the SPR object.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the reference transformation is inverted when it is used in the inverse method, it may be appropriate to to invert the DOF weighting to achieve the desired effect.</p>
+</div>
+<p>A frequency dependent normalization can be applied to the <code class="docutils literal notranslate"><span class="pre">response_transformation</span></code> or <code class="docutils literal notranslate"><span class="pre">reference_transformation</span></code> using the <code class="docutils literal notranslate"><span class="pre">set_response_transformation_by_normalization</span></code> or <code class="docutils literal notranslate"><span class="pre">set_reference_transformation_by_normalization</span></code> methods. These methods set the DOF weightings by the inverse of the standard deviation of the accompanying row or column in the FRF matrix.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="hyperparameter_tuning_methods.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Hyperparameter Tuning Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="miscellaneous_techniques.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Theory for Miscellaneous Techniques</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transformations-on-power-spectra">Transformations on Power Spectra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dof-weightings">DOF Weightings</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
