@@ -58,30 +58,37 @@ def prepare_for_zero_padding(spr_object,
     signal_sizes : dict
         The various signal sizes that were used in the zero padding operation. The
         dictionary includes the following keys: 
-            - pre_data_blank_frame_length - The amount of zeros that were added to 
-            the beginning of the training response to enable a perfect COLA 
-            reconstruction.
+            
+            - pre_data_blank_frame_length
+                The amount of zeros that were added to the beginning of the training 
+                response to enable a perfect COLA reconstruction.
 
-            - post_data_blank_frame_length - The amount of zeros that were added to 
-            the end of the training response to enable a perfect COLA reconstruction.
+            - post_data_blank_frame_length
+                The amount of zeros that were added to the end of the training response 
+                to enable a perfect COLA reconstruction.
 
-            - left_zero_pad_length - The amount of zeros that were used to pad the 
-            left side of the COLA frames. 
+            - left_zero_pad_length
+                The amount of zeros that were used to pad the left side of the COLA 
+                frames. 
             
-            - right_zero_pad_length - The amount of zeros that were used to pad the 
-            right side of the COLA frames. 
+            - right_zero_pad_length
+                The amount of zeros that were used to pad the right side of the COLA 
+                frames. 
             
-            - number_cola_frames - The number of frames to segment the data into for 
-            the COLA processing.
+            - number_cola_frames
+                The number of frames to segment the data into for the COLA processing.
             
-            - cola_frame_length - The frame length (in samples) that was use for the 
-            COLA processing (corresponds to the cola_frame_length input parameter).
+            - cola_frame_length
+                The frame length (in samples) that was use for the COLA processing 
+                (corresponds to the cola_frame_length input parameter).
             
-            - cola_overlap_samples - The overlap (in samples) between the frames in 
-            the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            - cola_overlap_samples
+                The overlap (in samples) between the frames in the COLA processing 
+                (corresponds to the cola_overlap_samples input parameter).
             
-            - zero_padded_signal_length - The frame length (in samples) of each zero 
-            padded COLA frame. 
+            - zero_padded_signal_length
+                The frame length (in samples) of each zero padded COLA frame. 
+
     frame_indices : ndarray
         The indices to segment the padded_response into the COLA frames. It is shaped
         [number of frames, cola frame length]. 
@@ -144,17 +151,21 @@ def generate_zero_padded_response_fft(full_data, frame_indices, signal_sizes,
     signal_sizes : dict
         A dictionary with the signal sizes for the segmentation and zero 
         padding. The keys in the dictionary should include:
-            - left_zero_pad_length - The amount of zeros that were used to pad the 
-            left side of the COLA frames. 
+
+            - left_zero_pad_length
+                The amount of zeros that were used to pad the left side of the COLA 
+                frames. 
             
-            - right_zero_pad_length - The amount of zeros that were used to pad the 
-            right side of the COLA frames. 
+            - right_zero_pad_length
+                The amount of zeros that were used to pad the right side of the COLA 
+                frames. 
             
-            - number_cola_frames - The number of frames to segment the data into for 
-            the COLA processing.
+            - number_cola_frames
+                The number of frames to segment the data into for the COLA processing.
             
-            - zero_padded_signal_length - The frame length (in samples) of each zero 
-            padded COLA frame. 
+            - zero_padded_signal_length
+                The frame length (in samples) of each zero padded COLA frame. 
+
     window : ndarray
         The window (as a 1D array) to apply to the segmented data frames.
     response_transform : ndarray
@@ -188,30 +199,37 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
     signal_sizes : dict
         The various signal sizes that were used in the original COLA segmentation 
         and zero padding operation. The dictionary should include the following keys: 
-            - pre_data_blank_frame_length - The amount of zeros that were added to 
-            the beginning of the training response to enable a perfect COLA 
-            reconstruction.
+
+            - pre_data_blank_frame_length
+                The amount of zeros that were added to the beginning of the training 
+                response to enable a perfect COLA reconstruction.
             
-            - post_data_blank_frame_length - The amount of zeros that were added to 
-            the end of the training response to enable a perfect COLA reconstruction.
+            - post_data_blank_frame_length
+                The amount of zeros that were added to the end of the training response 
+                to enable a perfect COLA reconstruction.
             
-            - left_zero_pad_length - The amount of zeros that were used to pad the 
-            left side of the COLA frames. 
+            - left_zero_pad_length
+                The amount of zeros that were used to pad the left side of the COLA 
+                frames. 
             
-            - right_zero_pad_length - The amount of zeros that were used to pad the 
-            right side of the COLA frames. 
+            - right_zero_pad_length
+                The amount of zeros that were used to pad the right side of the COLA 
+                frames. 
             
-            - number_cola_frames - The number of frames to segment the data into for 
-            the COLA processing.
+            - number_cola_frames
+                The number of frames to segment the data into for the COLA processing.
             
-            - cola_frame_length - The frame length (in samples) that was use for the 
-            COLA processing (corresponds to the cola_frame_length input parameter).
+            - cola_frame_length
+                The frame length (in samples) that was use for the COLA processing 
+                (corresponds to the cola_frame_length input parameter).
             
-            - cola_overlap_samples - The overlap (in samples) between the frames in 
-            the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            - cola_overlap_samples
+                The overlap (in samples) between the frames in the COLA processing 
+                (corresponds to the cola_overlap_samples input parameter).
             
-            - zero_padded_signal_length - The frame length (in samples) of each zero 
-            padded COLA frame. 
+            - zero_padded_signal_length
+                The frame length (in samples) of each zero padded COLA frame. 
+
     return_signal_length : int
         The desired number of samples in the returned signal. 
     cola_window : ndarray
@@ -434,27 +452,34 @@ def create_zero_padded_response_fft(spr_object,
     signal_sizes : dict
         The various signal sizes that were used in the zero padding operation. The
         dictionary includes the following keys: 
-            - pre_data_blank_frame_length - The amount of zeros that were added to 
-            the beginning of the training response to enable a perfect COLA 
-            reconstruction.
 
-            - post_data_blank_frame_length - The amount of zeros that were added to 
-            the end of the training response to enable a perfect COLA reconstruction.
+            - pre_data_blank_frame_length
+                The amount of zeros that were added to the beginning of the training 
+                response to enable a perfect COLA reconstruction.
+
+            - post_data_blank_frame_length
+                The amount of zeros that were added to the end of the training 
+                response to enable a perfect COLA reconstruction.
             
-            - left_zero_pad_length - The amount of zeros that were used to pad the 
-            left side of the COLA frames. 
+            - left_zero_pad_length
+                The amount of zeros that were used to pad the left side of the COLA 
+                frames. 
             
-            - right_zero_pad_length - The amount of zeros that were used to pad the 
-            right side of the COLA frames. 
+            - right_zero_pad_length
+                The amount of zeros that were used to pad the right side of the COLA 
+                frames. 
             
-            - cola_frame_length - The frame length (in samples) that was use for the 
-            COLA processing (corresponds to the cola_frame_length input parameter).
+            - cola_frame_length
+                The frame length (in samples) that was use for the COLA processing
+                (corresponds to the cola_frame_length input parameter).
             
-            - cola_overlap_samples - The overlap (in samples) between the frames in 
-            the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            - cola_overlap_samples
+                The overlap (in samples) between the frames in the COLA processing 
+                (corresponds to the cola_overlap_samples input parameter).
             
-            - zero_padded_signal_length - The frame length (in samples) of each zero 
-            padded COLA frame. 
+            - zero_padded_signal_length
+                The frame length (in samples) of each zero padded COLA frame. 
+
     window : ndarray
         The window that was used in the COLA processing. 
 
@@ -518,27 +543,34 @@ def reconstruct_cola_frames(cola_ffts,
     signal_sizes : dict
         The various signal sizes that were used in the original COLA segmentation 
         and zero padding operation. The dictionary should include the following keys: 
-            - pre_data_blank_frame_length - The amount of zeros that were added to 
-            the beginning of the training response to enable a perfect COLA 
-            reconstruction.
+
+            - pre_data_blank_frame_length
+                The amount of zeros that were added to the beginning of the training 
+                response to enable a perfect COLA reconstruction.
             
-            - post_data_blank_frame_length - The amount of zeros that were added to 
-            the end of the training response to enable a perfect COLA reconstruction.
+            - post_data_blank_frame_length
+                The amount of zeros that were added to the end of the training response 
+                to enable a perfect COLA reconstruction.
             
-            - left_zero_pad_length - The amount of zeros that were used to pad the 
-            left side of the COLA frames. 
+            - left_zero_pad_length
+                The amount of zeros that were used to pad the left side of the COLA 
+                frames. 
             
-            - right_zero_pad_length - The amount of zeros that were used to pad the 
-            right side of the COLA frames. 
+            - right_zero_pad_length
+                The amount of zeros that were used to pad the right side of the COLA 
+                frames. 
             
-            - cola_frame_length - The frame length (in samples) that was use for the 
-            COLA processing (corresponds to the cola_frame_length input parameter).
+            - cola_frame_length
+                The frame length (in samples) that was use for the COLA processing 
+                (corresponds to the cola_frame_length input parameter).
             
-            - cola_overlap_samples - The overlap (in samples) between the frames in 
-            the COLA processing (corresponds to the cola_overlap_samples input parameter).
+            - cola_overlap_samples
+                The overlap (in samples) between the frames in the COLA processing 
+                (corresponds to the cola_overlap_samples input parameter).
             
-            - zero_padded_signal_length - The frame length (in samples) of each zero 
-            padded COLA frame. 
+            - zero_padded_signal_length
+                The frame length (in samples) of each zero padded COLA frame. 
+
     return_signal_length : int
         The desired number of samples in the returned signal. 
     cola_window : ndarray

@@ -571,7 +571,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2567c604a25bddd923e94a57987eaf3dd52722f22a06c98a0255d9c7e7b48a9e.png" src="_images/2567c604a25bddd923e94a57987eaf3dd52722f22a06c98a0255d9c7e7b48a9e.png" />
+<img alt="_images/a825f85e66ca50321a84caecc6e4f246047a1a665f37b174f927a6382ea76c5f.png" src="_images/a825f85e66ca50321a84caecc6e4f246047a1a665f37b174f927a6382ea76c5f.png" />
 </div>
 </div>
 </section>
@@ -639,7 +639,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sdynpy.core.sdynpy_data.GUIPlot at 0x16e3bc430&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sdynpy.core.sdynpy_data.GUIPlot at 0x1073675b0&gt;
 </pre></div>
 </div>
 </div>
@@ -667,7 +667,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d43b583d0890558339561f5e99902b0f26daada93f4934f52345ce8001a3dbd0.png" src="_images/d43b583d0890558339561f5e99902b0f26daada93f4934f52345ce8001a3dbd0.png" />
+<img alt="_images/9d540ddd62843a0f91e14302f10b464f4b8697e035e1d86059537a6fd8d26aad.png" src="_images/9d540ddd62843a0f91e14302f10b464f4b8697e035e1d86059537a6fd8d26aad.png" />
 </div>
 </div>
 </section>
@@ -745,7 +745,7 @@ document.write(`
 <img alt="Example Spectrogram GUI" src="_images/example_spectrogram_gui.png" />
 </figure>
 <p>Unfortunately, the spectrogram error can be difficult to interpret, since the error level is independent of the response amplitude. This issue can be seen in the spectrogram error that is shown above, where there are significant errors in the second half of the time range, which has has a near-zero response amplitude that is dominated by the the simulated measurement errors. As such, any errors in the second of the time range are inconsequential to the overall response, regardless of the amplitude.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">normalize_by_rms</span></code> option can help mitigate this issue with interpretability because it normalizes the spectrogram error for the different time segments by the relative RMS levels. Consequently, the spectrogram error for a given time segment will be scaled down if it is in a low responding time segment. An example spectrogram error plot, which uses the <code class="docutils literal notranslate"><span class="pre">normalize_by_rms</span></code> option, is shown below. As expected, it is much easier to identify the errors in the high responding time segments in this spectrogram compared to the non-normalized spectrogram that was shown above.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">normalize_by_rms</span></code> option can help mitigate this interpretability issue because it normalizes the spectrogram error for the different time segments by the relative RMS levels. Consequently, the spectrogram error for a given time segment will be scaled down if it is in a low responding time segment. An example spectrogram error plot, which uses the <code class="docutils literal notranslate"><span class="pre">normalize_by_rms</span></code> option, is shown below. As expected, it is much easier to identify the errors in the high responding time segments in this spectrogram compared to the non-normalized spectrogram that was shown above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">error_stft_normalized</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">transient_quality_metrics</span><span class="o">.</span><span class="n">compute_error_stft</span><span class="p">(</span><span class="n">example_spr</span><span class="p">,</span>

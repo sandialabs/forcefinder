@@ -86,23 +86,31 @@ Module Contents
                      The type of L-curve that is used to find the "optimal regularization
                      parameter. The default depends on if the TSVD or Tikhonov regularization
                      are being used and the options are:
-                         - forces - This L-curve is constructed with the "size" of the
-                         forces on the Y-axis and the regularization parameter on the X-axis.
 
-                         - standard - This L-curve is constructed with the residual squared
-                         error on the X-axis and the "size" of the forces on the Y-axis.
+                         - forces
+                             This L-curve is constructed with the "size" of the forces on the
+                             Y-axis and the regularization parameter on the X-axis.
+
+                         - standard
+                             This L-curve is constructed with the residual squared error on
+                             the X-axis and the "size" of the forces on the Y-axis.
+
                  optimality_condition : str
                      The method that is used to find an "optimal" regularization parameter.
                      The default depends on if the TSVD or Tikhonov regularization
                      is being used and the options are:
-                         - curvature - This method searches for the regularization parameter
-                         that results in maximum curvature of the L-curve. It is also referred
-                         to as the L-curve criterion.
 
-                         - distance - This method searches for the regularization parameter
-                         that minimizes the distance between the L-curve and a "virtual origin".
-                         A virtual origin is used, because the L-curve is scaled and offset to
-                         always range from zero to one, in this case.
+                         - curvature
+                             This method searches for the regularization parameter that
+                             results in maximum curvature of the L-curve. It is also referred
+                             to as the L-curve criterion.
+
+                         - distance
+                             This method searches for the regularization parameter that
+                             minimizes the distance between the L-curve and a "virtual origin".
+                             A virtual origin is used, because the L-curve is scaled and offset
+                             to always range from zero to one, in this case.
+
                  match_trace : bool
                      Whether or not to apply a match trace update during the control.
                  use_buzz : bool
@@ -120,10 +128,15 @@ Module Contents
    value with a line break between each value, for example:
 
        df = 0.1
+
        bp_freqs = 10, 500, 2000
+
        ISE_technique = manual_inverse
+
        inverse_method = threshold
+
        cond_num_threshold = 50, 1000, 300
+
        use_buzz = True
 
 

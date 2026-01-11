@@ -221,13 +221,21 @@ Module Contents
    :type number_regularization_values: int, optional
    :param error_function: The function that is used to compute the error in the inverse
                           problem. The function should take the following parameters:
-                              - validation_frfs - ndarray that is sized [number of lines, number of validation responses, number of references].
-                              - validation_response - ndarray that is sized [number of lines, number of responses].
-                              - frf_inverse - ndarray that is sized [number of lines, number of references, number of training responses].
-                              - training_response - ndarray that is sized [number of lines, number of training responses, 1].
-                          The function should output:
-                              - error - a 1d array that is sized number of lines.
-                          The default function computes the residual squared error.
+
+                          - validation_frfs
+                              ndarray that is sized [number of lines, number of validation responses, number of references].
+
+                          - validation_response
+                              ndarray that is sized [number of lines, number of responses].
+
+                          - frf_inverse
+                              ndarray that is sized [number of lines, number of references, number of training responses].
+
+                          - training_response
+                              ndarray that is sized [number of lines, number of training responses, 1].
+
+                          The function should output a 1d array of the computed error that is
+                          sized number of lines. The default function computes the residual squared error.
    :type error_function: function, optional
 
    :returns: * **regularization_values** (*ndarray*) -- The regularization values for the inverse problem. It is sized
@@ -270,15 +278,22 @@ Module Contents
    :type number_regularization_values: int, optional
    :param error_function: The function that is used to compute the error in the inverse
                           problem. The function should take the following parameters:
-                              - validation_frfs - ndarray that is sized [number of lines, number of validation responses, number of references].
 
-                              - validation_response - ndarray that is sized [number of lines, number of responses].
+                              - validation_frfs
+                                  ndarray that is sized [number of lines, number of validation responses, number of references].
 
-                              - frf_inverse - ndarray that is sized [number of lines, number of references, number of training responses].
+                              - validation_response
+                                  ndarray that is sized [number of lines, number of responses].
 
-                              - training_response - ndarray that is sized [number of lines, number of training responses, 1].
-                          The function should return a 1d array that is sized number of lines.
-                          The default function computes the mean squared error.
+                              - frf_inverse
+                                  ndarray that is sized [number of lines, number of references, number of training responses].
+
+                              - training_response
+                                  ndarray that is sized [number of lines, number of training responses, 1].
+
+                          The function should return a 1d array with the computed errors that
+                          is sized number of lines. The default function computes the mean squared
+                          error.
    :type error_function: function, optional
 
    :returns: * **regularization_values** (*ndarray*) -- The regularization values for the inverse problem. It is sized
@@ -317,48 +332,58 @@ Module Contents
    :type residual: ndarray
    :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                         parameter. The available types are:
-                            - forces (default) - This L-curve is constructed with the "size"
-                            of the forces on the Y-axis and the regularization parameter on the
-                            X-axis.
 
-                            - standard - This L-curve is constructed with the residual squared
-                            error on the X-axis and the "size" of the forces on the Y-axis.
+                            - forces (default)
+                                This L-curve is constructed with the "size" of the forces on the Y-axis
+                                and the regularization parameter on the X-axis [ar_lcor_3]_.
+
+                            - standard
+                                This L-curve is constructed with the residual squared error on the
+                                X-axis and the "size" of the forces on the Y-axis [ar_lcor_1]_, [ar_lcor_2]_.
    :type l_curve_type: str
    :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                 The options are:
-                                    - curvature (default) - This method searches for the regularization
-                                    parameter that results in maximum curvature of the L-curve. It is
-                                    also referred to as the L-curve criterion.
 
-                                    - distance - This method searches for the regularization parameter that
-                                    minimizes the distance between the L-curve and a "virtual origin". A
-                                    virtual origin is used, because the L-curve is scaled and offset to always
-                                    range from zero to one, in this case.
+                                    - curvature (default)
+                                        This method searches for the regularization parameter that results in
+                                        maximum curvature of the L-curve. It is also referred to as the L-curve
+                                        criterion.
+
+                                    - distance
+                                        This method searches for the regularization parameter that minimizes the
+                                        distance between the L-curve and a "virtual origin". A virtual origin is used,
+                                        because the L-curve is scaled and offset to always range from zero to one, in
+                                        this case.
    :type optimality_condition: str
 
    :returns: **optimal_regularization** -- A vector of the optimal regularization values, as defined by the L-curve.
              The length matches that number of frequency lines.
    :rtype: ndarray
 
-   :raises ValueError: If the requested L-curve type is not available.
-   :raises ValueError: If the requested optimality condition is not available.
+   :raises ValueError: If any of the following occurs:
+       
+       - If the requested L-curve type is not available.
+       
+       - If the requested optimality condition is not available.
 
    .. rubric:: References
 
-   .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
-       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-       vol. 14, no. 6, pp. 1487-1503, 1993.
-   .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-       problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
-       2000, pp. 119-142.
-   .. [3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
-       Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
+   .. [ar_lcor_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
+      of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+      vol. 14, no. 6, pp. 1487-1503, 1993.
+
+   .. [ar_lcor_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+      problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
+      2000, pp. 119-142.
+
+   .. [ar_lcor_3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
+      Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
 
 
 .. py:function:: broadcasting_l_curve_criterion(x_axis, y_axis, regularization_values, return_curvature=False)
 
    Finds the "optimal" regularization value from an L-curve via the
-   location where its curvature is at a maximum (the L-curve criterion).
+   location where its curvature is at a maximum (the L-curve criterion) [ar_blcc_1]_, [ar_blcc_2]_.
 
    :param x_axis: This is a vector that defines the X-axis of the L-curve. The variable
                   that is used for this depends on the type of L-curve that is being
@@ -391,12 +416,13 @@ Module Contents
 
    .. rubric:: References
 
-   .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
-          of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-          vol. 14, no. 6, pp. 1487-1503, 1993.
-   .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-          problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
-          2000, pp. 119-142.
+   .. [ar_blcc_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
+      of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+      vol. 14, no. 6, pp. 1487-1503, 1993.
+
+   .. [ar_blcc_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+      problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
+      2000, pp. 119-142.
 
 
 .. py:function:: broadcasting_l_curve_by_distance(x_axis, y_axis, regularization_values)
@@ -444,11 +470,14 @@ Module Contents
    :param method:
                   The desired information criterion, the available options are:
 
-                      - 'BIC': the Bayesian information criterion
+                      - 'BIC'
+                          The Bayesian information criterion
 
-                      - 'AIC': the Akaike information criterion
+                      - 'AIC'
+                          The Akaike information criterion
 
-                      - 'AICC': the corrected Akaike information criterion
+                      - 'AICC'
+                          The corrected Akaike information criterion
    :type method: str
 
    :returns: **selected_forces** -- The forces that were selected using the desired model, sized:
@@ -506,7 +535,7 @@ Module Contents
 
 .. py:function:: l_curve_selection(regularization_values, penalty, residual, forces_full_path, l_curve_type='forces', optimality_condition='curvature', curvature_method='numerical')
 
-   Selects the optimal regularization parameter and forces using L-curve methods
+   Selects the optimal regularization parameter and forces using L-curve methods.
 
    :param regularization_values: The regularization values that were searched over. This should be sized
                                  [number of frequency lines, number of regularization values]
@@ -523,34 +552,46 @@ Module Contents
    :type forces_full_path: ndarray
    :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                         parameter. The available types are:
-                            - forces (default) - This L-curve is constructed with the "size"
-                            of the forces on the Y-axis and the regularization parameter on the
-                            X-axis.
-                            - standard - This L-curve is constructed with the residual squared
-                            error on the X-axis and the "size" of the forces on the Y-axis.
+
+                            - forces (default)
+                                This L-curve is constructed with the "size" of the forces on the
+                                Y-axis and the regularization parameter on the X-axis [ar_lcs_3]_.
+
+                            - standard
+                                This L-curve is constructed with the residual squared error on the
+                                X-axis and the "size" of the forces on the Y-axis [ar_lcs_1]_, [ar_lcs_2]_.
    :type l_curve_type: str
    :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                 The options are:
-                                    - curvature (default) - This method searches for the regularization
-                                    parameter that results in maximum curvature of the L-curve. It is
-                                    also referred to as the L-curve criterion.
-                                    - distance - This method searches for the regularization parameter that
-                                    minimizes the distance between the L-curve and a "virtual origin". A
-                                    virtual origin is used, because the L-curve is scaled and offset to always
-                                    range from zero to one, in this case.
+
+                                    - curvature (default)
+                                        This method searches for the regularization parameter that results in
+                                        maximum curvature of the L-curve. It is also referred to as the L-curve
+                                        criterion.
+
+                                    - distance
+                                        This method searches for the regularization parameter that minimizes the
+                                        distance between the L-curve and a "virtual origin". A virtual origin is
+                                        used, because the L-curve is scaled and offset to always range from zero to
+                                        one, in this case.
    :type optimality_condition: str
    :param curvature_method: The method that is used to compute the curvature of the L-curve, in the
                             case that the curvature is used to find the optimal regularization
                             parameter. The options are:
-                                - numerical (default) - this method computes the curvature of
-                                the L-curve via numerical derivatives
-                                - cubic_spline - this method fits a cubic spline to the L-curve
-                                the computes the curvature from the cubic spline (this might
-                                perform better if the L-curve isn't "smooth")
+
+                                - numerical (default)
+                                    This method computes the curvature of the L-curve via numerical derivatives
+
+                                - cubic_spline
+                                    This method fits a cubic spline to the L-curve the computes the curvature
+                                    from the cubic spline (this might perform better if the L-curve isn't "smooth")
    :type curvature_method: str
 
-   :raises ValueError: If the requested L-curve type is not available.
-   :raises ValueError: If the requested optimality condition is not available.
+   :raises ValueError: If any of the following occurs:
+       
+           - If the requested L-curve type is not available.
+       
+           - If the requested optimality condition is not available.
 
    :returns: * **chosen_force** (*ndarray*) -- The force at the optimal regularization value, as defined by the L-curve.
                It is sized [number of frequency lines, force array size].
@@ -563,20 +604,22 @@ Module Contents
 
    .. rubric:: References
 
-   .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
-       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-       vol. 14, no. 6, pp. 1487-1503, 1993.
-   .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-       problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
-       2000, pp. 119-142.
-   .. [3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
-       Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
+   .. [ar_lcs_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
+      of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+      vol. 14, no. 6, pp. 1487-1503, 1993.
+
+   .. [ar_lcs_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+      problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
+      2000, pp. 119-142.
+
+   .. [ar_lcs_3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
+      Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
 
 
 .. py:function:: l_curve_criterion(x_axis, y_axis, regularization_values, method='numerical', return_curvature=False)
 
    Finds the "optimal" regularization value from an L-curve via the
-   location where its curvature is at a maximum (the L-curve criterion).
+   location where its curvature is at a maximum (the L-curve criterion) [ar_lcc_1]_, [ar_lcc_2]_.
 
    :param x_axis: This is a vector that defines the X-axis of the L-curve. The variable
                   that is used for this depends on the type of L-curve that is being
@@ -591,11 +634,15 @@ Module Contents
    :type regularization_values: ndarray
    :param method: This is the method by which the curvature is computed, the
                   available methods are:
-                      - numerical (default) - this method computes the curvature of
-                        the L-curve via numerical derivatives
-                      - cubic_spline - this method fits a cubic spline to the L-curve
-                        the computes the curvature from the cubic spline (this might
-                        perform better if the L-curve isn't "smooth")
+
+                      - numerical (default)
+                          This method computes the curvature of the L-curve via numerical
+                          derivatives
+
+                      - cubic_spline
+                          This method fits a cubic spline to the L-curve the computes the
+                          curvature from the cubic spline (this might perform better if the
+                          L-curve isn't "smooth")
    :type method: str
 
    :returns: * **optimal_regularization** (*float*) -- This is the optimal regularization value based on the L-curve
@@ -606,12 +653,12 @@ Module Contents
 
    .. rubric:: References
 
-   .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
-          of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-          vol. 14, no. 6, pp. 1487-1503, 1993.
-   .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-          problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
-          2000, pp. 119-142.
+   .. [ar_lcc_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization
+      of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+      vol. 14, no. 6, pp. 1487-1503, 1993.
+   .. [ar_lcc_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+      problems," in Computational Inverse Problems in Electrocardiology," WIT Press,
+      2000, pp. 119-142.
 
 
 .. py:function:: optimal_l_curve_by_distance(x_axis, y_axis, regularization_values)

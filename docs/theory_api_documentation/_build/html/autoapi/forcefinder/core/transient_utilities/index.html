@@ -473,38 +473,53 @@ end, to account for the windowing in the COLA procedure. It is shaped
 dictionary includes the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>pre_data_blank_frame_length - The amount of zeros that were added to</p></li>
+<li><dl class="simple">
+<dt>pre_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the beginning of the training
+response to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>post_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the end of the training response
+to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the left side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the right side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>number_cola_frames</dt><dd><p>The number of frames to segment the data into for the COLA processing.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_frame_length</dt><dd><p>The frame length (in samples) that was use for the COLA processing
+(corresponds to the cola_frame_length input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_overlap_samples</dt><dd><p>The overlap (in samples) between the frames in the COLA processing
+(corresponds to the cola_overlap_samples input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>zero_padded_signal_length</dt><dd><p>The frame length (in samples) of each zero padded COLA frame.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>the beginning of the training response to enable a perfect COLA
-reconstruction.</p>
-<ul class="simple">
-<li><p>post_data_blank_frame_length - The amount of zeros that were added to</p></li>
-</ul>
-<p>the end of the training response to enable a perfect COLA reconstruction.</p>
-<ul class="simple">
-<li><p>left_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>left side of the COLA frames.</p>
-<ul class="simple">
-<li><p>right_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>right side of the COLA frames.</p>
-<ul class="simple">
-<li><p>number_cola_frames - The number of frames to segment the data into for</p></li>
-</ul>
-<p>the COLA processing.</p>
-<ul class="simple">
-<li><p>cola_frame_length - The frame length (in samples) that was use for the</p></li>
-</ul>
-<p>COLA processing (corresponds to the cola_frame_length input parameter).</p>
-<ul class="simple">
-<li><p>cola_overlap_samples - The overlap (in samples) between the frames in</p></li>
-</ul>
-<p>the COLA processing (corresponds to the cola_overlap_samples input parameter).</p>
-<ul class="simple">
-<li><p>zero_padded_signal_length - The frame length (in samples) of each zero</p></li>
-</ul>
-<p>padded COLA frame.</p>
 </div></blockquote>
 </li>
 <li><p><strong>frame_indices</strong> (<em>ndarray</em>) – The indices to segment the padded_response into the COLA frames. It is shaped
@@ -535,21 +550,29 @@ reconstructing the signal with an inverse FFT.</p>
 padding. The keys in the dictionary should include:</p>
 <blockquote>
 <div><ul>
-<li><p>left_zero_pad_length - The amount of zeros that were used to pad the</p></li>
+<li><dl class="simple">
+<dt>left_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the left side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the right side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>number_cola_frames</dt><dd><p>The number of frames to segment the data into for the COLA processing.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>zero_padded_signal_length</dt><dd><p>The frame length (in samples) of each zero padded COLA frame.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>left side of the COLA frames.</p>
-<ul>
-<li><p>right_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>right side of the COLA frames.</p>
-<ul>
-<li><p>number_cola_frames - The number of frames to segment the data into for</p></li>
-</ul>
-<p>the COLA processing.</p>
-<ul>
-<li><p>zero_padded_signal_length - The frame length (in samples) of each zero</p></li>
-</ul>
-<p>padded COLA frame.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>window</strong> (<em>ndarray</em>) – The window (as a 1D array) to apply to the segmented data frames.</p></li>
@@ -575,38 +598,53 @@ shaped [number of frequency lines, number of response, number of responses].</p>
 and zero padding operation. The dictionary should include the following keys:</p>
 <blockquote>
 <div><ul>
-<li><p>pre_data_blank_frame_length - The amount of zeros that were added to</p></li>
+<li><dl class="simple">
+<dt>pre_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the beginning of the training
+response to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>post_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the end of the training response
+to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the left side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the right side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>number_cola_frames</dt><dd><p>The number of frames to segment the data into for the COLA processing.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_frame_length</dt><dd><p>The frame length (in samples) that was use for the COLA processing
+(corresponds to the cola_frame_length input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_overlap_samples</dt><dd><p>The overlap (in samples) between the frames in the COLA processing
+(corresponds to the cola_overlap_samples input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>zero_padded_signal_length</dt><dd><p>The frame length (in samples) of each zero padded COLA frame.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>the beginning of the training response to enable a perfect COLA
-reconstruction.</p>
-<ul>
-<li><p>post_data_blank_frame_length - The amount of zeros that were added to</p></li>
-</ul>
-<p>the end of the training response to enable a perfect COLA reconstruction.</p>
-<ul>
-<li><p>left_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>left side of the COLA frames.</p>
-<ul>
-<li><p>right_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>right side of the COLA frames.</p>
-<ul>
-<li><p>number_cola_frames - The number of frames to segment the data into for</p></li>
-</ul>
-<p>the COLA processing.</p>
-<ul>
-<li><p>cola_frame_length - The frame length (in samples) that was use for the</p></li>
-</ul>
-<p>COLA processing (corresponds to the cola_frame_length input parameter).</p>
-<ul>
-<li><p>cola_overlap_samples - The overlap (in samples) between the frames in</p></li>
-</ul>
-<p>the COLA processing (corresponds to the cola_overlap_samples input parameter).</p>
-<ul>
-<li><p>zero_padded_signal_length - The frame length (in samples) of each zero</p></li>
-</ul>
-<p>padded COLA frame.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>return_signal_length</strong> (<em>int</em>) – The desired number of samples in the returned signal.</p></li>
@@ -744,34 +782,48 @@ default is defined for the default Tukey window.</p></li>
 dictionary includes the following keys:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>pre_data_blank_frame_length - The amount of zeros that were added to</p></li>
+<li><dl class="simple">
+<dt>pre_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the beginning of the training
+response to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>post_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the end of the training
+response to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the left side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the right side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_frame_length</dt><dd><p>The frame length (in samples) that was use for the COLA processing
+(corresponds to the cola_frame_length input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_overlap_samples</dt><dd><p>The overlap (in samples) between the frames in the COLA processing
+(corresponds to the cola_overlap_samples input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>zero_padded_signal_length</dt><dd><p>The frame length (in samples) of each zero padded COLA frame.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>the beginning of the training response to enable a perfect COLA
-reconstruction.</p>
-<ul class="simple">
-<li><p>post_data_blank_frame_length - The amount of zeros that were added to</p></li>
-</ul>
-<p>the end of the training response to enable a perfect COLA reconstruction.</p>
-<ul class="simple">
-<li><p>left_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>left side of the COLA frames.</p>
-<ul class="simple">
-<li><p>right_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>right side of the COLA frames.</p>
-<ul class="simple">
-<li><p>cola_frame_length - The frame length (in samples) that was use for the</p></li>
-</ul>
-<p>COLA processing (corresponds to the cola_frame_length input parameter).</p>
-<ul class="simple">
-<li><p>cola_overlap_samples - The overlap (in samples) between the frames in</p></li>
-</ul>
-<p>the COLA processing (corresponds to the cola_overlap_samples input parameter).</p>
-<ul class="simple">
-<li><p>zero_padded_signal_length - The frame length (in samples) of each zero</p></li>
-</ul>
-<p>padded COLA frame.</p>
 </div></blockquote>
 </li>
 <li><p><strong>window</strong> (<em>ndarray</em>) – The window that was used in the COLA processing.</p></li>
@@ -798,34 +850,48 @@ taken when reconstructing the signal with an inverse FFT.</p>
 and zero padding operation. The dictionary should include the following keys:</p>
 <blockquote>
 <div><ul>
-<li><p>pre_data_blank_frame_length - The amount of zeros that were added to</p></li>
+<li><dl class="simple">
+<dt>pre_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the beginning of the training
+response to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>post_data_blank_frame_length</dt><dd><p>The amount of zeros that were added to the end of the training response
+to enable a perfect COLA reconstruction.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the left side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_zero_pad_length</dt><dd><p>The amount of zeros that were used to pad the right side of the COLA
+frames.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_frame_length</dt><dd><p>The frame length (in samples) that was use for the COLA processing
+(corresponds to the cola_frame_length input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>cola_overlap_samples</dt><dd><p>The overlap (in samples) between the frames in the COLA processing
+(corresponds to the cola_overlap_samples input parameter).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>zero_padded_signal_length</dt><dd><p>The frame length (in samples) of each zero padded COLA frame.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>the beginning of the training response to enable a perfect COLA
-reconstruction.</p>
-<ul>
-<li><p>post_data_blank_frame_length - The amount of zeros that were added to</p></li>
-</ul>
-<p>the end of the training response to enable a perfect COLA reconstruction.</p>
-<ul>
-<li><p>left_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>left side of the COLA frames.</p>
-<ul>
-<li><p>right_zero_pad_length - The amount of zeros that were used to pad the</p></li>
-</ul>
-<p>right side of the COLA frames.</p>
-<ul>
-<li><p>cola_frame_length - The frame length (in samples) that was use for the</p></li>
-</ul>
-<p>COLA processing (corresponds to the cola_frame_length input parameter).</p>
-<ul>
-<li><p>cola_overlap_samples - The overlap (in samples) between the frames in</p></li>
-</ul>
-<p>the COLA processing (corresponds to the cola_overlap_samples input parameter).</p>
-<ul>
-<li><p>zero_padded_signal_length - The frame length (in samples) of each zero</p></li>
-</ul>
-<p>padded COLA frame.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>return_signal_length</strong> (<em>int</em>) – The desired number of samples in the returned signal.</p></li>

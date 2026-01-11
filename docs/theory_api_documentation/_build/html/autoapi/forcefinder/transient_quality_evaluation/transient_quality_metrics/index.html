@@ -453,17 +453,25 @@ for the transient response prediction quality metrics.</p>
 The available options are:</p>
 <blockquote>
 <div><ul>
-<li><p>training (default) - This compares the responses for the</p></li>
+<li><dl class="simple">
+<dt>training (default)</dt><dd><p>This compares the responses for the transformed training
+DOFs in the SPR object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>validation</dt><dd><p>This compares the responses for the validation response
+DOFs in the SPR object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>target</dt><dd><p>This compares the responses for all the target response
+DOFs in the SPR object.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>transformed training DOFs in the SPR object.</p>
-<ul>
-<li><p>validation - This compares the responses for the validation</p></li>
-</ul>
-<p>response DOFs in the SPR object.</p>
-<ul>
-<li><p>target - This compares the responses for all the target</p></li>
-</ul>
-<p>response DOFs in the SPR object.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>samples_per_frame</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in each measurement frame to compute the RMS
@@ -634,15 +642,22 @@ or max) between the check and truth responses.</p>
 for the truth response in the comparison.</p></li>
 <li><p><strong>check_response</strong> (<em>TimeHistoryArray</em>) – The segmented TimeHistoryArray (from the split_into_frames method)
 for the check response in the comparison.</p></li>
-<li><p><strong>level_type</strong> (<em>str</em><em>, </em><em>optional</em>) – <dl>
-<dt>The type of level to be used in the comparison. The options are:</dt><dd><ul>
-<li><p>rms - The rms level error for each frame of data in the</p></li>
-</ul>
-<p>responses. This is the default.
-- max - The error in the maximum level that is seem for each
-frame of data in the responses.</p>
+<li><p><strong>level_type</strong> (<em>str</em><em>, </em><em>optional</em>) – <p>The type of level to be used in the comparison. The options are:</p>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt>rms (default)</dt><dd><p>The rms level error for each frame of data in the responses</p>
 </dd>
 </dl>
+</li>
+<li><dl class="simple">
+<dt>max</dt><dd><p>The error in the maximum level that is seem for each frame
+of data in the responses.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
 </p></li>
 </ul>
 </dd>
@@ -680,17 +695,25 @@ segmented using the <cite>split_into_frames</cite> method.</p>
 The available options are:</p>
 <blockquote>
 <div><ul>
-<li><p>training (default) - This compares the responses for the</p></li>
+<li><dl class="simple">
+<dt>training (default)</dt><dd><p>This compares the responses for the transformed training
+DOFs in the SPR object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>validation</dt><dd><p>This compares the responses for the validation response DOFs
+in the SPR object.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>target</dt><dd><p>This compares the responses for all the target response DOFs
+in the SPR object.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>transformed training DOFs in the SPR object.</p>
-<ul>
-<li><p>validation - This compares the responses for the validation</p></li>
-</ul>
-<p>response DOFs in the SPR object.</p>
-<ul>
-<li><p>target - This compares the responses for all the target</p></li>
-</ul>
-<p>response DOFs in the SPR object.</p>
 </div></blockquote>
 </p></li>
 <li><p><strong>samples_per_frame</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of samples in each measurement frame to compute the RMS
@@ -725,17 +748,32 @@ are scaled down where the RMS level is small). The default is false.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>db_error_stft</strong> –</p>
-<dl class="simple">
-<dt>A dictionary with the following keys:</dt><dd><ul class="simple">
-<li><p>time (ndarray) - The time vector for the STFT.</p></li>
-<li><p>frequency (ndarray) - The frequency vector for the STFT.</p></li>
-<li><p>response_coordinate (coordinate_array) - The response
-coordinate array for the STFT.</p></li>
-<li><p>amplitude (ndarray) - The dB error STFT, it is organized
-[response coordinate, frequency axis, time axis].</p></li>
-</ul>
+<p>A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>time (ndarray)</dt><dd><p>The time vector for the STFT.</p>
 </dd>
 </dl>
+</li>
+<li><dl class="simple">
+<dt>frequency (ndarray)</dt><dd><p>The frequency vector for the STFT.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>response_coordinate (coordinate_array)</dt><dd><p>The response coordinate array for the STFT.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>amplitude (ndarray)</dt><dd><p>The dB error STFT, it is organized [response coordinate,
+frequency axis, time axis].</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -783,17 +821,32 @@ is hann.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>stft</strong> –</p>
-<dl class="simple">
-<dt>A dictionary with the following keys:</dt><dd><ul class="simple">
-<li><p>time (ndarray) - The time vector for the STFT.</p></li>
-<li><p>frequency (ndarray) - The frequency vector for the STFT.</p></li>
-<li><p>response_coordinate (coordinate_array) - The response
-coordinate array for the STFT.</p></li>
-<li><p>amplitude (ndarray) - The STFT, it is organized
-[response coordinate, frequency axis, time axis].</p></li>
-</ul>
+<p>A dictionary with the following keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>time (ndarray)</dt><dd><p>The time vector for the STFT.</p>
 </dd>
 </dl>
+</li>
+<li><dl class="simple">
+<dt>frequency (ndarray)</dt><dd><p>The frequency vector for the STFT.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>response_coordinate (coordinate_array)</dt><dd><p>The response coordinate array for the STFT.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>amplitude (ndarray)</dt><dd><p>The STFT, it is organized [response coordinate,
+frequency axis, time axis].</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>

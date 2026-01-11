@@ -53,14 +53,18 @@ Module Contents
    :type spr_object: TransientSourcePathReceiver
    :param channel_set: The channel set to make the response comparisons between.
                        The available options are:
-                           - training (default) - This compares the responses for the
-                           transformed training DOFs in the SPR object.
 
-                           - validation - This compares the responses for the validation
-                           response DOFs in the SPR object.
+                           - training (default)
+                               This compares the responses for the transformed training
+                               DOFs in the SPR object.
 
-                           - target - This compares the responses for all the target
-                           response DOFs in the SPR object.
+                           - validation
+                               This compares the responses for the validation response
+                               DOFs in the SPR object.
+
+                           - target
+                               This compares the responses for all the target response
+                               DOFs in the SPR object.
    :type channel_set: str, optional
    :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                              for. Either this argument or `frame_length` must be specified.
@@ -204,10 +208,13 @@ Module Contents
    :type check_response: TimeHistoryArray
    :param level_type:
                       The type of level to be used in the comparison. The options are:
-                          - rms - The rms level error for each frame of data in the
-                          responses. This is the default.
-                          - max - The error in the maximum level that is seem for each
-                          frame of data in the responses.
+
+                          - rms (default)
+                              The rms level error for each frame of data in the responses
+
+                          - max
+                              The error in the maximum level that is seem for each frame
+                              of data in the responses.
    :type level_type: str, optional
 
    :returns: Returns a time history array of the time varying level error in dB for
@@ -234,14 +241,18 @@ Module Contents
    :type spr_object: TransientSourcePathReceiver
    :param channel_set: The channel set to make the response comparisons between.
                        The available options are:
-                           - training (default) - This compares the responses for the
-                           transformed training DOFs in the SPR object.
 
-                           - validation - This compares the responses for the validation
-                           response DOFs in the SPR object.
+                           - training (default)
+                               This compares the responses for the transformed training
+                               DOFs in the SPR object.
 
-                           - target - This compares the responses for all the target
-                           response DOFs in the SPR object.
+                           - validation
+                               This compares the responses for the validation response DOFs
+                               in the SPR object.
+
+                           - target
+                               This compares the responses for all the target response DOFs
+                               in the SPR object.
    :type channel_set: str, optional
    :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                              for. Either this argument or `frame_length` must be specified.
@@ -281,12 +292,19 @@ Module Contents
    :returns: **db_error_stft** --
 
              A dictionary with the following keys:
-                 - time (ndarray) - The time vector for the STFT.
-                 - frequency (ndarray) - The frequency vector for the STFT.
-                 - response_coordinate (coordinate_array) - The response
-                   coordinate array for the STFT.
-                 - amplitude (ndarray) - The dB error STFT, it is organized
-                   [response coordinate, frequency axis, time axis].
+
+                 - time (ndarray)
+                     The time vector for the STFT.
+
+                 - frequency (ndarray)
+                     The frequency vector for the STFT.
+
+                 - response_coordinate (coordinate_array)
+                     The response coordinate array for the STFT.
+
+                 - amplitude (ndarray)
+                     The dB error STFT, it is organized [response coordinate,
+                     frequency axis, time axis].
    :rtype: dict
 
    .. rubric:: Notes
@@ -334,12 +352,19 @@ Module Contents
    :returns: **stft** --
 
              A dictionary with the following keys:
-                 - time (ndarray) - The time vector for the STFT.
-                 - frequency (ndarray) - The frequency vector for the STFT.
-                 - response_coordinate (coordinate_array) - The response
-                   coordinate array for the STFT.
-                 - amplitude (ndarray) - The STFT, it is organized
-                   [response coordinate, frequency axis, time axis].
+
+                 - time (ndarray)
+                     The time vector for the STFT.
+
+                 - frequency (ndarray)
+                     The frequency vector for the STFT.
+
+                 - response_coordinate (coordinate_array)
+                     The response coordinate array for the STFT.
+
+                 - amplitude (ndarray)
+                     The STFT, it is organized [response coordinate,
+                     frequency axis, time axis].
    :rtype: dict
 
    .. rubric:: Notes
