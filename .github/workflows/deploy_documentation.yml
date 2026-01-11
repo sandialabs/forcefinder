@@ -38,12 +38,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .[dev]
-      
-      - name: Debug jupyter-book installation
-        run: |
-          which jupyter-book || echo "no jupyter-book script on PATH"
-          python -m pip show jupyter-book || echo "jupyter-book not installed?"
-          
+            
+      # Makes sure that the example data is generated prior to building the book
+      - name: Generate data
+        run: jupyter nbconvert --to notebook --execute docs/theory_api_documentation/example_utilization_intro.ipynb --inplace
+
       # Build the book
       - name: Build the book
         run: jupyter-book build docs/theory_api_documentation

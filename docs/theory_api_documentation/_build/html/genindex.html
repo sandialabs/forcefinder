@@ -1,0 +1,1246 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="example_utilization_intro.html">Example Utilization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_spr_utilization.html">Basic Use of the SourcePathReceiver Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transient_metrics.html">Using Transient Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-abscissa"><strong>abscissa</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.abscissa">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.abscissa">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.abscissa">(SourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-abscissa_spacing"><strong>abscissa_spacing</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.abscissa_spacing">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.abscissa_spacing">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.abscissa_spacing">(SourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/utilities/index.html#forcefinder.core.utilities.apply_buzz_method">apply_buzz_method() (in module forcefinder.core.utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.apply_reference_weighting">apply_reference_weighting() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.apply_response_limit">apply_response_limit() (PowerSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.apply_response_weighting">apply_response_weighting() (SourcePathReceiver method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.attenuate_force">attenuate_force() (TransientSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.attenuate_signal">attenuate_signal() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.auto_tikhonov_by_cv_rse">auto_tikhonov_by_cv_rse() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.auto_tikhonov_by_cv_rse">(PowerSourcePathReceiver method)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.auto_tikhonov_by_cv_rse">(TransientSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.auto_tikhonov_by_l_curve">auto_tikhonov_by_l_curve() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.auto_tikhonov_by_l_curve">(PowerSourcePathReceiver method)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.auto_tikhonov_by_l_curve">(TransientSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.auto_truncation_by_l_curve">auto_truncation_by_l_curve() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.auto_truncation_by_l_curve">(PowerSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.average_asd_error">average_asd_error() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.average_asd_error">(PowerSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.average_rms_error">average_rms_error() (TransientSourcePathReceiver method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit.breakpoint_frequency">breakpoint_frequency (ResponseLimit attribute)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit.breakpoint_level">breakpoint_level (ResponseLimit attribute)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.broadcasting_l_curve_by_distance">broadcasting_l_curve_by_distance() (in module forcefinder.core.auto_regularization)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.broadcasting_l_curve_criterion">broadcasting_l_curve_criterion() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.buzz_cpsd">buzz_cpsd (PowerSourcePathReceiver attribute)</a>
+
+      <ul>
+        <li><a href="object_attribute_definitions.html#term-buzz_cpsd-PowerSourcePathReceiver-only"><strong>(PowerSourcePathReceiver only)</strong></a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.check_ascending">check_ascending() (in module forcefinder.core.response_limit)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/utilities/index.html#forcefinder.core.utilities.check_frequency_abscissa">check_frequency_abscissa() (in module forcefinder.core.utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/utilities/index.html#forcefinder.core.utilities.compare_sampling_rate">compare_sampling_rate() (in module forcefinder.core.utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_average_rms_error">compute_average_rms_error() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_error_stft">compute_error_stft() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_global_rms_error">compute_global_rms_error() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.compute_regularized_forces">compute_regularized_forces() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.compute_regularized_residual_penalty_for_l_curve">compute_regularized_residual_penalty_for_l_curve() (in module forcefinder.core.auto_regularization)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.compute_regularized_svd_inv">compute_regularized_svd_inv() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.compute_residual_penalty_for_l_curve">compute_residual_penalty_for_l_curve() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_stft">compute_stft() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.compute_tikhonov_regularized_frf_pinv">compute_tikhonov_regularized_frf_pinv() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_level_error">compute_time_varying_level_error() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.compute_time_varying_trac">compute_time_varying_trac() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+      <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#forcefinder.rattlesnake_control_laws.spr_random_control_law.RandomControlSourcePathReceiver.control">control() (RandomControlSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.copy">copy() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.create_zero_padded_response_fft">create_zero_padded_response_fft() (in module forcefinder.core.transient_utilities)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.elastic_net_by_information_criterion">elastic_net_by_information_criterion() (LinearSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/sparse_functions/index.html#forcefinder.core.sparse_functions.elastic_net_full_path">elastic_net_full_path() (in module forcefinder.core.sparse_functions)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/sparse_functions/index.html#forcefinder.core.sparse_functions.elastic_net_full_path_all_frequencies_parallel">elastic_net_full_path_all_frequencies_parallel() (in module forcefinder.core.sparse_functions)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.error_summary">error_summary() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.error_summary">(PowerSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.extract_elements_by_abscissa">extract_elements_by_abscissa() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.extract_time_elements_by_abscissa">extract_time_elements_by_abscissa() (TransientSourcePathReceiver method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.LevelErrorCanvas.figure">figure (LevelErrorCanvas attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.SpectrogramCanvas.figure">(SpectrogramCanvas attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-force"><strong>force</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.force">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.force">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.force">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.force">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder
+
+      <ul>
+        <li><a href="autoapi/forcefinder/index.html#module-forcefinder">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/index.html#module-forcefinder.core">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.auto_regularization
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#module-forcefinder.core.auto_regularization">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.inverse_processing
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/inverse_processing/index.html#module-forcefinder.core.inverse_processing">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.response_limit
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/response_limit/index.html#module-forcefinder.core.response_limit">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.source_path_receiver
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#module-forcefinder.core.source_path_receiver">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.sparse_functions
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/sparse_functions/index.html#module-forcefinder.core.sparse_functions">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    forcefinder.core.transient_utilities
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#module-forcefinder.core.transient_utilities">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.core.utilities
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/utilities/index.html#module-forcefinder.core.utilities">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.rattlesnake_control_laws
+
+      <ul>
+        <li><a href="autoapi/forcefinder/rattlesnake_control_laws/index.html#module-forcefinder.rattlesnake_control_laws">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.rattlesnake_control_laws.spr_random_control_law
+
+      <ul>
+        <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#module-forcefinder.rattlesnake_control_laws.spr_random_control_law">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.transient_quality_evaluation
+
+      <ul>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/index.html#module-forcefinder.transient_quality_evaluation">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.transient_quality_evaluation.transient_gui_plot
+
+      <ul>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#module-forcefinder.transient_quality_evaluation.transient_gui_plot">module</a>
+</li>
+      </ul></li>
+      <li>
+    forcefinder.transient_quality_evaluation.transient_quality_metrics
+
+      <ul>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#module-forcefinder.transient_quality_evaluation.transient_quality_metrics">module</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.frequency_interpolation">frequency_interpolation() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-frfs"><strong>frfs</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.frfs">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.frfs">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.frfs">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id0">(SourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.frfs">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.generate_signal_from_cola_frames">generate_signal_from_cola_frames() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.generate_zero_padded_response_fft">generate_zero_padded_response_fft() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.get_nesting_depth">get_nesting_depth() (in module forcefinder.core.response_limit)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.global_asd_error">global_asd_error() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.global_asd_error">(PowerSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.global_rms_error">global_rms_error() (TransientSourcePathReceiver method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit.interpolate_to_full_frequency">interpolate_to_full_frequency() (ResponseLimit method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.inverse_settings">inverse_settings (LinearSourcePathReceiver attribute)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.inverse_settings">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.inverse_settings">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.inverse_settings">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/utilities/index.html#forcefinder.core.utilities.is_cpsd">is_cpsd() (in module forcefinder.core.utilities)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.k_fold_cv">k_fold_cv() (in module forcefinder.core.auto_regularization)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.l_curve_criterion">l_curve_criterion() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.l_curve_optimal_regularization">l_curve_optimal_regularization() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.l_curve_selection">l_curve_selection() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.leave_one_out_cv">leave_one_out_cv() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.LevelErrorCanvas">LevelErrorCanvas (class in forcefinder.transient_quality_evaluation.transient_gui_plot)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit.limit_coordinate">limit_coordinate (ResponseLimit attribute)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/inverse_processing/index.html#forcefinder.core.inverse_processing.linear_inverse_processing">linear_inverse_processing() (in module forcefinder.core.inverse_processing)</a>
+</li>
+      <li><a href="spr_types.html#term-LinearSourcePathReceiver"><strong>LinearSourcePathReceiver</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver">(class in forcefinder.core.source_path_receiver)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.load">load() (SourcePathReceiver class method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.load">(TransientSourcePathReceiver class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.make_buzz_cpsd_from_frf">make_buzz_cpsd_from_frf() (PowerSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.manual_inverse">manual_inverse() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.manual_inverse">(PowerSourcePathReceiver method)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.manual_inverse">(TransientSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.match_trace_update">match_trace_update() (PowerSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.mean_squared_error">mean_squared_error() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="autoapi/forcefinder/index.html#module-forcefinder">forcefinder</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/index.html#module-forcefinder.core">forcefinder.core</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#module-forcefinder.core.auto_regularization">forcefinder.core.auto_regularization</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/inverse_processing/index.html#module-forcefinder.core.inverse_processing">forcefinder.core.inverse_processing</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/response_limit/index.html#module-forcefinder.core.response_limit">forcefinder.core.response_limit</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#module-forcefinder.core.source_path_receiver">forcefinder.core.source_path_receiver</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/sparse_functions/index.html#module-forcefinder.core.sparse_functions">forcefinder.core.sparse_functions</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#module-forcefinder.core.transient_utilities">forcefinder.core.transient_utilities</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/utilities/index.html#module-forcefinder.core.utilities">forcefinder.core.utilities</a>
+</li>
+        <li><a href="autoapi/forcefinder/rattlesnake_control_laws/index.html#module-forcefinder.rattlesnake_control_laws">forcefinder.rattlesnake_control_laws</a>
+</li>
+        <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#module-forcefinder.rattlesnake_control_laws.spr_random_control_law">forcefinder.rattlesnake_control_laws.spr_random_control_law</a>
+</li>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/index.html#module-forcefinder.transient_quality_evaluation">forcefinder.transient_quality_evaluation</a>
+</li>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#module-forcefinder.transient_quality_evaluation.transient_gui_plot">forcefinder.transient_quality_evaluation.transient_gui_plot</a>
+</li>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#module-forcefinder.transient_quality_evaluation.transient_quality_metrics">forcefinder.transient_quality_evaluation.transient_quality_metrics</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.optimal_l_curve_by_distance">optimal_l_curve_by_distance() (in module forcefinder.core.auto_regularization)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#forcefinder.rattlesnake_control_laws.spr_random_control_law.parse_extra_parameters">parse_extra_parameters() (in module forcefinder.rattlesnake_control_laws.spr_random_control_law)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.LevelErrorCanvas.plot_data">plot_data() (LevelErrorCanvas method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.SpectrogramCanvas.plot_data">(SpectrogramCanvas method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/inverse_processing/index.html#forcefinder.core.inverse_processing.power_inverse_processing">power_inverse_processing() (in module forcefinder.core.inverse_processing)</a>
+</li>
+      <li><a href="spr_types.html#term-PowerSourcePathReceiver"><strong>PowerSourcePathReceiver</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver">(class in forcefinder.core.source_path_receiver)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-predicted_response"><strong>predicted_response</strong></a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.predicted_response_specific_dofs">predicted_response_specific_dofs() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.predicted_response_specific_dofs">(PowerSourcePathReceiver method)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.predicted_response_specific_dofs">(TransientSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.prepare_for_zero_padding">prepare_for_zero_padding() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html#forcefinder.transient_quality_evaluation.transient_quality_metrics.preprocess_data_for_quality_metric">preprocess_data_for_quality_metric() (in module forcefinder.transient_quality_evaluation.transient_quality_metrics)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#forcefinder.rattlesnake_control_laws.spr_random_control_law.RandomControlSourcePathReceiver">RandomControlSourcePathReceiver (class in forcefinder.rattlesnake_control_laws.spr_random_control_law)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.reconstruct_cola_frames">reconstruct_cola_frames() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-reconstructed_target_response"><strong>reconstructed_target_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.reconstructed_target_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.reconstructed_target_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reconstructed_target_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.reconstructed_target_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-reconstructed_training_response"><strong>reconstructed_training_response</strong></a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-reconstructed_validation_response"><strong>reconstructed_validation_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.reconstructed_validation_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.reconstructed_validation_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reconstructed_validation_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.reconstructed_validation_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/utilities/index.html#forcefinder.core.utilities.reduce_drives_condition_not_met">reduce_drives_condition_not_met() (in module forcefinder.core.utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.reduce_drives_update">reduce_drives_update() (PowerSourcePathReceiver method)</a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-reference_coordinate"><strong>reference_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.reference_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.reference_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reference_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.reference_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-reference_transformation"><strong>reference_transformation</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.reference_transformation">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.reference_transformation">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reference_transformation">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.reference_transformation">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reset_reference_transformation">reset_reference_transformation() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.reset_response_transformation">reset_response_transformation() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-response_coordinate"><strong>response_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.response_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.response_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.response_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.response_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-response_transformation"><strong>response_transformation</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.response_transformation">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.response_transformation">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.response_transformation">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.response_transformation">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/response_limit/index.html#forcefinder.core.response_limit.ResponseLimit">ResponseLimit (class in forcefinder.core.response_limit)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.rms_asd_error">rms_asd_error() (LinearSourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.rms_asd_error">(PowerSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.save">save() (SourcePathReceiver method)</a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.save">(TransientSourcePathReceiver method)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.select_model_by_information_criterion">select_model_by_information_criterion() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.set_reference_transformation_by_normalization">set_reference_transformation_by_normalization() (SourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.set_response_transformation_by_normalization">set_response_transformation_by_normalization() (SourcePathReceiver method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.sinc_interpolation">sinc_interpolation() (in module forcefinder.core.transient_utilities)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.sosfiltfilt">sosfiltfilt() (TransientSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver">SourcePathReceiver (class in forcefinder.core.source_path_receiver)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.SpectrogramCanvas">SpectrogramCanvas (class in forcefinder.transient_quality_evaluation.transient_gui_plot)</a>
+</li>
+      <li><a href="autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html#forcefinder.transient_quality_evaluation.transient_gui_plot.system_dependent_dpi">system_dependent_dpi() (in module forcefinder.transient_quality_evaluation.transient_gui_plot)</a>
+</li>
+      <li><a href="autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html#forcefinder.rattlesnake_control_laws.spr_random_control_law.RandomControlSourcePathReceiver.system_id_update">system_id_update() (RandomControlSourcePathReceiver method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-target_frfs"><strong>target_frfs</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.target_frfs">(SourcePathReceiver property)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-target_response"><strong>target_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.target_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.target_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.target_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.target_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-target_response_coordinate"><strong>target_response_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.target_response_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.target_response_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.target_response_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.target_response_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/auto_regularization/index.html#forcefinder.core.auto_regularization.tikhonov_full_path_for_l_curve">tikhonov_full_path_for_l_curve() (in module forcefinder.core.auto_regularization)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.time_abscissa">time_abscissa (TransientSourcePathReceiver attribute)</a>
+
+      <ul>
+        <li><a href="object_attribute_definitions.html#term-time_abscissa-TransientSourcePathReceiver-only"><strong>(TransientSourcePathReceiver only)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.time_abscissa_spacing">time_abscissa_spacing (TransientSourcePathReceiver attribute)</a>
+
+      <ul>
+        <li><a href="object_attribute_definitions.html#term-time_abscissa_spacing-TransientSourcePathReceiver-only"><strong>(TransientSourcePathReceiver only)</strong></a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.time_varying_level_error">time_varying_level_error() (TransientSourcePathReceiver method)</a>
+</li>
+      <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.time_varying_trac">time_varying_trac() (TransientSourcePathReceiver method)</a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-training_frfs"><strong>training_frfs</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.training_frfs">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.training_frfs">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.training_frfs">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id1">(SourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.training_frfs">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-training_response"><strong>training_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.training_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.training_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.training_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.training_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-training_response_coordinate"><strong>training_response_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.training_response_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.training_response_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.training_response_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.training_response_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-transformed_force"><strong>transformed_force</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_force">(LinearSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_force">(PowerSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_force">(TransientSourcePathReceiver property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-transformed_reconstructed_response"><strong>transformed_reconstructed_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_reconstructed_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id4">(LinearSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_reconstructed_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id17">(PowerSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.transformed_reconstructed_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_reconstructed_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id32">(TransientSourcePathReceiver property)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-transformed_reference_coordinate"><strong>transformed_reference_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_reference_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_reference_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.transformed_reference_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_reference_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-transformed_response_coordinate"><strong>transformed_response_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_response_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_response_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.transformed_response_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_response_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-transformed_training_frfs"><strong>transformed_training_frfs</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_training_frfs">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_training_frfs">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.transformed_training_frfs">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id2">(SourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_training_frfs">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-transformed_training_response"><strong>transformed_training_response</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.transformed_training_response">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id3">(LinearSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.transformed_training_response">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id16">(PowerSourcePathReceiver property)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.transformed_training_response">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.transformed_training_response">(TransientSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#id31">(TransientSourcePathReceiver property)</a>
+</li>
+      </ul></li>
+      <li><a href="autoapi/forcefinder/core/inverse_processing/index.html#forcefinder.core.inverse_processing.transient_inverse_processing">transient_inverse_processing() (in module forcefinder.core.inverse_processing)</a>
+</li>
+      <li><a href="spr_types.html#term-TransientSourcePathReceiver"><strong>TransientSourcePathReceiver</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver">(class in forcefinder.core.source_path_receiver)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="object_attribute_definitions.html#term-validation_frfs"><strong>validation_frfs</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.validation_frfs">(SourcePathReceiver property)</a>
+</li>
+      </ul></li>
+      <li><a href="object_attribute_definitions.html#term-validation_response"><strong>validation_response</strong></a>
+</li>
+      <li><a href="object_attribute_definitions.html#term-validation_response_coordinate"><strong>validation_response_coordinate</strong></a>
+
+      <ul>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.LinearSourcePathReceiver.validation_response_coordinate">(LinearSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.PowerSourcePathReceiver.validation_response_coordinate">(PowerSourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.SourcePathReceiver.validation_response_coordinate">(SourcePathReceiver attribute)</a>
+</li>
+        <li><a href="autoapi/forcefinder/core/source_path_receiver/index.html#forcefinder.core.source_path_receiver.TransientSourcePathReceiver.validation_response_coordinate">(TransientSourcePathReceiver attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

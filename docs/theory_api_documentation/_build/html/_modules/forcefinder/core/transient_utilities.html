@@ -1,0 +1,975 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>forcefinder.core.transient_utilities &#8212; ForceFinder Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/forcefinder/core/transient_utilities';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../theory_api_documentation_intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ForceFinder Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../theory_api_documentation_intro.html">
+                    ForceFinder Theory and Programming Interface Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../forcefinder_framework.html">ForceFinder Framework</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../spr_types.html">SourcePathReceiver Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../automatic_bookkeeping.html">Automatic Bookkeeping, Sample Splitting, and Inverse Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_method_code.html">Anatomy of an Inverse Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../object_attribute_definitions.html">SourcePathReceiver Object Attributes</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../method_theory_intro.html">Theory Guide</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../inverse_problem_form.html">Inverse Problem Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../regularization_methods.html">Regularization Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../hyperparameter_tuning_methods.html">Hyperparameter Tuning Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../transformation_theory.html">Transformation Theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../miscellaneous_techniques.html">Theory for Miscellaneous Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../error_metrics.html">Error Metrics</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../example_utilization_intro.html">Example Utilization</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/index.html">forcefinder</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/core/index.html">forcefinder.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/auto_regularization/index.html">forcefinder.core.auto_regularization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/inverse_processing/index.html">forcefinder.core.inverse_processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/response_limit/index.html">forcefinder.core.response_limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/source_path_receiver/index.html">forcefinder.core.source_path_receiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/sparse_functions/index.html">forcefinder.core.sparse_functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/transient_utilities/index.html">forcefinder.core.transient_utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/core/utilities/index.html">forcefinder.core.utilities</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/index.html">forcefinder.rattlesnake_control_laws</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/rattlesnake_control_laws/spr_random_control_law/index.html">forcefinder.rattlesnake_control_laws.spr_random_control_law</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/index.html">forcefinder.transient_quality_evaluation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_gui_plot/index.html">forcefinder.transient_quality_evaluation.transient_gui_plot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/forcefinder/transient_quality_evaluation/transient_quality_metrics/index.html">forcefinder.transient_quality_evaluation.transient_quality_metrics</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for forcefinder.core.transient_utilities</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Contains helper functions for transient source estimation problems.</span>
+
+<span class="sd">Copyright 2025 National Technology &amp; Engineering Solutions of Sandia,</span>
+<span class="sd">LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.</span>
+<span class="sd">Government retains certain rights in this software.</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_window</span><span class="p">,</span> <span class="n">check_COLA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.fft</span><span class="w"> </span><span class="kn">import</span> <span class="n">rfft</span><span class="p">,</span> <span class="n">irfft</span><span class="p">,</span> <span class="n">next_fast_len</span><span class="p">,</span> <span class="n">rfftfreq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<div class="viewcode-block" id="prepare_for_zero_padding">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.prepare_for_zero_padding">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">prepare_for_zero_padding</span><span class="p">(</span><span class="n">spr_object</span><span class="p">,</span> 
+                             <span class="n">cola_frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                             <span class="n">cola_window</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+                             <span class="n">cola_overlap_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identifies and creates several parameters that will be used when zero</span>
+<span class="sd">    padding the data in a transient source estimation problem.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spr_object : TransientSourcePathReceiver</span>
+<span class="sd">        The transient SPR object that is being used for the source estimation</span>
+<span class="sd">        problem. </span>
+<span class="sd">    cola_frame_length : int, optional</span>
+<span class="sd">        The frame length (in samples) for the COLA processing. The default frame </span>
+<span class="sd">        length is approximately Fs/df from the FRFs.</span>
+<span class="sd">    cola_window : string, float, or tuple</span>
+<span class="sd">        The window to use in the COLA processing. This input is passed directly to </span>
+<span class="sd">        the SciPy get_window function. The default is a Tukey window with an alpha </span>
+<span class="sd">        of 0.5.</span>
+<span class="sd">    cola_overlap_samples : int, optional</span>
+<span class="sd">        The overlap (in samples) between the frames in the COLA processing, such that</span>
+<span class="sd">        cola_overlap_samples/cola_frame_length results in the overlap percentage. A</span>
+<span class="sd">        default is defined for the default Tukey window.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    padded_response : ndarray</span>
+<span class="sd">        The training response of the SPR object with zero padding on the start and </span>
+<span class="sd">        end, to account for the windowing in the COLA procedure. It is shaped </span>
+<span class="sd">        [number of samples, number of responses].</span>
+<span class="sd">    signal_sizes : dict</span>
+<span class="sd">        The various signal sizes that were used in the zero padding operation. The</span>
+<span class="sd">        dictionary includes the following keys: </span>
+<span class="sd">            - pre_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the beginning of the training response to enable a perfect COLA </span>
+<span class="sd">            reconstruction.</span>
+
+<span class="sd">            - post_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the end of the training response to enable a perfect COLA reconstruction.</span>
+
+<span class="sd">            - left_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            left side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - right_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            right side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - number_cola_frames - The number of frames to segment the data into for </span>
+<span class="sd">            the COLA processing.</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_frame_length - The frame length (in samples) that was use for the </span>
+<span class="sd">            COLA processing (corresponds to the cola_frame_length input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_overlap_samples - The overlap (in samples) between the frames in </span>
+<span class="sd">            the COLA processing (corresponds to the cola_overlap_samples input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - zero_padded_signal_length - The frame length (in samples) of each zero </span>
+<span class="sd">            padded COLA frame. </span>
+<span class="sd">    frame_indices : ndarray</span>
+<span class="sd">        The indices to segment the padded_response into the COLA frames. It is shaped</span>
+<span class="sd">        [number of frames, cola frame length]. </span>
+<span class="sd">    window : ndarray</span>
+<span class="sd">        The window that was used in the COLA processing. </span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The zero_padded_signal_length is determined by an algorithm that uses the SciPy </span>
+<span class="sd">    next_fast_len function, which can return an odd length. Care should be taken when </span>
+<span class="sd">    reconstructing the signal with an inverse FFT.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_order</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">spr_object</span><span class="o">.</span><span class="n">abscissa</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">/</span><span class="n">spr_object</span><span class="o">.</span><span class="n">abscissa_spacing</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span> <span class="c1"># slightly strange operations to guarantee a model order that is divisible by 4</span>
+    <span class="k">if</span> <span class="n">cola_frame_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cola_frame_length</span> <span class="o">=</span> <span class="n">model_order</span>
+
+    <span class="n">window</span> <span class="o">=</span> <span class="n">get_window</span><span class="p">(</span><span class="n">cola_window</span><span class="p">,</span> <span class="n">cola_frame_length</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">cola_window</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;tukey&#39;</span> <span class="ow">and</span> <span class="n">cola_overlap_samples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cola_overlap_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">*</span><span class="p">(</span><span class="n">cola_window</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_COLA</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">model_order</span><span class="p">,</span> <span class="n">cola_overlap_samples</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The selected window and overlap will not result in a COLA scenario&#39;</span><span class="p">)</span>
+
+    <span class="n">number_of_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">spr_object</span><span class="o">.</span><span class="n">time_abscissa</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">cola_overlap_samples</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">cola_frame_length</span> <span class="o">-</span> <span class="n">cola_overlap_samples</span><span class="p">)))</span><span class="o">+</span><span class="mi">2</span>
+    <span class="n">frame_indices</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">cola_frame_length</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">number_of_frames</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">-</span><span class="n">cola_overlap_samples</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">pre_data_pad_length</span> <span class="o">=</span> <span class="n">cola_frame_length</span><span class="o">-</span><span class="n">cola_overlap_samples</span> <span class="c1"># zero padding the initial data to ensure a cola over the full time trace</span>
+    <span class="n">post_data_pad_length</span> <span class="o">=</span> <span class="n">frame_indices</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">-</span><span class="p">(</span><span class="n">spr_object</span><span class="o">.</span><span class="n">_training_response_array_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pre_data_pad_length</span><span class="p">)</span> <span class="c1"># zero padding the end of the signal to allow partial cola frames </span>
+    <span class="n">padded_response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">pre_data_pad_length</span><span class="p">,</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">training_response_coordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> 
+                                      <span class="n">spr_object</span><span class="o">.</span><span class="n">_training_response_array_</span><span class="p">,</span>
+                                      <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">post_data_pad_length</span><span class="p">,</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">training_response_coordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">zero_pad_signal_length</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">model_order</span><span class="p">)</span>
+    <span class="n">left_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">zero_pad_signal_length</span><span class="o">-</span><span class="n">cola_frame_length</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">right_samples</span> <span class="o">=</span> <span class="n">cola_frame_length</span><span class="o">+</span><span class="n">left_samples</span>
+
+    <span class="n">signal_sizes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">:</span><span class="n">pre_data_pad_length</span><span class="p">,</span>
+                    <span class="s1">&#39;post_data_blank_frame_length&#39;</span><span class="p">:</span><span class="n">post_data_pad_length</span><span class="p">,</span>
+                    <span class="s1">&#39;left_zero_pad_length&#39;</span><span class="p">:</span><span class="n">left_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;right_zero_pad_length&#39;</span><span class="p">:</span><span class="n">right_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;number_cola_frames&#39;</span><span class="p">:</span><span class="n">number_of_frames</span><span class="p">,</span>
+                    <span class="s1">&#39;cola_frame_length&#39;</span><span class="p">:</span><span class="n">cola_frame_length</span><span class="p">,</span>
+                    <span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">:</span><span class="n">cola_overlap_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">:</span><span class="n">zero_pad_signal_length</span><span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">padded_response</span><span class="p">),</span> <span class="n">signal_sizes</span><span class="p">,</span> <span class="n">frame_indices</span><span class="p">,</span> <span class="n">window</span></div>
+
+
+<div class="viewcode-block" id="generate_zero_padded_response_fft">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.generate_zero_padded_response_fft">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_zero_padded_response_fft</span><span class="p">(</span><span class="n">full_data</span><span class="p">,</span> <span class="n">frame_indices</span><span class="p">,</span> <span class="n">signal_sizes</span><span class="p">,</span> 
+                                      <span class="n">window</span><span class="p">,</span> <span class="n">response_transform</span><span class="p">,</span> <span class="n">use_transformation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yields an FFT for a zero padded segment of the provided data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    full_data : ndarray</span>
+<span class="sd">        The data to segment and FFT. It should be shaped </span>
+<span class="sd">        [number of samples, number of channels].</span>
+<span class="sd">    frame_indices : ndarray</span>
+<span class="sd">        The indices to segment the data. It should be shaped</span>
+<span class="sd">        [number of frames, number of samples per frame].</span>
+<span class="sd">    signal_sizes : dict</span>
+<span class="sd">        A dictionary with the signal sizes for the segmentation and zero </span>
+<span class="sd">        padding. The keys in the dictionary should include:</span>
+<span class="sd">            - left_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            left side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - right_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            right side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - number_cola_frames - The number of frames to segment the data into for </span>
+<span class="sd">            the COLA processing.</span>
+<span class="sd">            </span>
+<span class="sd">            - zero_padded_signal_length - The frame length (in samples) of each zero </span>
+<span class="sd">            padded COLA frame. </span>
+<span class="sd">    window : ndarray</span>
+<span class="sd">        The window (as a 1D array) to apply to the segmented data frames.</span>
+<span class="sd">    response_transform : ndarray</span>
+<span class="sd">        The response transformation to apply to the FFT of responses. It should be </span>
+<span class="sd">        shaped [number of frequency lines, number of response, number of responses].</span>
+<span class="sd">    use_transformation : bool</span>
+<span class="sd">        Whether or not to use the response transformation. </span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    padded_response_fft : ndarray</span>
+<span class="sd">        The FFT of the zero padded segment of data.  </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">zero_padded_response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">],</span> <span class="n">full_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;number_cola_frames&#39;</span><span class="p">]):</span>
+        <span class="c1"># Using in-place multiplication in an attempt to save memory</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">full_data</span><span class="p">[</span><span class="n">frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span> <span class="n">window</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">zero_padded_response</span><span class="p">[</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;left_zero_pad_length&#39;</span><span class="p">]:</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;right_zero_pad_length&#39;</span><span class="p">],</span> <span class="p">:])</span>
+        
+        <span class="k">if</span> <span class="n">use_transformation</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">response_transform</span><span class="nd">@rfft</span><span class="p">(</span><span class="n">zero_padded_response</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">rfft</span><span class="p">(</span><span class="n">zero_padded_response</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="generate_signal_from_cola_frames">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.generate_signal_from_cola_frames">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_signal_from_cola_frames</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">,</span> <span class="n">return_signal_length</span><span class="p">,</span> <span class="n">cola_window</span><span class="p">,</span> 
+                                     <span class="n">number_of_dofs</span><span class="p">,</span> <span class="n">reference_transform</span><span class="p">,</span> <span class="n">use_transformation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs a full time signal from cola frame FFTs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    signal_sizes : dict</span>
+<span class="sd">        The various signal sizes that were used in the original COLA segmentation </span>
+<span class="sd">        and zero padding operation. The dictionary should include the following keys: </span>
+<span class="sd">            - pre_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the beginning of the training response to enable a perfect COLA </span>
+<span class="sd">            reconstruction.</span>
+<span class="sd">            </span>
+<span class="sd">            - post_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the end of the training response to enable a perfect COLA reconstruction.</span>
+<span class="sd">            </span>
+<span class="sd">            - left_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            left side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - right_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            right side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - number_cola_frames - The number of frames to segment the data into for </span>
+<span class="sd">            the COLA processing.</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_frame_length - The frame length (in samples) that was use for the </span>
+<span class="sd">            COLA processing (corresponds to the cola_frame_length input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_overlap_samples - The overlap (in samples) between the frames in </span>
+<span class="sd">            the COLA processing (corresponds to the cola_overlap_samples input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - zero_padded_signal_length - The frame length (in samples) of each zero </span>
+<span class="sd">            padded COLA frame. </span>
+<span class="sd">    return_signal_length : int</span>
+<span class="sd">        The desired number of samples in the returned signal. </span>
+<span class="sd">    cola_window : ndarray</span>
+<span class="sd">        The window (as a 1d array) that was used in the original COLA segmentation.</span>
+<span class="sd">    number_of_dofs : int</span>
+<span class="sd">        The number of DOFs in the reconstructed signal.</span>
+<span class="sd">    reference_transform : ndarray</span>
+<span class="sd">        The reference transformation to apply to the FFT of responses. It should be </span>
+<span class="sd">        shaped [number of frequency lines, number of references, number of references].</span>
+<span class="sd">    use_transformation : bool</span>
+<span class="sd">        Whether or not to use the reference transformation.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    -------</span>
+<span class="sd">    reconstructed_signal : ndarray</span>
+<span class="sd">        The reconstructed signal, it is sized [number of samples, number of DOFs]</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Although it isn&#39;t directly passed as a parameter for the function, the user must </span>
+<span class="sd">    pass a &quot;segment_fft&quot; variable to the generator to recompile the signal in the </span>
+<span class="sd">    time domain. This variable should be shaped </span>
+<span class="sd">    [number of frequency lines, number of dofs, 1].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reconstruction_frame_indices</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;number_cola_frames&#39;</span><span class="p">])[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="p">((</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">])))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">reconstructed_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">return_signal_length</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;post_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;right_zero_pad_length&#39;</span><span class="p">],</span> <span class="n">number_of_dofs</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">segment_fft</span> <span class="o">=</span> <span class="k">yield</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;number_cola_frames&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">use_transformation</span><span class="p">:</span>
+            <span class="n">segment_force</span> <span class="o">=</span> <span class="n">irfft</span><span class="p">((</span><span class="n">reference_transform</span><span class="nd">@segment_fft</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">segment_force</span> <span class="o">=</span> <span class="n">irfft</span><span class="p">(</span><span class="n">segment_fft</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+        <span class="n">reconstructed_signal</span><span class="p">[</span><span class="n">reconstruction_frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">reconstruction_frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="o">...</span><span class="p">]</span> <span class="o">+=</span> <span class="n">segment_force</span>
+        
+        <span class="k">if</span> <span class="n">ii</span> <span class="o">!=</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;number_cola_frames&#39;</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Continues through the loop as long as we haven&#39;t hit the end</span>
+            <span class="n">segment_fft</span> <span class="o">=</span> <span class="k">yield</span> <span class="p">[]</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Yield the final reconstructed signal if all the segments have been compiled</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">]</span>
+            <span class="n">reconstructed_signal</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cola_window</span><span class="p">[</span><span class="n">ii</span><span class="o">*</span><span class="n">step</span><span class="p">:(</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span><span class="o">//</span><span class="n">step</span><span class="p">)))</span>
+
+            <span class="k">yield</span> <span class="n">reconstructed_signal</span><span class="p">[(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;left_zero_pad_length&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">return_signal_length</span><span class="p">),</span> <span class="p">:]</span></div>
+
+
+<div class="viewcode-block" id="frequency_interpolation">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.frequency_interpolation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">frequency_interpolation</span><span class="p">(</span><span class="n">original_frequency</span><span class="p">,</span> <span class="n">original_ordinate</span><span class="p">,</span> <span class="n">padded_length</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">interpolation_type</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Interpolates a frequency domain function with the specified technique to account </span>
+<span class="sd">    for differing block sizes in frequency and time domain data. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    original_frequency : ndarray</span>
+<span class="sd">        A 1D array for the frequency axis of the original data.</span>
+<span class="sd">    original_ordinate : ndarray</span>
+<span class="sd">        The ordinate for the original data, should be shaped </span>
+<span class="sd">        [number of frequency lines, ...]. </span>
+<span class="sd">    padded_length : int</span>
+<span class="sd">        The number of samples in the time data that accompanies the frequency data.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        The sampling period for the time data that accompanies the frequency data.</span>
+<span class="sd">    interpolation : str, optional</span>
+<span class="sd">        The type of interpolation to use, this should match one of the available </span>
+<span class="sd">        types in scipy.interpolate.interp1d. The default is &#39;cubic&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    interpolated_ordinate : ndarray</span>
+<span class="sd">        The ordinate for the interpolated data. It is shaped </span>
+<span class="sd">        [number of frequency lines, ...].</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is essentially a wrapper around scipy.interpolate.interp1d. It sets all </span>
+<span class="sd">    frequencies outside the band of interest to zero. The first (i.e. 0 Hz) and </span>
+<span class="sd">    last frequencies are set to zero, regardless. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">padded_frequency</span> <span class="o">=</span> <span class="n">rfftfreq</span><span class="p">(</span><span class="n">padded_length</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">interpolator</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">original_frequency</span><span class="p">,</span> <span class="n">original_ordinate</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">interpolation_type</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+    <span class="n">interpolated_ordinate</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">padded_frequency</span><span class="p">)</span>
+    <span class="n">interpolated_ordinate</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">interpolated_ordinate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">interpolated_ordinate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sinc_interpolation">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.sinc_interpolation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sinc_interpolation</span><span class="p">(</span><span class="n">original_ordinate</span><span class="p">,</span> <span class="n">padded_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sinc interpolates a frequency domain function (via an FFT) to account for </span>
+<span class="sd">    differing block sizes in frequency and time domain data. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    original_ordinate : ndarray</span>
+<span class="sd">        The ordinate for the original data, should be shaped </span>
+<span class="sd">        [number of frequency lines, ...]. </span>
+<span class="sd">    padded_length : int</span>
+<span class="sd">        The number of samples in the time data that accompanies the frequency data.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    interpolated_ordinate : ndarray</span>
+<span class="sd">        The ordinate for the interpolated data. It is shaped </span>
+<span class="sd">        [number of frequency lines, ...].</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function does not account for any apparent non-causalities in the </span>
+<span class="sd">    original ordinate. Spline interpolation should be used for data with apparent</span>
+<span class="sd">    non-causalities. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># assume an even length time function</span>
+        <span class="n">num_samples</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># assume an odd length time function</span>
+        <span class="n">num_samples</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        
+    <span class="n">zero_padded_ifft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">padded_length</span><span class="p">,</span> <span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">zero_padded_ifft</span><span class="p">[:</span><span class="nb">int</span><span class="p">((</span><span class="n">original_ordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">irfft</span><span class="p">(</span><span class="n">original_ordinate</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">num_samples</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+
+    <span class="n">interpolated_ordinate</span> <span class="o">=</span> <span class="n">rfft</span><span class="p">(</span><span class="n">zero_padded_ifft</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+
+    <span class="n">interpolated_ordinate</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">padded_length</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">interpolated_ordinate</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">interpolated_ordinate</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="attenuate_signal">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.attenuate_signal">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">attenuate_signal</span><span class="p">(</span><span class="n">input_waveform</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+                     <span class="n">limit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+                     <span class="n">full_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attenuate peaks that exceed limits in time domain by scaling the region between zero </span>
+<span class="sd">    crossings using the local maximum. This maintains a smooth waveform that does not </span>
+<span class="sd">    exceed the specified limits.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_waveform : np.ndarray</span>
+<span class="sd">        1D or 2D array with shape (n_signals, n_samples)</span>
+<span class="sd">    limit : float | np.ndarray</span>
+<span class="sd">        limit value or array of limit values with shape (n_signals,)</span>
+<span class="sd">    full_scale : float, optional</span>
+<span class="sd">        global scaling factor applied to limit value, intended to be used such</span>
+<span class="sd">        that output waveform peaks are slightly less than physical limit,</span>
+<span class="sd">        (ex. use full_scale=0.97 so that output signal will not exceed 97% of specified limit), </span>
+<span class="sd">        by default 1.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    np.ndarray</span>
+<span class="sd">        clipped waveform, with shape (n_signals, n_samples)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Each region between zero crossings is scaled according to:</span>
+<span class="sd">        `full_scale * limit / local_maximum`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_waveform</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">input_waveform</span> <span class="o">=</span> <span class="n">input_waveform</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">limit</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">input_waveform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">limit</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">limit</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+    <span class="c1"># pre-scale the limit value to the full scale percentage</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">limit</span> <span class="o">*</span> <span class="n">full_scale</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">input_waveform</span><span class="o">.</span><span class="n">shape</span>
+    <span class="c1"># pre-scale the waveform by the limit (so that we can flatten the array with limits already applied)</span>
+    <span class="c1"># waveform &gt; limit equivalent to waveform / limit &gt; 1</span>
+    <span class="n">scaled_waveform</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_waveform</span> <span class="o">/</span> <span class="n">limit</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">input_waveform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># find each index after the waveform crosses zero</span>
+    <span class="n">zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">signbit</span><span class="p">(</span><span class="n">scaled_waveform</span><span class="p">))</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1"># construct list of slices representing each segment between zero crossings</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">zero_crossings</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="c1"># initialize scaling array (scaling = limit for values that won&#39;t be clipped)</span>
+    <span class="n">scaling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">limit</span><span class="p">,</span> <span class="n">samples</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">slices</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">stop</span> <span class="o">-</span> <span class="n">sl</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">continue</span> <span class="c1"># skip empty slices</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">stop</span> <span class="o">%</span> <span class="n">samples</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">start</span> <span class="o">%</span> <span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="k">continue</span> <span class="c1"># edge case - skip slices that span between waveforms (since we flattened everything)</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="n">scaled_waveform</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span>
+        <span class="n">abs_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">segment</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">abs_max</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># for segments that exceed the limit, scaling array set to limit * local_max</span>
+            <span class="n">scaling</span><span class="p">[</span><span class="n">sl</span><span class="p">]</span> <span class="o">*=</span> <span class="n">abs_max</span>
+    <span class="k">return</span> <span class="n">scaled_waveform</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">limit</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">scaling</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
+
+
+<span class="c1">#%% Deprecated Functions</span>
+<div class="viewcode-block" id="create_zero_padded_response_fft">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.create_zero_padded_response_fft">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_zero_padded_response_fft</span><span class="p">(</span><span class="n">spr_object</span><span class="p">,</span> 
+                                    <span class="n">cola_frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                                    <span class="n">cola_window</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;tukey&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+                                    <span class="n">cola_overlap_samples</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the zero padded response FFT for a COLA source estimation problem.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spr_object : TransientSourcePathReceiver</span>
+<span class="sd">        The transient SPR object that is being used for the source estimation</span>
+<span class="sd">        problem. </span>
+<span class="sd">    cola_frame_length : int, optional</span>
+<span class="sd">        The frame length (in samples) for the COLA processing. The default frame </span>
+<span class="sd">        length is approximately Fs/df from the FRFs.</span>
+<span class="sd">    cola_window : string, float, or tuple</span>
+<span class="sd">        The window to use in the COLA processing. This input is passed directly to </span>
+<span class="sd">        the SciPy get_window function. The default is a Tukey window with an alpha </span>
+<span class="sd">        of 0.5.</span>
+<span class="sd">    cola_overlap_samples : int, optional</span>
+<span class="sd">        The overlap (in samples) between the frames in the COLA processing, such that</span>
+<span class="sd">        cola_overlap_samples/cola_frame_length results in the overlap percentage. A</span>
+<span class="sd">        default is defined for the default Tukey window.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    padded_response_fft : ndarray</span>
+<span class="sd">        The zero padded response FFT. It is shaped </span>
+<span class="sd">        [number of COLA frames, number of frequency lines, number of responses].</span>
+<span class="sd">    signal_sizes : dict</span>
+<span class="sd">        The various signal sizes that were used in the zero padding operation. The</span>
+<span class="sd">        dictionary includes the following keys: </span>
+<span class="sd">            - pre_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the beginning of the training response to enable a perfect COLA </span>
+<span class="sd">            reconstruction.</span>
+
+<span class="sd">            - post_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the end of the training response to enable a perfect COLA reconstruction.</span>
+<span class="sd">            </span>
+<span class="sd">            - left_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            left side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - right_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            right side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - cola_frame_length - The frame length (in samples) that was use for the </span>
+<span class="sd">            COLA processing (corresponds to the cola_frame_length input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_overlap_samples - The overlap (in samples) between the frames in </span>
+<span class="sd">            the COLA processing (corresponds to the cola_overlap_samples input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - zero_padded_signal_length - The frame length (in samples) of each zero </span>
+<span class="sd">            padded COLA frame. </span>
+<span class="sd">    window : ndarray</span>
+<span class="sd">        The window that was used in the COLA processing. </span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The zero_padded_signal_length is determined by an algorithm that uses the SciPy </span>
+<span class="sd">    next_fast_len function, which can return an odd length. As such, care should be </span>
+<span class="sd">    taken when reconstructing the signal with an inverse FFT.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_order</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">spr_object</span><span class="o">.</span><span class="n">abscissa</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">/</span><span class="n">spr_object</span><span class="o">.</span><span class="n">abscissa_spacing</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span> <span class="c1"># slightly strange operations to guarantee a model order that is divisible by 4</span>
+    <span class="k">if</span> <span class="n">cola_frame_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cola_frame_length</span> <span class="o">=</span> <span class="n">model_order</span>
+
+    <span class="n">window</span> <span class="o">=</span> <span class="n">get_window</span><span class="p">(</span><span class="n">cola_window</span><span class="p">,</span> <span class="n">cola_frame_length</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">cola_window</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;tukey&#39;</span> <span class="ow">and</span> <span class="n">cola_overlap_samples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cola_overlap_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">*</span><span class="p">(</span><span class="n">cola_window</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">check_COLA</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">model_order</span><span class="p">,</span> <span class="n">cola_overlap_samples</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The selected window and overlap will not result in a COLA scenario&#39;</span><span class="p">)</span>
+
+    <span class="n">number_of_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">((</span><span class="n">spr_object</span><span class="o">.</span><span class="n">time_abscissa</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">cola_overlap_samples</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">cola_frame_length</span> <span class="o">-</span> <span class="n">cola_overlap_samples</span><span class="p">)))</span><span class="o">+</span><span class="mi">2</span>
+    <span class="n">frame_indices</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">number_of_frames</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">-</span><span class="n">cola_overlap_samples</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">pre_data_pad_length</span> <span class="o">=</span> <span class="n">cola_frame_length</span><span class="o">-</span><span class="n">cola_overlap_samples</span> <span class="c1"># zero padding the initial data to ensure a cola over the full time trace</span>
+    <span class="n">post_data_pad_length</span> <span class="o">=</span> <span class="n">frame_indices</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">spr_object</span><span class="o">.</span><span class="n">_training_response_array_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">pre_data_pad_length</span><span class="p">)</span> <span class="c1"># zero padding the end of the signal to allow partial cola frames </span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">pre_data_pad_length</span><span class="p">,</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">training_response_coordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> 
+                               <span class="n">spr_object</span><span class="o">.</span><span class="n">_training_response_array_</span><span class="p">,</span>
+                               <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">post_data_pad_length</span><span class="p">,</span> <span class="n">spr_object</span><span class="o">.</span><span class="n">training_response_coordinate</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">zero_pad_signal_length</span> <span class="o">=</span> <span class="n">next_fast_len</span><span class="p">(</span><span class="n">cola_frame_length</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">model_order</span><span class="p">)</span>
+    <span class="n">left_samples</span> <span class="o">=</span> <span class="p">(</span><span class="n">zero_pad_signal_length</span><span class="o">-</span><span class="n">cola_frame_length</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">right_samples</span> <span class="o">=</span> <span class="n">cola_frame_length</span><span class="o">+</span><span class="n">left_samples</span>
+
+    <span class="n">zero_padded_response</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">zero_pad_signal_length</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">padded_response_fft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_frames</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">zero_pad_signal_length</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">response</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_frames</span><span class="p">):</span>
+        <span class="n">zero_padded_response</span><span class="p">[</span><span class="n">left_samples</span><span class="p">:</span><span class="n">right_samples</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="n">frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,:],</span> <span class="o">...</span><span class="p">]</span><span class="o">*</span><span class="n">window</span>
+        <span class="n">padded_response_fft</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">rfft</span><span class="p">(</span><span class="n">zero_padded_response</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+
+    <span class="n">signal_sizes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">:</span><span class="n">pre_data_pad_length</span><span class="p">,</span>
+                    <span class="s1">&#39;post_data_blank_frame_length&#39;</span><span class="p">:</span><span class="n">post_data_pad_length</span><span class="p">,</span>
+                    <span class="s1">&#39;left_zero_pad_length&#39;</span><span class="p">:</span><span class="n">left_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;right_zero_pad_length&#39;</span><span class="p">:</span><span class="n">right_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;cola_frame_length&#39;</span><span class="p">:</span><span class="n">cola_frame_length</span><span class="p">,</span>
+                    <span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">:</span><span class="n">cola_overlap_samples</span><span class="p">,</span>
+                    <span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">:</span><span class="n">zero_pad_signal_length</span><span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">padded_response_fft</span><span class="p">,</span> <span class="n">signal_sizes</span><span class="p">,</span> <span class="n">window</span></div>
+
+
+<div class="viewcode-block" id="reconstruct_cola_frames">
+<a class="viewcode-back" href="../../../autoapi/forcefinder/core/transient_utilities/index.html#forcefinder.core.transient_utilities.reconstruct_cola_frames">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reconstruct_cola_frames</span><span class="p">(</span><span class="n">cola_ffts</span><span class="p">,</span>
+                            <span class="n">signal_sizes</span><span class="p">,</span> 
+                            <span class="n">return_signal_length</span><span class="p">,</span>
+                            <span class="n">cola_window</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs a full time signal from cola frame FFTs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cola_ffts : ndarray</span>
+<span class="sd">        The cola frame FFTs to reconstruct the signal from. It should be sized</span>
+<span class="sd">        [number of frames, number of frequency lines, number of DOFs]</span>
+<span class="sd">    signal_sizes : dict</span>
+<span class="sd">        The various signal sizes that were used in the original COLA segmentation </span>
+<span class="sd">        and zero padding operation. The dictionary should include the following keys: </span>
+<span class="sd">            - pre_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the beginning of the training response to enable a perfect COLA </span>
+<span class="sd">            reconstruction.</span>
+<span class="sd">            </span>
+<span class="sd">            - post_data_blank_frame_length - The amount of zeros that were added to </span>
+<span class="sd">            the end of the training response to enable a perfect COLA reconstruction.</span>
+<span class="sd">            </span>
+<span class="sd">            - left_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            left side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - right_zero_pad_length - The amount of zeros that were used to pad the </span>
+<span class="sd">            right side of the COLA frames. </span>
+<span class="sd">            </span>
+<span class="sd">            - cola_frame_length - The frame length (in samples) that was use for the </span>
+<span class="sd">            COLA processing (corresponds to the cola_frame_length input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - cola_overlap_samples - The overlap (in samples) between the frames in </span>
+<span class="sd">            the COLA processing (corresponds to the cola_overlap_samples input parameter).</span>
+<span class="sd">            </span>
+<span class="sd">            - zero_padded_signal_length - The frame length (in samples) of each zero </span>
+<span class="sd">            padded COLA frame. </span>
+<span class="sd">    return_signal_length : int</span>
+<span class="sd">        The desired number of samples in the returned signal. </span>
+<span class="sd">    cola_window : ndarray</span>
+<span class="sd">        The window (as a 1d array) that was used in the original COLA segmentation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    reconstructed_signal : ndarray</span>
+<span class="sd">        The reconstructed signal, it is sized [number of samples, number of DOFs]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reconstruction_frame_indices</span> <span class="o">=</span> <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">cola_ffts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span><span class="o">*</span><span class="p">((</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">])))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">reconstructed_signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">return_signal_length</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;post_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;right_zero_pad_length&#39;</span><span class="p">],</span> <span class="n">cola_ffts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">reconstruction_frame_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">reconstructed_signal</span><span class="p">[</span><span class="n">reconstruction_frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">reconstruction_frame_indices</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="o">...</span><span class="p">]</span> <span class="o">+=</span> <span class="n">irfft</span><span class="p">(</span><span class="n">cola_ffts</span><span class="p">[</span><span class="n">ii</span><span class="p">,</span><span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;zero_padded_signal_length&#39;</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+
+    <span class="n">step</span> <span class="o">=</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_overlap_samples&#39;</span><span class="p">]</span>
+    <span class="n">reconstructed_signal</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">cola_window</span><span class="p">[</span><span class="n">ii</span><span class="o">*</span><span class="n">step</span><span class="p">:(</span><span class="n">ii</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">step</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;cola_frame_length&#39;</span><span class="p">]</span><span class="o">//</span><span class="n">step</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">reconstructed_signal</span><span class="p">[(</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;pre_data_blank_frame_length&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">signal_sizes</span><span class="p">[</span><span class="s1">&#39;left_zero_pad_length&#39;</span><span class="p">])</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">return_signal_length</span><span class="p">),</span> <span class="p">:]</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By National Technology & Engineering Solutions of Sandia, LLC (NTESS)
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
