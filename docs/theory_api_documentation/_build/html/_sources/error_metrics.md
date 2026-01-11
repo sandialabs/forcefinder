@@ -89,12 +89,14 @@ $$
 
 Where $\begin{Bmatrix} E_{dB} \end{Bmatrix}$ is the DOF by DOF dB error spectra and $n$ is the number of response DOFs for the metric computation.
 
+(sec:transient_error_metrics)=
 ## Error Metrics for Transient Problems
 Several error metrics have been implemented for transient problems, which attempt to evaluate the errors in response level, waveform shape, and spectral content. All of these metrics are time varying and are computed by splitting the full time trace into segments and computing the error on a segment-by-segment basis. The segmentation is specified with two parameters:
 
 - Segment duration - This is the duration of the segment, which is specified as a time with the `frame_length` kwarg or an integer number of samples with the `samples_per_frame` kwarg.
 - Overlap between segments - This is the overlap between the segments, which is specified as a percentage (in decimal format) with the `overlap` kwarg or as an integer number of samples with the `overlap_samples` kwarg.
 
+(sec:global_rms_error)=
 ### Global RMS Error
 The global RMS error, which is computed with the `global_rms_error` method, is a summary metric that is defined in MIL-STD 810. It sums the RMS errors for all the response DOFs while applying weights that are based on the relative response amplitudes. These weights are used to make the metric sensitive to errors in responses with large amplitudes and insensitive to errors in responses that have small amplitudes. As such, the global RMS error metric helps determine if the estimated sources apply sufficient vibration energy to a system in MIMO vibration testing, but may not be useful for a detailed investigation of the errors, since low responding DOFs may be ignored. 
 
@@ -140,6 +142,7 @@ Decibel values are averaged on the corresponding linear values, which is why the
 Many ISE problems are computed as least squares problems, which tend to result in an similar quantities of positive and negative errors. Consequently, the average RMS error may show less error than a subjective perception of the DOF by DOF error. However, it can be useful for quickly identifying large bias errors. 
 ```
 
+(sec:time_varying_trac)=
 ### Time Varying TRAC
 As the name implies, this metric computes a TRAC error time trace (based on the segmentation) for all the response DOFs and is computed with the `time_varying_trac` method. The TRAC error is computed for each DOF (at each segment) with:  
 
@@ -153,9 +156,11 @@ Where $n$ represents the response DOF index and the response vectors, $\begin{Bm
 The `time_varying_trac` method returns a SDynPy `TimeHistoryArray` with the time varying TRAC for each DOF and does not attempt to summarize the TRACs for the different DOFs into a single curve.
 ```
 
+(sec:time_varying_level_error)=
 ### Time Varying Level Error
 The time varying level error, which is computed with the `time_varying_level_error` method, computes the response level error in dB for all the DOFs rather than computing a single summary curve (like the `global_rms_error`, etc.). Currently, two types of levels are supported: the segment RMS level error and the segment maximum level error. 
 
+(sec:spectrogram_error)=
 ### Spectrogram Error
 The spectrogram error computes a short-time Fourier transform (STFT) PSD for all the DOFs, then computes the dB error between the truth and reconstructed STFTs. This metric is computed with the `compute_error_stft` function that is in the `transient_quality_metrics` module. The spectrogram error attempts to show the spectral errors as a function of time and can be useful to develop a thorough understanding of the errors in the ISE problem. 
 

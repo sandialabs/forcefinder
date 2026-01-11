@@ -195,6 +195,7 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Basic Use of the SourcePathReceiver Object</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_transformations.html">Source Estimation with the Virtual Point Transformation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spr_utilization_response_limit.html">MIMO Drive Prediction with Response Limiting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spr_utilization_transient_metrics.html">Using Transient Error Metrics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -399,7 +400,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="basic-use-of-the-sourcepathreceiver-object">
 <h1>Basic Use of the SourcePathReceiver Object<a class="headerlink" href="#basic-use-of-the-sourcepathreceiver-object" title="Link to this heading">#</a></h1>
-<p>This notebook demonstrates a basic workflow when using the SourcePathReceiver (SPR) object for source estimation problems. It shows how to:</p>
+<p>This notebook demonstrates a basic workflow when using the SPR object for source estimation problems. It shows how to:</p>
 <ul class="simple">
 <li><p>Create the SPR object</p></li>
 <li><p>Evaluate the FRFs in the SPR object</p></li>
@@ -408,7 +409,7 @@ document.write(`
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>This example demonstrates the basic use of ForceFinder with the PowerSourcePathReceiver object type. However, all the SPR object types have a common look and feel. As a result, all the SPR object types use the same commands for object initialization and source estimation. The main differences in the API for the different SPR object types are the pre-implemented error metrics.</p>
+<p>This example demonstrates the basic use of ForceFinder with the PowerSourcePathReceiver object type. All the SPR object types have a common look and feel. As a result, all the SPR object types use the same commands for object initialization and source estimation. The main differences in the API for the different SPR object types are the pre-implemented error metrics.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -436,7 +437,7 @@ document.write(`
 <ol class="arabic simple">
 <li><p>The SDynPy <code class="docutils literal notranslate"><span class="pre">System</span></code> object for the beam is imported</p></li>
 <li><p>White noise excitation is created for the source DOFs on the beam</p></li>
-<li><p>Time responses to the white noise excitation (as SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> objects) are computed for the beam using the <code class="docutils literal notranslate"><span class="pre">time_integrate</span></code> method for the beam <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
+<li><p>Time responses to the white noise excitation are computed (as SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> objects) for the beam using the <code class="docutils literal notranslate"><span class="pre">time_integrate</span></code> method for the beam <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
 <li><p>Random measurement errors are added to the time response</p></li>
 <li><p>The CPSD response is computed using the <code class="docutils literal notranslate"><span class="pre">cpsd</span></code> method for the SDynPy <code class="docutils literal notranslate"><span class="pre">TimeHistoryArray</span></code> object</p></li>
 <li><p>The FRFs are computed for the beam system using the <code class="docutils literal notranslate"><span class="pre">frequency_response</span></code> method for the beam <code class="docutils literal notranslate"><span class="pre">System</span></code> object</p></li>
@@ -450,7 +451,7 @@ document.write(`
 </div>
 <section id="making-the-white-noise-excitation">
 <h3>Making the White Noise Excitation<a class="headerlink" href="#making-the-white-noise-excitation" title="Link to this heading">#</a></h3>
-<p>The white noise is generated with a standard random number generator in NumPy. This time signal is then filtered to 80% of the Nyquist frequency and a Tukey window is applied to reduce transient response issues at the signal start/stop. Sample time traces and frequency spectra for the excitation are shown in the plots below.</p>
+<p>The white noise is generated with a standard random number generator in NumPy. This time signal is then filtered to ~80% of the Nyquist frequency and a Tukey window is applied to reduce transient response issues at the signal start/stop. Sample time traces and frequency spectra for the excitation are shown in the plots below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sampling_rate</span> <span class="o">=</span> <span class="mi">1000</span> <span class="c1"># Hz</span>
@@ -487,7 +488,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/df3bd56db2c3b26e15cdf39fea6263ad72f12f4e3aa57bf708f03fbd8fff1bf7.png" src="_images/df3bd56db2c3b26e15cdf39fea6263ad72f12f4e3aa57bf708f03fbd8fff1bf7.png" />
+<img alt="_images/107954b7a09be2c30cfe058d70fb2becec8607b0d192d85f16adf050ddff4080.png" src="_images/107954b7a09be2c30cfe058d70fb2becec8607b0d192d85f16adf050ddff4080.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -501,7 +502,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0d6b37a7001975b47fdef843705b501a7bb68381e853036982389b9d3299bde3.png" src="_images/0d6b37a7001975b47fdef843705b501a7bb68381e853036982389b9d3299bde3.png" />
+<img alt="_images/cc7aede4cd4e42f2bf9054051b638aa2d4c5f8378192233de10d534fcd067543.png" src="_images/cc7aede4cd4e42f2bf9054051b638aa2d4c5f8378192233de10d534fcd067543.png" />
 </div>
 </div>
 </section>
@@ -527,7 +528,7 @@ document.write(`
 </section>
 <section id="computing-the-cpsd-response-and-truth-excitation">
 <h3>Computing the CPSD Response and Truth Excitation<a class="headerlink" href="#computing-the-cpsd-response-and-truth-excitation" title="Link to this heading">#</a></h3>
-<p>The CPSD response and truth excitation (for comparisons to the reconstructed forces) is computed using the <code class="docutils literal notranslate"><span class="pre">cpsd</span></code> method with the following signal processing settings. The time data is trimmed at the start at stop to avoid the ring up and down from the windowing of the excitation signal.</p>
+<p>The CPSD response and truth excitation (for comparisons to the reconstructed forces) is computed using the <code class="docutils literal notranslate"><span class="pre">cpsd</span></code> method with the following signal processing settings. The time data is trimmed at the start and stop to avoid the using ring up and down from the windowing of the excitation signal in the CPSD processing.</p>
 <ul class="simple">
 <li><p>Samples per frame: 1000 (frequency resolution of 1 Hz)</p></li>
 <li><p>Overlap: 50%</p></li>
@@ -563,14 +564,14 @@ document.write(`
 </section>
 <section id="using-the-spr-object">
 <h2>Using the SPR Object<a class="headerlink" href="#using-the-spr-object" title="Link to this heading">#</a></h2>
-<p>The example SPR object is created using the standard initialization function. The training response DOFs are explicitly defined, since CPSD responses were computed fo all the DOFs in the beam.</p>
+<p>The example SPR object is created using the standard initialization function. The training response DOFs are explicitly defined to demonstrate the automatic sample splitting in ForceFinder.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The training response DOFs were selected to demonstrate the sample splitting capabilities of ForceFinder and do not necessarily represent a good set of response DOFs for a source estimation problem.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The frequency content of the SPR object is trimmed to the 1-500 Hz frequency range to avoid innocuous divide by zero warnings (in the error metrics) from the 0 Hz content.</p>
+<p>The frequency content of the SPR object is trimmed to the 1-500 Hz frequency range to avoid innocuous divide by zero warnings (in the error metrics) from the zero response at 0 Hz.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -591,7 +592,7 @@ document.write(`
 </div>
 <section id="sample-splitting">
 <h3>Sample Splitting<a class="headerlink" href="#sample-splitting" title="Link to this heading">#</a></h3>
-<p>Since the training response coordinate was explicitly defined, the target response DOFs were split into a validation and training DOF set, as described <a class="reference internal" href="automatic_bookkeeping.html#sec-sample-splitting"><span class="std std-ref">here</span></a>. The sample splitting can be confirmed by reviewing the different DOF sets in the SPR object.</p>
+<p>Since the training response coordinate was explicitly defined, the target response DOFs (which are all the response DOFs on the beam) were split into a validation and training DOF set, as described <a class="reference internal" href="automatic_bookkeeping.html#sec-sample-splitting"><span class="std std-ref">here</span></a>. The sample splitting can be confirmed by reviewing the different DOF sets in the SPR object.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The target response DOFs are: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">example_spr</span><span class="o">.</span><span class="n">target_response_coordinate</span><span class="o">.</span><span class="n">string_array</span><span class="p">()))</span>
@@ -634,7 +635,7 @@ document.write(`
 </section>
 <section id="evaluating-the-frfs">
 <h3>Evaluating the FRFs<a class="headerlink" href="#evaluating-the-frfs" title="Link to this heading">#</a></h3>
-<p>Most of the SPR object attributes are SDynPy objects, which means that SDynPy plotting functions can be used to evaluate and analyze the data. As such, it is simple to evaluate the conditioning of the training FRF matrix. There are three distinct segments of the code for reviewing the FRF condition, a sample breakdown of these segments for the <code class="docutils literal notranslate"><span class="pre">example_spr.training_frfs.plot_cond_num()</span></code> code is:</p>
+<p>Most of the SPR object attributes are SDynPy objects, which means that SDynPy plotting functions can be used to evaluate and analyze the data. As such, it is simple to evaluate the conditioning of the training FRF matrix. There are three distinct segments of the code for reviewing the FRF condition, a sample breakdown of these segments for the <code class="docutils literal notranslate"><span class="pre">example_spr.training_frfs.plot_cond_num()</span></code> command is:</p>
 <ol class="arabic simple">
 <li><p><strong><u>example_spr</u>.training_frfs.plot_cond_num()</strong> - <code class="docutils literal notranslate"><span class="pre">example_spr</span></code> indicates that we are looking at the data in the example SPR object.</p></li>
 <li><p><strong>example_spr.<u>training_frfs</u>.plot_cond_num()</strong> - <code class="docutils literal notranslate"><span class="pre">training_frfs</span></code> is the <a class="reference internal" href="object_attribute_definitions.html"><span class="doc std std-doc">attribute</span></a> that returns the training FRFs as a SDynPy <code class="docutils literal notranslate"><span class="pre">TransferFunctionArray</span></code>.</p></li>
@@ -643,7 +644,7 @@ document.write(`
 <p>This method chaining strategy is valid for any of the SPR object attributes, assuming that the method exists for the SDynPy object that is returned by the ForceFinder attribute.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>In general, the SPR object attributes should be treated as read-only variables once it is created. Technically, some attributes can be overwritten or modified, but this is considered bad practice. Further, some operations, which may seem logical for a SDynPy user will not work in ForceFinder. For example, the <code class="docutils literal notranslate"><span class="pre">spr_object.frfs.ordinate</span> <span class="pre">=</span> <span class="pre">data</span></code> command will not write or modify any data into the SPR object.</p>
+<p>In general, the SPR object attributes should be treated as read-only variables once the object is created. Technically, some attributes can be overwritten or modified, but this is considered bad practice. Further, some operations, which may seem logical for a SDynPy user will not work in ForceFinder. For example, the <code class="docutils literal notranslate"><span class="pre">spr_object.frfs.ordinate</span> <span class="pre">=</span> <span class="pre">data</span></code> command will not write or modify any data into the SPR object.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -685,35 +686,35 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The errors in the reconstructed response are evaluated with the <a class="reference internal" href="error_metrics.html#sec-rms-asd-error"><span class="std std-ref">RMS ASD error</span></a> metric for the training DOF set and validation DOF set by toggling the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg in the error method. As expected, the error is higher for the validation DOFs compared to the training DOFs.</p>
+<p>The errors in the reconstructed response for this example are evaluated with the <a class="reference internal" href="error_metrics.html#sec-rms-asd-error"><span class="std std-ref">RMS ASD error</span></a> metric for the training DOF set and validation DOF set by toggling the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg in the error method. As expected, the error is higher for the validation DOFs compared to the training DOFs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">example_spr</span><span class="o">.</span><span class="n">rms_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;training&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;linewidth&#39;</span><span class="p">:</span><span class="mi">5</span><span class="p">})</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Channel RMS Error (dB)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;RMS ASD Error (dB)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Channel RMS Error for Training DOFs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;RMS ASD Error for Training DOFs&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">500</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7c419833656f392a6bf5960fb5597402d5d45e4549cb966298d204cd4cf5ff39.png" src="_images/7c419833656f392a6bf5960fb5597402d5d45e4549cb966298d204cd4cf5ff39.png" />
+<img alt="_images/3f71094ebece66defac83fa7968ebb5eada0a55108c145f1dc816442408c31fb.png" src="_images/3f71094ebece66defac83fa7968ebb5eada0a55108c145f1dc816442408c31fb.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">example_spr</span><span class="o">.</span><span class="n">rms_asd_error</span><span class="p">(</span><span class="n">channel_set</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;linewidth&#39;</span><span class="p">:</span><span class="mi">5</span><span class="p">})</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Channel RMS Error (dB)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;RMS ASD Error (dB)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (Hz)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Channel RMS Error for Validation DOFs&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;RMS ASD Error for Validation DOFs&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">500</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4ed71b26276d73d2573b374aef8a2a0ab9688203f08db3f58446e878f6c041ea.png" src="_images/4ed71b26276d73d2573b374aef8a2a0ab9688203f08db3f58446e878f6c041ea.png" />
+<img alt="_images/4736ad13353f56426bb45517f43e964ab239277446f10600d016259005e8703c.png" src="_images/4736ad13353f56426bb45517f43e964ab239277446f10600d016259005e8703c.png" />
 </div>
 </div>
 <p>The reconstructed response errors can also be evaluated on a DOF-DOF basis using the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> method where the target response is the black curve and the reconstructed responses are in blue. This plot shows the DOF-DOF comparison plots in the upper section, the lower left plot compares the PSD sums and the lower right plot is the RMS ASD error. Like the other error metrics, the <code class="docutils literal notranslate"><span class="pre">error_summary</span></code> can be shown for the different DOF sets using the <code class="docutils literal notranslate"><span class="pre">channel_set</span></code> kwarg.</p>
@@ -724,13 +725,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f61aaa2c6d975556a9f8ed340427234700d279f408fae46508e16fadbf908cf0.png" src="_images/f61aaa2c6d975556a9f8ed340427234700d279f408fae46508e16fadbf908cf0.png" />
+<img alt="_images/5eda36b85f08042291695959648737de1449931ecc38d46834e759f4b5401dff.png" src="_images/5eda36b85f08042291695959648737de1449931ecc38d46834e759f4b5401dff.png" />
 </div>
 </div>
 <p>Lastly, it may be useful to compare the PSDs DOF-DOF, one at a time, which is easily accomplished with the <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool in SDynPy. The code block below uses the <code class="docutils literal notranslate"><span class="pre">get_asd</span></code> method for SDynPy <code class="docutils literal notranslate"><span class="pre">PowerSpectralDensityArrays</span></code> to only plot the PSDs, but this is not necessary.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool will not directly plot in Jupyter Notebooks. The magic command <code class="docutils literal notranslate"><span class="pre">%matplotlib</span> <span class="pre">qt</span></code> must be used to open the <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool separate in a separate window. Refer to IDE help documents to set the appropriate plotting backend.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool will not directly plot in Jupyter Notebooks. The magic command <code class="docutils literal notranslate"><span class="pre">%matplotlib</span> <span class="pre">qt</span></code> must be used to open the <code class="docutils literal notranslate"><span class="pre">GUIPlot</span></code> tool in a separate window. Refer to IDE help documents to set the appropriate plotting backend.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -740,7 +741,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sdynpy.core.sdynpy_data.GUIPlot at 0x16e7fdfc0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;sdynpy.core.sdynpy_data.GUIPlot at 0x3194a0310&gt;
 </pre></div>
 </div>
 </div>
@@ -751,7 +752,7 @@ document.write(`
 <section id="comparing-the-estimated-sources-to-the-truth-sources">
 <h3>Comparing the Estimated Sources to the Truth Sources<a class="headerlink" href="#comparing-the-estimated-sources-to-the-truth-sources" title="Link to this heading">#</a></h3>
 <p>This section compares the PSDs for the estimated and truth sources, where the estimated sources are the <code class="docutils literal notranslate"><span class="pre">force</span></code> attribute of the SPR object. The plot below shows that the estimated sources are very accurate, except for an overestimation at high frequencies (where the truth sources are near zero) and an overestimation of the 103Z+ force at ~150 Hz.</p>
-<p>Both of these issues were indicated in the on-board validation. However, it is interesting to note that the reconstructed responses are lower than the training responses in the problematic frequency bands. The under predicted responses would imply that the sources were also under predicted, which is the opposite of what actually happened.</p>
+<p>Both of these issues were indicated in the on-board validation. However, it is interesting to note that the reconstructed responses are lower than the training responses in the problematic frequency bands, which would imply that the sources were under predicted, which is the opposite of what actually happened.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="s1">&#39;constrained&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
@@ -784,7 +785,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/447b6ce85a288b88a365595061739062ceb48f3d6f25b02ac3b79e6a9bb2913f.png" src="_images/447b6ce85a288b88a365595061739062ceb48f3d6f25b02ac3b79e6a9bb2913f.png" />
+<img alt="_images/0687881e07cd0931f50bd2de8749c893bff674354427aacd358aff9b951e25e5.png" src="_images/0687881e07cd0931f50bd2de8749c893bff674354427aacd358aff9b951e25e5.png" />
 </div>
 </div>
 </section>
