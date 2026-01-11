@@ -50,138 +50,6 @@ Module Contents
    This is the base SPR class that is further defined for specific data types in
    subclasses.
 
-   .. attribute:: frfs
-
-      The FRFs at the training, validation, and prediction response DOFs.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: target_response
-
-      The measured responses at both the training and validation DOFs that define the
-      receiver of the SPR object.
-
-   .. attribute:: force
-
-      The forces that define the source in the SPR model. The force degrees of freedom
-      (DOFs) should match the reference DOFs in the FRFs. The forces will typically be
-      set via an inverse method in the class, but the user can also set them manually.
-
-   .. attribute:: training_response
-
-      The measured responses that will be used to estimate the forces in the SPR object
-      (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-      response if a training response or training_response_coordinate is not supplied .
-
-   .. attribute:: transformed_training_response
-
-      The training_response with the response_transformation applied.
-
-   .. attribute:: training_frfs
-
-      A subset of the FRFs that have the same response DOFs as training response.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: transformed_training_frfs
-
-      The training_frfs with the response_transformation and reference_transformation
-      applied.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: reconstructed_target_response
-
-      The computed responses from the FRFs and forces at the target response DOFs.
-
-   .. attribute:: transformed_reconstructed_response
-
-      The reconstructed response at the training_response_coordinate with the
-      response_transformation applied.
-
-   .. attribute:: reconstructed_validation_response
-
-      The computed responses from the FRFs and forces at the validation response DOFs.
-
-   .. attribute:: response_coordinate
-
-      All the response DOFs in teh SPR object, including the prediction, training, and
-      validation DOFs, as defined by the response coordinate in the FRF.
-
-      :type: CoordinateArray
-
-   .. attribute:: target_response_coordinate
-
-      The target_response coordinates of the SPR object, based on the intersection of the
-      DOFs in the target_response and FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: training_response_coordinate
-
-      The training response coordinates of teh SPR object, based on the training responses.
-
-      :type: CoordinateArray
-
-   .. attribute:: validation_response_coordinate
-
-      The validation response coordinates of teh SPR object, based on the difference between
-      the target and training response coordinates.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_coordinate
-
-      The reference coordinates of the SPR object, based on the FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: response_transformation
-
-      The response transformation that is used in the inverse problem. The default is
-      identity. Transformations are only applied to the training responses.
-
-      :type: Matrix
-
-   .. attribute:: transformed_response_coordinate
-
-      The coordinates that the response is transformed into through the response
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_transformation
-
-      The reference transformation that is used in the inverse problem. The default is
-      identity.
-
-      :type: Matrix
-
-   .. attribute:: transformed_reference_coordinate
-
-      The coordinates that the reference is transformed into through the reference
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: abscissa
-
-      The frequency or time vector of the SPR model.
-
-      :type: float
-
-   .. attribute:: abscissa_spacing
-
-      The abscissa spacing (frequency resolution or sampling time) for the SPR model.
-
-      :type: float
-
-   .. attribute:: inverse_settings
-
-      The settings that were to estimate the sources in the SourcePathReceiver object.
-
-      :type: dictionary
-
    .. rubric:: Notes
 
    The ordinate in the full FRFs and target responses can be different for the ordinate
@@ -266,11 +134,15 @@ Module Contents
                 has been updated
       :rtype: SourcePathReceiver
 
-      :raises ValueError: If the number of elements in the physical response weighting array
-          does not match the number of training response coordinates.
-      :raises ValueError: If the number of elements in the transformed response weighting array
-          does not match the number of transformed response coordinates.
-      :raises ValueError: If neither a physical or transformed response weighting is supplied.
+      :raises ValueError: If any of the following occurs:
+          
+              - If the number of elements in the physical response weighting array
+              does not match the number of training response coordinates.
+          
+              - If the number of elements in the transformed response weighting array
+              does not match the number of transformed response coordinates.
+          
+              - If neither a physical or transformed response weighting is supplied.
 
 
 
@@ -294,11 +166,15 @@ Module Contents
                 has been updated
       :rtype: SourcePathReceiver
 
-      :raises ValueError: If the number of elements in the physical reference weighting array
-          does not match the number of reference coordinates.
-      :raises ValueError: If the number of elements in the transformed reference weighting array
-          does not match the number of transformed reference coordinates.
-      :raises ValueError: If neither a physical or transformed reference weighting is supplied.
+      :raises ValueError: If an of the following occurs:
+          
+              - If the number of elements in the physical reference weighting array
+              does not match the number of reference coordinates.
+          
+              - If the number of elements in the transformed reference weighting array
+              does not match the number of transformed reference coordinates.
+          
+              - If neither a physical or transformed reference weighting is supplied.
 
 
 
@@ -399,160 +275,10 @@ Module Contents
    Bases: :py:obj:`SourcePathReceiver`
 
 
-   A subclass to represent a source-path-receiver (SPR) model of a system for MIMO
-   vibration testing or transfer path analysis. The responses and forces in this
-   subclass are linear spectra (i.e., ffts).
-
-   .. attribute:: frfs
-
-      The FRFs at the training, validation, and prediction response DOFs.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: target_response
-
-      The measured responses at both the training and validation DOFs that define the
-      receiver of the SPR object.
-
-      :type: SpectrumArray
-
-   .. attribute:: force
-
-      The forces that define the source in the SPR model. The force degrees of freedom
-      (DOFs) should match the reference DOFs in the FRFs. The forces will typically be
-      set via an inverse method in the class, but the user can also set them manually.
-
-      :type: SpectrumArray
-
-   .. attribute:: training_response
-
-      The measured responses that will be used to estimate the forces in the SPR object
-      (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-      response if a training response or training_response_coordinate is not supplied.
-
-      :type: SpectrumArray
-
-   .. attribute:: transformed_training_response
-
-      The training_response with the response_transformation applied.
-
-      :type: SpectrumArray
-
-   .. attribute:: training_frfs
-
-      A subset of the FRFs that have the same response DOFs as training response.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: transformed_training_frfs
-
-      The training_frfs with the response_transformation and reference_transformation
-      applied.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: reconstructed_target_response
-
-      The computed responses from the FRFs and forces at the target response DOFs.
-
-      :type: SpectrumArray
-
-   .. attribute:: transformed_reconstructed_response
-
-      The reconstructed response at the training_response_coordinate with the
-      response_transformation applied.
-
-      :type: SpectrumArray
-
-   .. attribute:: reconstructed_validation_response
-
-      The computed responses from the FRFs and forces at the validation response DOFs.
-
-      :type: SpectrumArray
-
-   .. attribute:: response_coordinate
-
-      All the response DOFs in teh SPR object, including the prediction, training, and
-      validation DOFs, as defined by the response coordinate in the FRF.
-
-      :type: CoordinateArray
-
-   .. attribute:: target_response_coordinate
-
-      The target_response coordinates of the SPR object, based on the intersection of the
-      DOFs in the target_response and FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: training_response_coordinate
-
-      The training response coordinates of teh SPR object, based on the training responses.
-
-      :type: CoordinateArray
-
-   .. attribute:: validation_response_coordinate
-
-      The validation response coordinates of teh SPR object, based on the difference between
-      the target and training response coordinates.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_coordinate
-
-      The reference coordinates of the SPR object, based on the FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: response_transformation
-
-      The response transformation that is used in the inverse problem. The default is
-      identity. Transformations are only applied to the training responses.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_response_coordinate
-
-      The coordinates that the response is transformed into through the response
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_transformation
-
-      The reference transformation that is used in the inverse problem. The default is
-      identity.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_reference_coordinate
-
-      The coordinates that the reference is transformed into through the reference
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: abscissa
-
-      The frequency vector of the SPR model.
-
-      :type: float
-
-   .. attribute:: abscissa_spacing
-
-      The frequency resolution for the SPR model.
-
-      :type: float
-
-   .. attribute:: inverse_settings
-
-      The settings that were to estimate the sources in the SourcePathReceiver object.
-
-      :type: dict
+   A subclass to represent a source-path-receiver (SPR) model with linear spectra
+   (i.e., ffts) for the responses or forces.
 
    .. rubric:: Notes
-
-   The ordinate in the full FRFs and target responses can be different for the ordinate in the
-   training FRFs and responses (depending on the problem set-up).
 
    The "linear" term in the class name stands for the linear units in the response and
    force spectra.
@@ -586,9 +312,12 @@ Module Contents
       :rtype: SpectrumArray
 
       :raises AttributeError: If there are not forces in the SPR object.
-      :raises ValueError: If any of the selected response DOFs are not in the response_coordinate of
-          the SPR object.
-      :raises ValueError: If the response_dofs is not a 1d array.
+      :raises ValueError: If any of the following occurs:
+          
+              - If any of the selected response DOFs are not in the response_coordinate of
+              the SPR object.
+          
+              - If the response_dofs is not a 1d array.
 
 
 
@@ -599,13 +328,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the global ASD error in dB. The response
@@ -630,13 +362,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the average ASD error in dB. The response
@@ -658,13 +393,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the RMS ASD error in dB. The response
@@ -686,13 +424,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
       :param figure_kwargs: Arguments to use when creating the figure. The default is {}.
       :type figure_kwargs: dict, optional
@@ -719,15 +460,21 @@ Module Contents
 
       :param method: The method to be used for the FRF matrix inversions. The available
                      methods are:
-                         - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                           default rcond parameter, this is the default method.
 
-                         - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                           condition number threshold.
+                         - standard
+                             Basic pseudo-inverse via numpy.linalg.pinv with the default
+                             rcond parameter, this is the default method.
 
-                         - tikhonov - pseudo-inverse using the Tikhonov regularization method
-                         - truncation - pseudo-inverse where a fixed number of singular values
-                           are retained for the inverse.
+                         - threshold
+                             Pseudo-inverse via numpy.linalg.pinv with a specified condition
+                             number threshold.
+
+                         - tikhonov
+                             Pseudo-inverse using the Tikhonov regularization method.
+
+                         - truncation
+                             Pseudo-inverse where a fixed number of singular values are
+                             retained for the inverse.
       :type method: str, optional
       :param regularization_weighting_matrix: Matrix used to weight input degrees of freedom via Tikhonov regularization.
                                               This matrix can also be a 3D matrix such that the the weights are different
@@ -796,22 +543,28 @@ Module Contents
       :type number_regularization_values: int
       :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                            parameter. The available types are:
-                               - forces - This L-curve is constructed with the "size" of the forces
-                               on the Y-axis and the regularization parameter on the X-axis.
 
-                               - standard (default) - This L-curve is constructed with the residual
-                               squared error on the X-axis and the "size" of the forces on the Y-axis.
+                               - forces
+                                   This L-curve is constructed with the "size" of the forces on
+                                   the Y-axis and the regularization parameter on the X-axis.
+
+                               - standard (default)
+                                   This L-curve is constructed with the residual squared error on
+                                   the X-axis and the "size" of the forces on the Y-axis.
       :type l_curve_type: str
       :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                    The options are:
-                                       - curvature (default) - This method searches for the regularization
-                                       parameter that results in maximum curvature of the L-curve. It is
-                                       also referred to as the L-curve criterion.
 
-                                       - distance - This method searches for the regularization parameter that
-                                       minimizes the distance between the L-curve and a "virtual origin". A
-                                       virtual origin is used, because the L-curve is scaled and offset to always
-                                       range from zero to one, in this case.
+                                       - curvature (default)
+                                           This method searches for the regularization parameter that
+                                           results in maximum curvature of the L-curve. It is also referred
+                                           to as the L-curve criterion.
+
+                                       - distance
+                                           This method searches for the regularization parameter that
+                                           minimizes the distance between the L-curve and a "virtual origin".
+                                           A virtual origin is used, because the L-curve is scaled and offset
+                                           to always range from zero to one, in this case.
       :type optimality_condition: str
       :param use_transformation: Whether or not the response and reference transformation from the class
                                  definition should be used (which is handled in the "linear_inverse_processing"
@@ -871,9 +624,12 @@ Module Contents
       :type number_regularization_values: int, optional
       :param cross_validation_type:
                                     The cross validation method to use. The available options are:
-                                        - loocv (default) - Leave one out cross validation.
 
-                                        - k-fold - K fold cross validation.
+                                        - loocv (default)
+                                            Leave one out cross validation.
+
+                                        - k-fold
+                                            K fold cross validation.
       :type cross_validation_type: str, optional
       :param number_folds: The number of folds to use in the k fold cross validation. The number of
                            response DOFs must be evenly divisible by the number of folds.
@@ -919,6 +675,7 @@ Module Contents
 
       :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                            parameter. The available types are:
+
                                - forces - This L-curve is constructed with the "size" of the
                                forces on the Y-axis and the regularization parameter on the X-axis.
 
@@ -927,24 +684,30 @@ Module Contents
       :type l_curve_type: str
       :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                    The options are:
-                                       - curvature - This method searches for the regularization parameter
-                                       that results in maximum curvature of the L-curve. It is also referred
-                                       to as the L-curve criterion.
 
-                                       - distance (default) - This method searches for the regularization
-                                       parameter that minimizes the distance between the L-curve and a "virtual
-                                       origin". A virtual origin is used, because the L-curve is scaled and
-                                       offset to always range from zero to one, in this case.
+                                       - curvature
+                                           This method searches for the regularization parameter that results
+                                           in maximum curvature of the L-curve. It is also referred to as the
+                                           L-curve criterion.
+
+                                       - distance (default)
+                                       This method searches for the regularization parameter that minimizes
+                                       the distance between the L-curve and a "virtual origin". A virtual
+                                       origin is used, because the L-curve is scaled and offset to always range
+                                       from zero to one, in this case.
       :type optimality_condition: str
       :param curvature_method: The method that is used to compute the curvature of the L-curve, in the
                                case that the curvature is used to find the optimal regularization
                                parameter. The default is None and the options are:
-                                   - numerical - this method computes the curvature of the L-curve via
-                                   numerical derivatives
 
-                                   - cubic_spline - this method fits a cubic spline to the L-curve
-                                   the computes the curvature from the cubic spline (this might
-                                   perform better if the L-curve isn't "smooth")
+                                   - numerical
+                                       This method computes the curvature of the L-curve via numerical
+                                       derivatives.
+
+                                   - cubic_spline
+                                       This method fits a cubic spline to the L-curve the computes the
+                                       curvature from the cubic spline (this might perform better if the
+                                       L-curve isn't "smooth").
       :type curvature_method: std
       :param use_transformation: Whether or not the response and reference transformation from the class
                                  definition should be used (which is handled in the "linear_inverse_processing"
@@ -1000,11 +763,15 @@ Module Contents
       :type number_of_lambdas: int
       :param information_criterion:
                                     The desired information criterion, the available options are:
-                                        - 'BIC' - the Bayesian information criterion
 
-                                        - 'AIC' - the Akaike information criterion
+                                        - 'BIC'
+                                            The Bayesian information criterion
 
-                                        - 'AICC' (default) - the corrected Akaike information criterion
+                                        - 'AIC'
+                                            The Akaike information criterion
+
+                                        - 'AICC' (default)
+                                            The corrected Akaike information criterion
       :type information_criterion: str
       :param use_transformation: Whether or not the response and reference transformation from the class
                                  definition should be used (which is handled in the "linear_inverse_processing"
@@ -1038,167 +805,10 @@ Module Contents
    Bases: :py:obj:`SourcePathReceiver`
 
 
-   A subclass to represent a source-path-receiver (SPR) model of a system for MIMO
-   vibration testing or transfer path analysis. The responses and forces in this
-   subclass are power spectra.
-
-   .. attribute:: frfs
-
-      The FRFs at the training, validation, and prediction response DOFs.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: target_response
-
-      The measured responses at both the training and validation DOFs that define the
-      receiver of the SPR object.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: force
-
-      The forces that define the source in the SPR model. The force degrees of freedom
-      (DOFs) should match the reference DOFs in the FRFs. The forces will typically be
-      set via an inverse method in the class, but the user can also set them manually.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: training_response
-
-      The measured responses that will be used to estimate the forces in the SPR object
-      (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-      response if a training response or training_response_coordinate is not supplied.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: transformed_training_response
-
-      The training_response with the response_transformation applied.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: training_frfs
-
-      A subset of the FRFs that have the same response DOFs as training response.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: transformed_training_frfs
-
-      The training_frfs with the response_transformation and reference_transformation
-      applied.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: buzz_cpsd
-
-      The cpsd matrix from the system ID matrix to use the so-called "buzz method"
-      in the inverse source estimation.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: reconstructed_target_response
-
-      The computed responses from the FRFs and forces at the target response DOFs.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: transformed_reconstructed_response
-
-      The reconstructed response at the training_response_coordinate with the
-      response_transformation applied.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: reconstructed_validation_response
-
-      The computed responses from the FRFs and forces at the validation response DOFs.
-
-      :type: PowerSpectralDensityArray
-
-   .. attribute:: response_coordinate
-
-      All the response DOFs in teh SPR object, including the prediction, training, and
-      validation DOFs, as defined by the response coordinate in the FRF.
-
-      :type: CoordinateArray
-
-   .. attribute:: target_response_coordinate
-
-      The target_response coordinates of the SPR object, based on the intersection of the
-      DOFs in the target_response and FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: training_response_coordinate
-
-      The training response coordinates of teh SPR object, based on the training responses.
-
-      :type: CoordinateArray
-
-   .. attribute:: validation_response_coordinate
-
-      The validation response coordinates of teh SPR object, based on the difference between
-      the target and training response coordinates.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_coordinate
-
-      The reference coordinates of the SPR object, based on the FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: response_transformation
-
-      The response transformation that is used in the inverse problem. The default is
-      identity. Transformations are only applied to the training responses.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_response_coordinate
-
-      The coordinates that the response is transformed into through the response
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_transformation
-
-      The reference transformation that is used in the inverse problem. The default is
-      identity.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_reference_coordinate
-
-      The coordinates that the reference is transformed into through the reference
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: abscissa
-
-      The frequency vector of the SPR model.
-
-      :type: float
-
-   .. attribute:: abscissa_spacing
-
-      The frequency resolution for the SPR model.
-
-      :type: float
-
-   .. attribute:: inverse_settings
-
-      The settings that were to estimate the sources in the SourcePathReceiver object.
-
-      :type: dict
+   A subclass to represent a source-path-receiver (SPR) model with power spectra
+   for the responses and forces.
 
    .. rubric:: Notes
-
-   The ordinate in the full FRFs and target responses can be different for the ordinate in the
-   training FRFs and responses (depending on the problem set-up).
 
    The "power" term in the class name stands for the power units (i.e., units squared) in the
    response and force spectra.
@@ -1234,9 +844,12 @@ Module Contents
       :rtype: PowerSpectralDensityArray
 
       :raises AttributeError: If there are not forces in the SPR object.
-      :raises ValueError: If any of the selected response DOFs are not in the response_coordinate of
-          the SPR object.
-      :raises ValueError: If the response_dofs is not a 1d array.
+      :raises ValueError: If any of the following occurs:
+          
+              - If any of the selected response DOFs are not in the response_coordinate of
+              the SPR object.
+          
+              - If the response_dofs is not a 1d array.
 
 
 
@@ -1253,13 +866,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the global ASD error in dB. The response
@@ -1279,13 +895,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the average ASD error in dB. The response
@@ -1302,13 +921,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
 
       :returns: Returns a spectrum array of the RMS ASD error in dB. The response
@@ -1325,13 +947,16 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs.
 
-                              - validation - This compares the responses at the validation DOFs.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs.
 
-                              - target - This compares the responses for all the target response
-                              DOFs in the SPR object.
+                              - validation
+                                  This compares the responses at the validation DOFs.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
       :param figure_kwargs: Arguments to use when creating the figure. The default is {}.
       :type figure_kwargs: dict, optional
@@ -1355,16 +980,21 @@ Module Contents
 
       :param method: The method to be used for the FRF matrix inversions. The available
                      methods are:
-                         - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                           default rcond parameter, this is the default method.
 
-                         - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                           condition number threshold.
+                         - standard
+                             Basic pseudo-inverse via numpy.linalg.pinv with the default rcond
+                             parameter, this is the default method.
 
-                         - tikhonov - pseudo-inverse using the Tikhonov regularization method.
+                         - threshold
+                             Pseudo-inverse via numpy.linalg.pinv with a specified condition
+                             number threshold.
 
-                         - truncation - pseudo-inverse where a fixed number of singular values
-                           are retained for the inverse.
+                         - tikhonov
+                             Pseudo-inverse using the Tikhonov regularization method.
+
+                         - truncation
+                             Pseudo-inverse where a fixed number of singular values are
+                             retained for the inverse.
       :type method: str, optional
       :param regularization_weighting_matrix: Matrix used to weight input degrees of freedom via Tikhonov regularization.
                                               This matrix can also be a 3D matrix such that the the weights are different
@@ -1447,22 +1077,28 @@ Module Contents
       :type number_regularization_values: int
       :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                            parameter. The available types are:
-                               - forces - This L-curve is constructed with the "size" of the forces
-                               on the Y-axis and the regularization parameter on the X-axis.
 
-                               - standard (default) - This L-curve is constructed with the residual
-                               squared error on the X-axis and the "size" of the forces on the Y-axis.
+                               - forces
+                                   This L-curve is constructed with the "size" of the forces on
+                                   the Y-axis and the regularization parameter on the X-axis.
+
+                               - standard (default)
+                                   This L-curve is constructed with the residual squared error on
+                                   the X-axis and the "size" of the forces on the Y-axis.
       :type l_curve_type: str
       :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                    The options are:
-                                       - curvature (default) - This method searches for the regularization
-                                       parameter that results in maximum curvature of the L-curve. It is
-                                       also referred to as the L-curve criterion.
 
-                                       - distance - This method searches for the regularization parameter that
-                                       minimizes the distance between the L-curve and a "virtual origin". A
-                                       virtual origin is used, because the L-curve is scaled and offset to always
-                                       range from zero to one, in this case.
+                                       - curvature (default)
+                                           This method searches for the regularization parameter that results
+                                           in maximum curvature of the L-curve. It is also referred to as the
+                                           L-curve criterion.
+
+                                       - distance
+                                           This method searches for the regularization parameter that minimizes
+                                           the distance between the L-curve and a "virtual origin". A virtual
+                                           origin is used, because the L-curve is scaled and offset to always
+                                           range from zero to one, in this case.
       :type optimality_condition: str
       :param use_transformation: Whether or not the response and reference transformation from the class
                                  definition should be used (which is handled in the "power_inverse_processing"
@@ -1528,9 +1164,12 @@ Module Contents
       :type number_regularization_values: int, optional
       :param cross_validation_type:
                                     The cross validation method to use. The available options are:
-                                        - loocv (default) - Leave one out cross validation.
 
-                                        - k-fold - K fold cross validation.
+                                        - loocv (default)
+                                            Leave one out cross validation.
+
+                                        - k-fold
+                                            K fold cross validation.
       :type cross_validation_type: str, optional
       :param number_folds: The number of folds to use in the k fold cross validation. The number of
                            response DOFs must be evenly divisible by the number of folds.
@@ -1576,32 +1215,41 @@ Module Contents
 
       :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                            parameter. The available types are:
-                               - forces - This L-curve is constructed with the "size" of the
-                               forces on the Y-axis and the regularization parameter on the X-axis.
 
-                               - standard (default) - This L-curve is constructed with the residual
-                               squared error on the X-axis and the "size" of the forces on the Y-axis.
+                               - forces
+                                   This L-curve is constructed with the "size" of the forces on
+                                   the Y-axis and the regularization parameter on the X-axis.
+
+                               - standard (default)
+                                   This L-curve is constructed with the residual squared error on
+                                   the X-axis and the "size" of the forces on the Y-axis.
       :type l_curve_type: str
       :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                    The options are:
-                                       - curvature - This method searches for the regularization parameter
-                                       that results in maximum curvature of the L-curve. It is also referred
-                                       to as the L-curve criterion.
 
-                                       - distance (default) - This method searches for the regularization
-                                       parameter that minimizes the distance between the L-curve and a "virtual
-                                       origin". A virtual origin is used, because the L-curve is scaled and
-                                       offset to always range from zero to one, in this case.
+                                       - curvature
+                                           This method searches for the regularization parameter that
+                                           results in maximum curvature of the L-curve. It is also referred
+                                           to as the L-curve criterion.
+
+                                       - distance (default)
+                                           This method searches for the regularization parameter that minimizes
+                                           the distance between the L-curve and a "virtual origin". A virtual
+                                           origin is used, because the L-curve is scaled and offset to always
+                                           range from zero to one, in this case.
       :type optimality_condition: str
       :param curvature_method: The method that is used to compute the curvature of the L-curve, in the
                                case that the curvature is used to find the optimal regularization
                                parameter. The default is None and the options are:
-                                   - numerical - this method computes the curvature of the L-curve via
-                                   numerical derivatives.
 
-                                   - cubic_spline - this method fits a cubic spline to the L-curve
-                                   the computes the curvature from the cubic spline (this might
-                                   perform better if the L-curve isn't "smooth").
+                                   - numerical
+                                       This method computes the curvature of the L-curve via numerical
+                                       derivatives.
+
+                                   - cubic_spline
+                                       This method fits a cubic spline to the L-curve the computes the
+                                       curvature from the cubic spline (this might perform better if the
+                                       L-curve isn't "smooth").
       :type curvature_method: std
       :param use_transformation: Whether or not the response and reference transformation from the class
                                  definition should be used (which is handled in the "power_inverse_processing"
@@ -1749,160 +1397,10 @@ Module Contents
    Bases: :py:obj:`SourcePathReceiver`
 
 
-   A subclass to represent a source-path-receiver (SPR) model of a system for MIMO
-   vibration testing or transfer path analysis. The responses and forces in this
-   subclass are time traces.
-
-   .. attribute:: frfs
-
-      The FRFs at the training, validation, and prediction response DOFs.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: target_response
-
-      The measured responses at both the training and validation DOFs that define the
-      receiver of the SPR object.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: force
-
-      The forces that define the source in the SPR model. The force degrees of freedom
-      (DOFs) should match the reference DOFs in the FRFs. The forces will typically be
-      set via an inverse method in the class, but the user can also set them manually.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: training_response
-
-      The measured responses that will be used to estimate the forces in the SPR object
-      (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-      response if a training response or training_response_coordinate is not supplied.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: transformed_training_response
-
-      The training_response with the response_transformation applied.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: training_frfs
-
-      A subset of the FRFs that have the same response DOFs as training response.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: transformed_training_frfs
-
-      The training_frfs with the response_transformation and reference_transformation
-      applied.
-
-      :type: TransferFunctionArray
-
-   .. attribute:: reconstructed_target_response
-
-      The computed responses from the FRFs and forces at the target response DOFs.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: transformed_reconstructed_response
-
-      The reconstructed response at the training_response_coordinate with the
-      response_transformation applied.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: reconstructed_validation_response
-
-      The computed responses from the FRFs and forces at the validation response DOFs.
-
-      :type: TimeHistoryArray
-
-   .. attribute:: response_coordinate
-
-      All the response DOFs in teh SPR object, including the prediction, training, and
-      validation DOFs, as defined by the response coordinate in the FRF.
-
-      :type: CoordinateArray
-
-   .. attribute:: target_response_coordinate
-
-      The target_response coordinates of the SPR object, based on the intersection of the
-      DOFs in the target_response and FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: training_response_coordinate
-
-      The training response coordinates of teh SPR object, based on the training responses.
-
-      :type: CoordinateArray
-
-   .. attribute:: validation_response_coordinate
-
-      The validation response coordinates of teh SPR object, based on the difference between
-      the target and training response coordinates.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_coordinate
-
-      The reference coordinates of the SPR object, based on the FRFs.
-
-      :type: CoordinateArray
-
-   .. attribute:: response_transformation
-
-      The response transformation that is used in the inverse problem. The default is
-      identity. Transformations are only applied to the training responses.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_response_coordinate
-
-      The coordinates that the response is transformed into through the response
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: reference_transformation
-
-      The reference transformation that is used in the inverse problem. The default is
-      identity.
-
-      :type: Matrix, optional
-
-   .. attribute:: transformed_reference_coordinate
-
-      The coordinates that the reference is transformed into through the reference
-      transformation array.
-
-      :type: CoordinateArray
-
-   .. attribute:: time_abscissa
-
-      The time vector of the SPR model.
-
-      :type: float
-
-   .. attribute:: time_abscissa_spacing
-
-      The sampling time for the SPR model.
-
-      :type: float
-
-   .. attribute:: inverse_settings
-
-      The settings that were to estimate the sources in the SourcePathReceiver object.
-
-      :type: dict
+   A subclass to represent a source-path-receiver (SPR) model with time traces
+   for the responses and forces.
 
    .. rubric:: Notes
-
-   The ordinate in the full FRFs and target responses can be different for the ordinate in the
-   training FRFs and responses (depending on the problem set-up).
 
    The "transient" term in the class name refers to the intended use of this SPR model
    (transient problems).
@@ -1918,11 +1416,9 @@ Module Contents
       .. rubric:: Notes
 
       The private properties of the class are saved as arguments in the .npz file, where
-      the argument names match the private variable name.
-
-      The save method is specially defined for the TransientSourcePathReceiver because
-      it has a "time_abscissa" private property, which isn't in the other SourcePathReceiver
-      objects.
+      the argument names match the private variable name. The save method is specially
+      defined for the TransientSourcePathReceiver because it has a "time_abscissa" private
+      property, which isn't in the other SourcePathReceiver objects.
 
 
 
@@ -1938,11 +1434,9 @@ Module Contents
       .. rubric:: Notes
 
       The private properties of the class should have been saved as arguments in the .npz
-      file, where the argument names match the private variable name.
-
-      The load method is specially defined for the TransientSourcePathReceiver because
-      it has a "time_abscissa" private property, which isn't in the other SourcePathReceiver
-      objects.
+      file, where the argument names match the private variable name. The load method is
+      specially defined for the TransientSourcePathReceiver because it has a "time_abscissa"
+      private property, which isn't in the other SourcePathReceiver objects.
 
 
 
@@ -1974,9 +1468,11 @@ Module Contents
       :rtype: TimeHistoryArray
 
       :raises AttributeError: If there are not forces in the SPR object.
-      :raises ValueError: If any of the selected response DOFs are not in the response_coordinate of
-          the SPR object.
-      :raises ValueError: If the response_dofs is not a 1d array.
+      :raises ValueError: If any of the following occurs:
+              - If any of the selected response DOFs are not in the response_coordinate of
+              the SPR object.
+          
+              - If the response_dofs is not a 1d array.
 
 
 
@@ -2004,14 +1500,18 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs in the SPR object.
 
-                              - validation - This compares the responses for the validation
-                              response DOFs in the SPR object.
+                              - training (default)
+                                  This compares the responses for the transformed training DOFs
+                                  in the SPR object.
 
-                              - target - This compares the responses for all the target
-                              response DOFs in the SPR object.
+                              - validation
+                                  This compares the responses for the validation response DOFs
+                                  in the SPR object.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
       :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                                 for. Either this argument or `frame_length` must be specified.
@@ -2055,14 +1555,18 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs in the SPR object.
 
-                              - validation - This compares the responses for the validation
-                              response DOFs in the SPR object.
+                              - training (default)
+                                  This compares the responses for the transformed training
+                                  DOFs in the SPR object.
 
-                              - target - This compares the responses for all the target
-                              response DOFs in the SPR object.
+                              - validation
+                                  This compares the responses for the validation response
+                                  DOFs in the SPR object.
+
+                              - target
+                                  This compares the responses for all the target response DOFs
+                                  in the SPR object.
       :type channel_set: str, optional
       :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                                 for. Either this argument or `frame_length` must be specified.
@@ -2103,14 +1607,18 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs in the SPR object.
 
-                              - validation - This compares the responses for the validation
-                              response DOFs in the SPR object.
+                              - training (default)
+                                  This compares the responses for the transformed training
+                                  DOFs in the SPR object.
 
-                              - target - This compares the responses for all the target
-                              response DOFs in the SPR object.
+                              - validation
+                                  This compares the responses for the validation response
+                                  DOFs in the SPR object.
+
+                              - target
+                                  This compares the responses for all the target response
+                                  DOFs in the SPR object.
       :type channel_set: str, optional
       :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                                 for. Either this argument or `frame_length` must be specified.
@@ -2150,22 +1658,28 @@ Module Contents
 
       :param channel_set: The channel set to make the response comparisons between.
                           The available options are:
-                              - training (default) - This compares the responses for the
-                              transformed training DOFs in the SPR object.
 
-                              - validation - This compares the responses for the validation
-                              response DOFs in the SPR object.
+                              - training (default)
+                                  This compares the responses for the transformed training
+                                  DOFs in the SPR object.
 
-                              - target - This compares the responses for all the target
-                              response DOFs in the SPR object.
+                              - validation
+                                  This compares the responses for the validation response
+                                  DOFs in the SPR object.
+
+                              - target
+                                  This compares the responses for all the target response
+                                  DOFs in the SPR object.
       :type channel_set: str, optional
       :param level_type:
                          The type of level to be used in the comparison. The options are:
-                             - rms - The rms level error for each frame of data in the
-                             responses. This is the default.
 
-                             - max - The error in the maximum level that is seem for each
-                             frame of data in the responses.
+                             - rms (default)
+                                 The rms level error for each frame of data in the responses.
+
+                             - max
+                                 The error in the maximum level that is seem for each frame
+                                 of data in the responses.
       :type level_type: str, optional
       :param samples_per_frame: Number of samples in each measurement frame to compute the RMS
                                 for. Either this argument or `frame_length` must be specified.
@@ -2263,16 +1777,21 @@ Module Contents
       :type cola_overlap_samples: int, optional
       :param inverse_method: The method to be used for the FRF matrix inversions. The available
                              methods are:
-                                 - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                                 default rcond parameter, this is the default method.
 
-                                 - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                                 condition number threshold.
+                                 - standard
+                                     Basic pseudo-inverse via numpy.linalg.pinv with the default
+                                     rcond parameter, this is the default method.
 
-                                 - tikhonov - pseudo-inverse using the Tikhonov regularization method.
+                                 - threshold
+                                     Pseudo-inverse via numpy.linalg.pinv with a specified condition
+                                     number threshold.
 
-                                 - truncation - pseudo-inverse where a fixed number of singular values
-                                 are retained for the inverse.
+                                 - tikhonov
+                                     Pseudo-inverse using the Tikhonov regularization method.
+
+                                 - truncation
+                                     Pseudo-inverse where a fixed number of singular values are
+                                     retained for the inverse.
       :type inverse_method: str, optional
       :param regularization_weighting_matrix: Matrix used to weight input degrees of freedom via Tikhonov regularization.
       :type regularization_weighting_matrix: sdpy.Matrix, optional
@@ -2362,22 +1881,28 @@ Module Contents
       :type number_regularization_values: int
       :param l_curve_type: The type of L-curve that is used to find the "optimal regularization
                            parameter. The available types are:
-                               - forces - This L-curve is constructed with the "size" of the forces on
-                               the Y-axis and the regularization parameter on the X-axis.
 
-                               - standard (default) - This L-curve is constructed with the residual squared
-                               error on the X-axis and the "size" of the forces on the Y-axis.
+                               - forces
+                                   This L-curve is constructed with the "size" of the forces on the
+                                   Y-axis and the regularization parameter on the X-axis.
+
+                               - standard (default)
+                                   This L-curve is constructed with the residual squared error on
+                                   the X-axis and the "size" of the forces on the Y-axis.
       :type l_curve_type: str
       :param optimality_condition: The method that is used to find an "optimal" regularization parameter.
                                    The options are:
-                                       - curvature (default) - This method searches for the regularization
-                                       parameter that results in maximum curvature of the L-curve. It is
-                                       also referred to as the L-curve criterion.
 
-                                       - distance - This method searches for the regularization parameter that
-                                       minimizes the distance between the L-curve and a "virtual origin". A
-                                       virtual origin is used, because the L-curve is scaled and offset to always
-                                       range from zero to one, in this case.
+                                       - curvature (default)
+                                           This method searches for the regularization parameter that results
+                                           in maximum curvature of the L-curve. It is also referred to as the
+                                           L-curve criterion.
+
+                                       - distance
+                                           This method searches for the regularization parameter that minimizes
+                                           the distance between the L-curve and a "virtual origin". A virtual
+                                           origin is used, because the L-curve is scaled and offset to always
+                                           range from zero to one, in this case.
       :type optimality_condition: str
       :param frf_interpolation_type: The type of interpolation to use on the FRFs (to account for the zero padding).
                                      This can be 'sinc' or any type that is allowed with scipy.interpolate.interp1d.
@@ -2449,9 +1974,12 @@ Module Contents
       :type number_regularization_values: int, optional
       :param cross_validation_type:
                                     The cross validation method to use. The available options are:
-                                        - loocv (default) - Leave one out cross validation.
 
-                                        - k-fold - K fold cross validation.
+                                        - loocv (default)
+                                            Leave one out cross validation.
+
+                                        - k-fold
+                                            K fold cross validation.
       :type cross_validation_type: str, optional
       :param number_folds: The number of folds to use in the k fold cross validation. The number of
                            response DOFs must be evenly divisible by the number of folds.
