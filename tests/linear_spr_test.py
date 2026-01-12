@@ -427,3 +427,61 @@ def test_reconstructed_response(unit_test_frf, unit_test_force, unit_test_respon
     
     with pytest.raises(AttributeError, match='There is no force array in this object so validation responses cannot be reconstructed'):
         no_force_spr.reconstructed_validation_response
+
+def test_sample_splitting(unit_test_frf, unit_test_response):
+    """
+    This makes sure that the sample splitting works as expected. It checks that 
+    the training, validation, and target responses/FRFs are split up as necessary.
+    It also makes sure that the correct errors are raised, as necessary.
+    """
+    target_dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    training_dof = sdpy.coordinate_array(node=[1,2], direction=1)
+    validation_dof = sdpy.coordinate_array(node=[3,4], direction=1)
+
+    unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                training_response_coordinate=training_dof)
+    
+    # Validating that the sample splitting worked as expected
+    assert np.all(unit_test_spr.training_response_coordinate == training_dof)
+    assert np.all(unit_test_spr.validation_response_coordinate == validation_dof)
+    assert np.all(unit_test_spr.target_response_coordinate == target_dof)
+
+    # Checking the responses
+    assert np.all(unit_test_spr.target_response.ordinate == unit_test_response.ordinate)
+    assert np.all(unit_test_spr.training_response.ordinate == unit_test_response.ordinate[:2,:])
+    assert np.all(unit_test_spr.validation_response.ordinate == unit_test_response.ordinate[2:,:])
+
+    # Checking the FRFs
+    assert np.all(unit_test_spr.target_frfs.ordinate == unit_test_frf.ordinate)
+    assert np.all(unit_test_spr.training_frfs.ordinate == unit_test_frf.ordinate[:2,:,:])
+    assert np.all(unit_test_spr.validation_frfs.ordinate == unit_test_frf.ordinate[2:,:,:])
+
+    with pytest.raises(AttributeError, match='The training response coordinate for a SourcePathReceiver object cannot be reset after it is initialized'):
+        unit_test_spr.training_response_coordinate = training_dof
+
+    bad_training_dof = sdpy.coordinate_array(node=[1,5], direction=1)
+    with pytest.raises(ValueError):
+        unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                training_response_coordinate=bad_training_dof)
+    
+    misordered_training_dof = sdpy.coordinate_array(node=[4,1], direction=1)
+    misordered_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                training_response_coordinate=misordered_training_dof)
+    
+    # Validating that the sample splitting worked as expected
+    assert np.all(misordered_spr.training_response_coordinate == sdpy.coordinate_array(node=[1,4], direction=1))
+    assert np.all(misordered_spr.validation_response_coordinate == sdpy.coordinate_array(node=[2,3], direction=1))
+    assert np.all(misordered_spr.target_response_coordinate == target_dof)
+
+    # Checking the responses
+    assert np.all(misordered_spr.target_response.ordinate == unit_test_response.ordinate)
+    assert np.all(misordered_spr.training_response.ordinate == unit_test_response.ordinate[[0,3],:])
+    assert np.all(misordered_spr.validation_response.ordinate == unit_test_response.ordinate[[1,2],:])
+
+    # Checking the FRFs
+    assert np.all(misordered_spr.target_frfs.ordinate == unit_test_frf.ordinate)
+    assert np.all(misordered_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,3],:,:])
+    assert np.all(misordered_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[1,2],:,:])
