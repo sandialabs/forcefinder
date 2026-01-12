@@ -62,67 +62,6 @@ class SourcePathReceiver:
     This is the base SPR class that is further defined for specific data types in 
     subclasses.
 
-    Attributes
-    ----------
-    frfs : TransferFunctionArray
-        The FRFs at the training, validation, and prediction response DOFs.
-    target_response
-        The measured responses at both the training and validation DOFs that define the 
-        receiver of the SPR object. 
-    force
-        The forces that define the source in the SPR model. The force degrees of freedom 
-        (DOFs) should match the reference DOFs in the FRFs. The forces will typically be 
-        set via an inverse method in the class, but the user can also set them manually. 
-    training_response
-        The measured responses that will be used to estimate the forces in the SPR object 
-        (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-        response if a training response or training_response_coordinate is not supplied .
-    transformed_training_response
-        The training_response with the response_transformation applied.
-    training_frfs : TransferFunctionArray
-        A subset of the FRFs that have the same response DOFs as training response.
-    transformed_training_frfs : TransferFunctionArray
-        The training_frfs with the response_transformation and reference_transformation
-        applied.
-    reconstructed_target_response
-        The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response
-        The reconstructed response at the training_response_coordinate with the 
-        response_transformation applied.
-    reconstructed_validation_response
-        The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : CoordinateArray
-        All the response DOFs in teh SPR object, including the prediction, training, and 
-        validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : CoordinateArray
-        The target_response coordinates of the SPR object, based on the intersection of the
-        DOFs in the target_response and FRFs.
-    training_response_coordinate : CoordinateArray
-        The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : CoordinateArray
-        The validation response coordinates of teh SPR object, based on the difference between
-        the target and training response coordinates.
-    reference_coordinate : CoordinateArray
-        The reference coordinates of the SPR object, based on the FRFs.
-    response_transformation : Matrix
-        The response transformation that is used in the inverse problem. The default is 
-        identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : CoordinateArray
-        The coordinates that the response is transformed into through the response 
-        transformation array.
-    reference_transformation : Matrix
-        The reference transformation that is used in the inverse problem. The default is 
-        identity.
-    transformed_reference_coordinate : CoordinateArray
-        The coordinates that the reference is transformed into through the reference 
-        transformation array.
-    abscissa : float
-        The frequency or time vector of the SPR model.
-    abscissa_spacing : float
-        The abscissa spacing (frequency resolution or sampling time) for the SPR model.
-    inverse_settings : dictionary
-        The settings that were to estimate the sources in the SourcePathReceiver object.
-
     Notes
     -----
     The ordinate in the full FRFs and target responses can be different for the ordinate 
@@ -560,13 +499,16 @@ class SourcePathReceiver:
         Raises
         ------
         ValueError
-            If the number of elements in the physical response weighting array
-            does not match the number of training response coordinates.
-        ValueError
-            If the number of elements in the transformed response weighting array
-            does not match the number of transformed response coordinates.
-        ValueError
-            If neither a physical or transformed response weighting is supplied.
+            If any of the following occurs:
+
+                - If the number of elements in the physical response weighting array
+                does not match the number of training response coordinates.
+
+                - If the number of elements in the transformed response weighting array
+                does not match the number of transformed response coordinates.
+
+                - If neither a physical or transformed response weighting is supplied.
+
         """
         if physical_response_weighting is not None:
             if physical_response_weighting.shape != self._training_response_coordinate_.shape:
@@ -608,13 +550,16 @@ class SourcePathReceiver:
         Raises
         ------
         ValueError
-            If the number of elements in the physical reference weighting array
-            does not match the number of reference coordinates.
-        ValueError
-            If the number of elements in the transformed reference weighting array
-            does not match the number of transformed reference coordinates.
-        ValueError
-            If neither a physical or transformed reference weighting is supplied.
+            If an of the following occurs:
+
+                - If the number of elements in the physical reference weighting array
+                does not match the number of reference coordinates.
+
+                - If the number of elements in the transformed reference weighting array
+                does not match the number of transformed reference coordinates.
+
+                - If neither a physical or transformed reference weighting is supplied.
+
         """
         if physical_reference_weighting is not None:
             if physical_reference_weighting.shape != self._reference_coordinate_.shape:
@@ -837,76 +782,11 @@ class SourcePathReceiver:
 
 class LinearSourcePathReceiver(SourcePathReceiver):
     """
-    A subclass to represent a source-path-receiver (SPR) model of a system for MIMO 
-    vibration testing or transfer path analysis. The responses and forces in this
-    subclass are linear spectra (i.e., ffts).
-
-    Attributes
-    ----------
-    frfs : TransferFunctionArray
-        The FRFs at the training, validation, and prediction response DOFs.
-    target_response : SpectrumArray
-        The measured responses at both the training and validation DOFs that define the 
-        receiver of the SPR object. 
-    force : SpectrumArray
-        The forces that define the source in the SPR model. The force degrees of freedom 
-        (DOFs) should match the reference DOFs in the FRFs. The forces will typically be 
-        set via an inverse method in the class, but the user can also set them manually. 
-    training_response : SpectrumArray
-        The measured responses that will be used to estimate the forces in the SPR object 
-        (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-        response if a training response or training_response_coordinate is not supplied.
-    transformed_training_response : SpectrumArray
-        The training_response with the response_transformation applied.
-    training_frfs : TransferFunctionArray
-        A subset of the FRFs that have the same response DOFs as training response.
-    transformed_training_frfs : TransferFunctionArray
-        The training_frfs with the response_transformation and reference_transformation
-        applied.
-    reconstructed_target_response : SpectrumArray
-        The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response : SpectrumArray
-        The reconstructed response at the training_response_coordinate with the 
-        response_transformation applied.
-    reconstructed_validation_response : SpectrumArray
-        The computed responses from the FRFs and forces at the validation response DOFs.  
-    response_coordinate : CoordinateArray
-        All the response DOFs in teh SPR object, including the prediction, training, and 
-        validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : CoordinateArray
-        The target_response coordinates of the SPR object, based on the intersection of the
-        DOFs in the target_response and FRFs.
-    training_response_coordinate : CoordinateArray
-        The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : CoordinateArray
-        The validation response coordinates of teh SPR object, based on the difference between
-        the target and training response coordinates.
-    reference_coordinate : CoordinateArray
-        The reference coordinates of the SPR object, based on the FRFs.
-    response_transformation : Matrix, optional
-        The response transformation that is used in the inverse problem. The default is 
-        identity. Transformations are only applied to the training responses.
-    transformed_response_coordinate : CoordinateArray
-        The coordinates that the response is transformed into through the response 
-        transformation array.
-    reference_transformation : Matrix, optional
-        The reference transformation that is used in the inverse problem. The default is 
-        identity.
-    transformed_reference_coordinate : CoordinateArray
-        The coordinates that the reference is transformed into through the reference 
-        transformation array.
-    abscissa : float
-        The frequency vector of the SPR model.
-    abscissa_spacing : float
-        The frequency resolution for the SPR model.
-    inverse_settings : dict
-        The settings that were to estimate the sources in the SourcePathReceiver object.
+    A subclass to represent a source-path-receiver (SPR) model with linear spectra 
+    (i.e., ffts) for the responses or forces.
 
     Notes
     -----
-    The ordinate in the full FRFs and target responses can be different for the ordinate in the
-    training FRFs and responses (depending on the problem set-up).
-
     The "linear" term in the class name stands for the linear units in the response and
     force spectra.
     """
@@ -916,8 +796,6 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         """
         Parameters
         ----------
-        frfs : TransferFunctionArray
-            The "full" FRFs that define the path of the SPR object.
         target_response : SpectrumArray
             The measured responses at both the training and validation DOFs that define the 
             receiver of the SPR object.
@@ -929,17 +807,6 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             The measured responses that will be used to estimate the forces in the SPR object 
             (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
             response if a training response or training_response_coordinate is not supplied .
-        training_response_coordinate : CoordinateArray, optional
-            The training response coordinates of teh SPR object, based on the training responses.
-        response_transformation : Matrix, optional
-            The response transformation that is used in the inverse problem. The default is 
-            identity. 
-        reference_transformation : Matrix, optional
-            The reference transformation that is used in the inverse problem. The default is 
-            identity.
-        empty : bool, optional
-            Whether or not to create an "empty" SPR object where all the attributes are None.
-            The default is False (to create a "full" SPR object).
 
         Notes
         -----
@@ -1096,10 +963,13 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         AttributeError
             If there are not forces in the SPR object.
         ValueError
-            If any of the selected response DOFs are not in the response_coordinate of 
-            the SPR object. 
-        ValueError
-            If the response_dofs is not a 1d array.
+            If any of the following occurs:
+
+                - If any of the selected response DOFs are not in the response_coordinate of 
+                the SPR object. 
+
+                - If the response_dofs is not a 1d array.
+
         """
         if self._force_array_ is None:
             raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
@@ -1126,13 +996,16 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
 
-                - validation - This compares the responses at the validation DOFs.
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
 
         Returns
         -------
@@ -1177,13 +1050,17 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
 
-                - validation - This compares the responses at the validation DOFs.
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object.
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object.
+
         Returns
         -------
         PowerSpectralDensityArray
@@ -1223,13 +1100,16 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
-                
-                - validation - This compares the responses at the validation DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
+
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
 
         Returns
         -------
@@ -1273,13 +1153,17 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
-                
-                - validation - This compares the responses at the validation DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object.
+                - training (default)
+                    This compares the responses for the transformed training DOFs.    
+
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object.
+
         figure_kwargs : dict, optional
             Arguments to use when creating the figure. The default is {}.
         linewidth : float, optional 
@@ -1356,15 +1240,22 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         method : str, optional
             The method to be used for the FRF matrix inversions. The available 
             methods are:
-                - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                  default rcond parameter, this is the default method.
 
-                - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                  condition number threshold.
+                - standard
+                    Basic pseudo-inverse via numpy.linalg.pinv with the default 
+                    rcond parameter, this is the default method.
 
-                - tikhonov - pseudo-inverse using the Tikhonov regularization method
-                - truncation - pseudo-inverse where a fixed number of singular values
-                  are retained for the inverse.
+                - threshold
+                    Pseudo-inverse via numpy.linalg.pinv with a specified condition 
+                    number threshold.
+
+                - tikhonov
+                    Pseudo-inverse using the Tikhonov regularization method.
+
+                - truncation
+                    Pseudo-inverse where a fixed number of singular values are 
+                    retained for the inverse.
+
         regularization_weighting_matrix : sdpy.Matrix or np.ndarray, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization. 
             This matrix can also be a 3D matrix such that the the weights are different
@@ -1459,22 +1350,30 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces - This L-curve is constructed with the "size" of the forces 
-                on the Y-axis and the regularization parameter on the X-axis. 
 
-                - standard (default) - This L-curve is constructed with the residual 
-                squared error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces
+                    This L-curve is constructed with the "size" of the forces on 
+                    the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default)
+                    This L-curve is constructed with the residual squared error on 
+                    the X-axis and the "size" of the forces on the Y-axis. 
+
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
-                - curvature (default) - This method searches for the regularization
-                parameter that results in maximum curvature of the L-curve. It is 
-                also referred to as the L-curve criterion. 
 
-                - distance - This method searches for the regularization parameter that
-                minimizes the distance between the L-curve and a "virtual origin". A 
-                virtual origin is used, because the L-curve is scaled and offset to always 
-                range from zero to one, in this case.
+                - curvature (default)
+                    This method searches for the regularization parameter that 
+                    results in maximum curvature of the L-curve. It is also referred 
+                    to as the L-curve criterion. 
+
+                - distance
+                    This method searches for the regularization parameter that 
+                    minimizes the distance between the L-curve and a "virtual origin". 
+                    A virtual origin is used, because the L-curve is scaled and offset 
+                    to always range from zero to one, in this case.
+
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "linear_inverse_processing" 
@@ -1565,9 +1464,13 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             regularization limits.  
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
-                - loocv (default) - Leave one out cross validation.
 
-                - k-fold - K fold cross validation.
+                - loocv (default)
+                    Leave one out cross validation.
+
+                - k-fold
+                    K fold cross validation.
+
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
             response DOFs must be evenly divisible by the number of folds.
@@ -1653,32 +1556,42 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
+
                 - forces - This L-curve is constructed with the "size" of the 
                 forces on the Y-axis and the regularization parameter on the X-axis. 
 
                 - standard (default) - This L-curve is constructed with the residual 
                 squared error on the X-axis and the "size" of the forces on the Y-axis. 
+
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
-                - curvature - This method searches for the regularization parameter 
-                that results in maximum curvature of the L-curve. It is also referred 
-                to as the L-curve criterion. 
 
-                - distance (default) - This method searches for the regularization 
-                parameter that minimizes the distance between the L-curve and a "virtual 
-                origin". A virtual origin is used, because the L-curve is scaled and 
-                offset to always range from zero to one, in this case.
+                - curvature
+                    This method searches for the regularization parameter that results 
+                    in maximum curvature of the L-curve. It is also referred to as the 
+                    L-curve criterion. 
+
+                - distance (default)
+                This method searches for the regularization parameter that minimizes 
+                the distance between the L-curve and a "virtual origin". A virtual 
+                origin is used, because the L-curve is scaled and offset to always range 
+                from zero to one, in this case.
+
         curvature_method : std
             The method that is used to compute the curvature of the L-curve, in the 
             case that the curvature is used to find the optimal regularization 
             parameter. The default is None and the options are:
-                - numerical - this method computes the curvature of the L-curve via 
-                numerical derivatives
 
-                - cubic_spline - this method fits a cubic spline to the L-curve
-                the computes the curvature from the cubic spline (this might 
-                perform better if the L-curve isn't "smooth")
+                - numerical
+                    This method computes the curvature of the L-curve via numerical 
+                    derivatives.
+
+                - cubic_spline 
+                    This method fits a cubic spline to the L-curve the computes the 
+                    curvature from the cubic spline (this might perform better if the 
+                    L-curve isn't "smooth").
+    
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "linear_inverse_processing" 
@@ -1766,11 +1679,16 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             the code. The default is 100. 
         information_criterion : str
             The desired information criterion, the available options are:
-                - 'BIC' - the Bayesian information criterion
 
-                - 'AIC' - the Akaike information criterion
-                
-                - 'AICC' (default) - the corrected Akaike information criterion
+                - 'BIC'
+                    The Bayesian information criterion
+
+                - 'AIC'
+                    The Akaike information criterion
+
+                - 'AICC' (default)
+                    The corrected Akaike information criterion
+
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "linear_inverse_processing" 
@@ -1815,79 +1733,11 @@ class LinearSourcePathReceiver(SourcePathReceiver):
         
 class PowerSourcePathReceiver(SourcePathReceiver):
     """
-    A subclass to represent a source-path-receiver (SPR) model of a system for MIMO 
-    vibration testing or transfer path analysis. The responses and forces in this
-    subclass are power spectra.
-
-    Attributes
-    ----------
-    frfs : TransferFunctionArray
-        The FRFs at the training, validation, and prediction response DOFs.
-    target_response : PowerSpectralDensityArray
-        The measured responses at both the training and validation DOFs that define the 
-        receiver of the SPR object. 
-    force : PowerSpectralDensityArray
-        The forces that define the source in the SPR model. The force degrees of freedom 
-        (DOFs) should match the reference DOFs in the FRFs. The forces will typically be 
-        set via an inverse method in the class, but the user can also set them manually. 
-    training_response : PowerSpectralDensityArray
-        The measured responses that will be used to estimate the forces in the SPR object 
-        (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-        response if a training response or training_response_coordinate is not supplied.
-    transformed_training_response : PowerSpectralDensityArray
-        The training_response with the response_transformation applied.
-    training_frfs : TransferFunctionArray
-        A subset of the FRFs that have the same response DOFs as training response.
-    transformed_training_frfs : TransferFunctionArray
-        The training_frfs with the response_transformation and reference_transformation
-        applied.
-    buzz_cpsd : PowerSpectralDensityArray
-        The cpsd matrix from the system ID matrix to use the so-called "buzz method"
-        in the inverse source estimation.
-    reconstructed_target_response : PowerSpectralDensityArray
-        The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response : PowerSpectralDensityArray
-        The reconstructed response at the training_response_coordinate with the 
-        response_transformation applied.
-    reconstructed_validation_response : PowerSpectralDensityArray
-        The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : CoordinateArray
-        All the response DOFs in teh SPR object, including the prediction, training, and 
-        validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : CoordinateArray
-        The target_response coordinates of the SPR object, based on the intersection of the
-        DOFs in the target_response and FRFs.
-    training_response_coordinate : CoordinateArray
-        The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : CoordinateArray
-        The validation response coordinates of teh SPR object, based on the difference between
-        the target and training response coordinates.
-    reference_coordinate : CoordinateArray
-        The reference coordinates of the SPR object, based on the FRFs.
-    response_transformation : Matrix, optional
-        The response transformation that is used in the inverse problem. The default is 
-        identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : CoordinateArray
-        The coordinates that the response is transformed into through the response 
-        transformation array.
-    reference_transformation : Matrix, optional
-        The reference transformation that is used in the inverse problem. The default is 
-        identity.
-    transformed_reference_coordinate : CoordinateArray
-        The coordinates that the reference is transformed into through the reference 
-        transformation array.
-    abscissa : float
-        The frequency vector of the SPR model.
-    abscissa_spacing : float
-        The frequency resolution for the SPR model.
-    inverse_settings : dict
-        The settings that were to estimate the sources in the SourcePathReceiver object.
+    A subclass to represent a source-path-receiver (SPR) model with power spectra
+    for the responses and forces.
 
     Notes
     -----
-    The ordinate in the full FRFs and target responses can be different for the ordinate in the
-    training FRFs and responses (depending on the problem set-up).
-
     The "power" term in the class name stands for the power units (i.e., units squared) in the 
     response and force spectra.
     """
@@ -1897,8 +1747,6 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         """
         Parameters
         ----------
-        frfs : TransferFunctionArray
-            The "full" FRFs that define the path of the SPR object.
         target_response : PowerSpectralDensityArray
             The measured responses at both the training and validation DOFs that define the 
             receiver of the SPR object.
@@ -1913,17 +1761,6 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         buzz_cpsd : PowerSpectralDensityArray, optional
             The cpsd matrix from the system ID matrix to use the so-called "buzz method"
             in the inverse source estimation. Defaults to None. 
-        training_response_coordinate : CoordinateArray, optional
-            The training response coordinates of teh SPR object, based on the training responses.
-        response_transformation : Matrix, optional
-            The response transformation that is used in the inverse problem. The default is 
-            identity. 
-        reference_transformation : Matrix, optional
-            The reference transformation that is used in the inverse problem. The default is 
-            identity.
-        empty : bool, optional
-            Whether or not to create an "empty" SPR object where all the attributes are None.
-            The default is False (to create a "full" SPR object).
 
         Notes
         -----
@@ -2132,10 +1969,13 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         AttributeError
             If there are not forces in the SPR object.
         ValueError
-            If any of the selected response DOFs are not in the response_coordinate of 
-            the SPR object. 
-        ValueError
-            If the response_dofs is not a 1d array.
+            If any of the following occurs:
+
+                - If any of the selected response DOFs are not in the response_coordinate of 
+                the SPR object. 
+
+                - If the response_dofs is not a 1d array.
+
         """
         if self._force_array_ is None:
             raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
@@ -2170,13 +2010,16 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
 
-                - validation - This compares the responses at the validation DOFs.
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
 
         Returns
         -------
@@ -2216,13 +2059,16 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
 
-                - validation - This compares the responses at the validation DOFs.
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
 
         Returns
         -------
@@ -2258,13 +2104,16 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
-                
-                - validation - This compares the responses at the validation DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - training (default)
+                    This compares the responses for the transformed training DOFs.
+
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
 
         Returns
         -------
@@ -2303,13 +2152,17 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs.
-                
-                - validation - This compares the responses at the validation DOFs.
 
-                - target - This compares the responses for all the target response 
-                DOFs in the SPR object. 
+                - training (default)
+                    This compares the responses for the transformed training DOFs.    
+
+                - validation
+                    This compares the responses at the validation DOFs.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
+
         figure_kwargs : dict, optional
             Arguments to use when creating the figure. The default is {}.
         linewidth : float, optional 
@@ -2364,16 +2217,22 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         method : str, optional
             The method to be used for the FRF matrix inversions. The available 
             methods are:
-                - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                  default rcond parameter, this is the default method.
 
-                - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                  condition number threshold.
-                
-                - tikhonov - pseudo-inverse using the Tikhonov regularization method.
-                
-                - truncation - pseudo-inverse where a fixed number of singular values
-                  are retained for the inverse. 
+                - standard
+                    Basic pseudo-inverse via numpy.linalg.pinv with the default rcond 
+                    parameter, this is the default method.
+
+                - threshold
+                    Pseudo-inverse via numpy.linalg.pinv with a specified condition 
+                    number threshold.
+
+                - tikhonov
+                    Pseudo-inverse using the Tikhonov regularization method.
+
+                - truncation
+                    Pseudo-inverse where a fixed number of singular values are 
+                    retained for the inverse. 
+
         regularization_weighting_matrix : sdpy.Matrix or np.ndarray, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization. 
             This matrix can also be a 3D matrix such that the the weights are different
@@ -2486,22 +2345,30 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces - This L-curve is constructed with the "size" of the forces 
-                on the Y-axis and the regularization parameter on the X-axis. 
 
-                - standard (default) - This L-curve is constructed with the residual 
-                squared error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces
+                    This L-curve is constructed with the "size" of the forces on 
+                    the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default)
+                    This L-curve is constructed with the residual squared error on 
+                    the X-axis and the "size" of the forces on the Y-axis. 
+
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
-                - curvature (default) - This method searches for the regularization
-                parameter that results in maximum curvature of the L-curve. It is 
-                also referred to as the L-curve criterion. 
 
-                - distance - This method searches for the regularization parameter that
-                minimizes the distance between the L-curve and a "virtual origin". A 
-                virtual origin is used, because the L-curve is scaled and offset to always 
-                range from zero to one, in this case.
+                - curvature (default)
+                    This method searches for the regularization parameter that results 
+                    in maximum curvature of the L-curve. It is also referred to as the 
+                    L-curve criterion. 
+
+                - distance
+                    This method searches for the regularization parameter that minimizes 
+                    the distance between the L-curve and a "virtual origin". A virtual 
+                    origin is used, because the L-curve is scaled and offset to always 
+                    range from zero to one, in this case.
+
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "power_inverse_processing" 
@@ -2602,9 +2469,13 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             regularization limits.  
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
-                - loocv (default) - Leave one out cross validation.
 
-                - k-fold - K fold cross validation.
+                - loocv (default)
+                    Leave one out cross validation.
+
+                - k-fold
+                    K fold cross validation.
+
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
             response DOFs must be evenly divisible by the number of folds.
@@ -2694,32 +2565,44 @@ class PowerSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces - This L-curve is constructed with the "size" of the 
-                forces on the Y-axis and the regularization parameter on the X-axis. 
 
-                - standard (default) - This L-curve is constructed with the residual 
-                squared error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces
+                    This L-curve is constructed with the "size" of the forces on 
+                    the Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default)
+                    This L-curve is constructed with the residual squared error on 
+                    the X-axis and the "size" of the forces on the Y-axis. 
+
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
-                - curvature - This method searches for the regularization parameter 
-                that results in maximum curvature of the L-curve. It is also referred 
-                to as the L-curve criterion. 
 
-                - distance (default) - This method searches for the regularization 
-                parameter that minimizes the distance between the L-curve and a "virtual 
-                origin". A virtual origin is used, because the L-curve is scaled and 
-                offset to always range from zero to one, in this case.
+                - curvature
+                    This method searches for the regularization parameter that 
+                    results in maximum curvature of the L-curve. It is also referred 
+                    to as the L-curve criterion. 
+
+                - distance (default)
+                    This method searches for the regularization parameter that minimizes 
+                    the distance between the L-curve and a "virtual origin". A virtual 
+                    origin is used, because the L-curve is scaled and offset to always 
+                    range from zero to one, in this case.
+
         curvature_method : std
             The method that is used to compute the curvature of the L-curve, in the 
             case that the curvature is used to find the optimal regularization 
             parameter. The default is None and the options are:
-                - numerical - this method computes the curvature of the L-curve via 
-                numerical derivatives.
 
-                - cubic_spline - this method fits a cubic spline to the L-curve
-                the computes the curvature from the cubic spline (this might 
-                perform better if the L-curve isn't "smooth").
+                - numerical
+                    This method computes the curvature of the L-curve via numerical 
+                    derivatives.
+
+                - cubic_spline
+                    This method fits a cubic spline to the L-curve the computes the 
+                    curvature from the cubic spline (this might perform better if the 
+                    L-curve isn't "smooth").
+
         use_transformation : bool
             Whether or not the response and reference transformation from the class 
             definition should be used (which is handled in the "power_inverse_processing" 
@@ -3059,76 +2942,11 @@ class PowerSourcePathReceiver(SourcePathReceiver):
 
 class TransientSourcePathReceiver(SourcePathReceiver):
     """
-    A subclass to represent a source-path-receiver (SPR) model of a system for MIMO 
-    vibration testing or transfer path analysis. The responses and forces in this
-    subclass are time traces.
-
-    Attributes
-    ----------
-    frfs : TransferFunctionArray
-        The FRFs at the training, validation, and prediction response DOFs.
-    target_response : TimeHistoryArray
-        The measured responses at both the training and validation DOFs that define the 
-        receiver of the SPR object.
-    force : TimeHistoryArray
-        The forces that define the source in the SPR model. The force degrees of freedom 
-        (DOFs) should match the reference DOFs in the FRFs. The forces will typically be 
-        set via an inverse method in the class, but the user can also set them manually. 
-    training_response : TimeHistoryArray
-        The measured responses that will be used to estimate the forces in the SPR object 
-        (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
-        response if a training response or training_response_coordinate is not supplied.
-    transformed_training_response : TimeHistoryArray
-        The training_response with the response_transformation applied.
-    training_frfs : TransferFunctionArray
-        A subset of the FRFs that have the same response DOFs as training response.
-    transformed_training_frfs : TransferFunctionArray
-        The training_frfs with the response_transformation and reference_transformation
-        applied.
-    reconstructed_target_response : TimeHistoryArray
-        The computed responses from the FRFs and forces at the target response DOFs. 
-    transformed_reconstructed_response : TimeHistoryArray
-        The reconstructed response at the training_response_coordinate with the 
-        response_transformation applied.
-    reconstructed_validation_response : TimeHistoryArray
-        The computed responses from the FRFs and forces at the validation response DOFs. 
-    response_coordinate : CoordinateArray
-        All the response DOFs in teh SPR object, including the prediction, training, and 
-        validation DOFs, as defined by the response coordinate in the FRF. 
-    target_response_coordinate : CoordinateArray
-        The target_response coordinates of the SPR object, based on the intersection of the
-        DOFs in the target_response and FRFs.
-    training_response_coordinate : CoordinateArray
-        The training response coordinates of teh SPR object, based on the training responses.
-    validation_response_coordinate : CoordinateArray
-        The validation response coordinates of teh SPR object, based on the difference between
-        the target and training response coordinates.
-    reference_coordinate : CoordinateArray
-        The reference coordinates of the SPR object, based on the FRFs.
-    response_transformation : Matrix, optional
-        The response transformation that is used in the inverse problem. The default is 
-        identity. Transformations are only applied to the training responses. 
-    transformed_response_coordinate : CoordinateArray
-        The coordinates that the response is transformed into through the response 
-        transformation array.
-    reference_transformation : Matrix, optional
-        The reference transformation that is used in the inverse problem. The default is 
-        identity.
-    transformed_reference_coordinate : CoordinateArray
-        The coordinates that the reference is transformed into through the reference 
-        transformation array.
-    time_abscissa : float
-        The time vector of the SPR model.
-    time_abscissa_spacing : float
-        The sampling time for the SPR model.
-    inverse_settings : dict
-        The settings that were to estimate the sources in the SourcePathReceiver object.
+    A subclass to represent a source-path-receiver (SPR) model with time traces 
+    for the responses and forces.
 
     Notes
     -----
-    The ordinate in the full FRFs and target responses can be different for the ordinate in the
-    training FRFs and responses (depending on the problem set-up).
-
     The "transient" term in the class name refers to the intended use of this SPR model
     (transient problems).
     """
@@ -3138,8 +2956,6 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         """
         Parameters
         ----------
-        frfs : TransferFunctionArray
-            The "full" FRFs that define the path of the SPR object.
         target_response : TimeHistoryArray
             The measured responses at both the training and validation DOFs that define the 
             receiver of the SPR object.
@@ -3151,17 +2967,6 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             The measured responses that will be used to estimate the forces in the SPR object 
             (e.g., the specified responses in a MIMO vibration test). Defaults to the "full"
             response if a training response or training_response_coordinate is not supplied .
-        training_response_coordinate : CoordinateArray, optional
-            The training response coordinates of teh SPR object, based on the training responses.
-        response_transformation : Matrix, optional
-            The response transformation that is used in the inverse problem. The default is 
-            identity. 
-        reference_transformation : Matrix, optional
-            The reference transformation that is used in the inverse problem. The default is 
-            identity.
-        empty : bool, optional
-            Whether or not to create an "empty" SPR object where all the attributes are None.
-            The default is False (to create a "full" SPR object).
 
         Notes
         -----
@@ -3183,11 +2988,9 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         Notes
         -----
         The private properties of the class are saved as arguments in the .npz file, where 
-        the argument names match the private variable name. 
-
-        The save method is specially defined for the TransientSourcePathReceiver because 
-        it has a "time_abscissa" private property, which isn't in the other SourcePathReceiver 
-        objects.
+        the argument names match the private variable name. The save method is specially 
+        defined for the TransientSourcePathReceiver because it has a "time_abscissa" private 
+        property, which isn't in the other SourcePathReceiver objects.
         """
         np.savez(filename, 
                  target_response=self._target_response_array_,
@@ -3223,11 +3026,9 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         Notes
         -----
         The private properties of the class should have been saved as arguments in the .npz 
-        file, where the argument names match the private variable name. 
-
-        The load method is specially defined for the TransientSourcePathReceiver because 
-        it has a "time_abscissa" private property, which isn't in the other SourcePathReceiver 
-        objects.
+        file, where the argument names match the private variable name. The load method is 
+        specially defined for the TransientSourcePathReceiver because it has a "time_abscissa" 
+        private property, which isn't in the other SourcePathReceiver objects.
         """
         loaded_spr = np.load(filename, allow_pickle=True)
         spr_object = cls.__new__(cls)
@@ -3401,10 +3202,12 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         AttributeError
             If there are not forces in the SPR object.
         ValueError
-            If any of the selected response DOFs are not in the response_coordinate of 
-            the SPR object. 
-        ValueError
-            If the response_dofs is not a 1d array.
+            If any of the following occurs:
+                - If any of the selected response DOFs are not in the response_coordinate of 
+                the SPR object. 
+
+                - If the response_dofs is not a 1d array.
+                
         """
         if self._force_array_ is None:
             raise AttributeError('There is no force array in this object so predicted responses cannot be computed')
@@ -3476,14 +3279,19 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs in the SPR object.
 
-                - validation - This compares the responses for the validation
-                response DOFs in the SPR object.
+                - training (default)
+                    This compares the responses for the transformed training DOFs 
+                    in the SPR object.
 
-                - target - This compares the responses for all the target 
-                response DOFs in the SPR object. 
+                - validation
+                    This compares the responses for the validation response DOFs 
+                    in the SPR object.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
+
         samples_per_frame : int, optional
             Number of samples in each measurement frame to compute the RMS 
             for. Either this argument or `frame_length` must be specified.  
@@ -3542,14 +3350,19 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs in the SPR object.
 
-                - validation - This compares the responses for the validation
-                response DOFs in the SPR object.
+                - training (default)
+                    This compares the responses for the transformed training 
+                    DOFs in the SPR object.
 
-                - target - This compares the responses for all the target 
-                response DOFs in the SPR object. 
+                - validation
+                    This compares the responses for the validation response 
+                    DOFs in the SPR object.
+
+                - target
+                    This compares the responses for all the target response DOFs 
+                    in the SPR object. 
+
         samples_per_frame : int, optional
             Number of samples in each measurement frame to compute the RMS 
             for. Either this argument or `frame_length` must be specified.  
@@ -3605,14 +3418,19 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs in the SPR object.
 
-                - validation - This compares the responses for the validation
-                response DOFs in the SPR object.
-                
-                - target - This compares the responses for all the target 
-                response DOFs in the SPR object. 
+                - training (default)
+                    This compares the responses for the transformed training 
+                    DOFs in the SPR object.
+
+                - validation
+                    This compares the responses for the validation response 
+                    DOFs in the SPR object.
+
+                - target
+                    This compares the responses for all the target response 
+                    DOFs in the SPR object. 
+
         samples_per_frame : int, optional
             Number of samples in each measurement frame to compute the RMS 
             for. Either this argument or `frame_length` must be specified.  
@@ -3668,21 +3486,29 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         channel_set : str, optional
             The channel set to make the response comparisons between.
             The available options are:
-                - training (default) - This compares the responses for the 
-                transformed training DOFs in the SPR object.
 
-                - validation - This compares the responses for the validation
-                response DOFs in the SPR object.
-                
-                - target - This compares the responses for all the target 
-                response DOFs in the SPR object. 
+                - training (default)
+                    This compares the responses for the transformed training 
+                    DOFs in the SPR object.
+
+                - validation
+                    This compares the responses for the validation response 
+                    DOFs in the SPR object.
+
+                - target
+                    This compares the responses for all the target response 
+                    DOFs in the SPR object. 
+
         level_type : str, optional
             The type of level to be used in the comparison. The options are:
-                - rms - The rms level error for each frame of data in the 
-                responses. This is the default.
 
-                - max - The error in the maximum level that is seem for each 
-                frame of data in the responses.
+                - rms (default)
+                    The rms level error for each frame of data in the responses. 
+
+                - max
+                    The error in the maximum level that is seem for each frame 
+                    of data in the responses.
+
         samples_per_frame : int, optional
             Number of samples in each measurement frame to compute the RMS 
             for. Either this argument or `frame_length` must be specified.  
@@ -3841,16 +3667,22 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         inverse_method : str, optional
             The method to be used for the FRF matrix inversions. The available 
             methods are:
-                - standard - basic pseudo-inverse via numpy.linalg.pinv with the
-                default rcond parameter, this is the default method.
 
-                - threshold - pseudo-inverse via numpy.linalg.pinv with a specified
-                condition number threshold.
+                - standard
+                    Basic pseudo-inverse via numpy.linalg.pinv with the default 
+                    rcond parameter, this is the default method.
 
-                - tikhonov - pseudo-inverse using the Tikhonov regularization method.
+                - threshold
+                    Pseudo-inverse via numpy.linalg.pinv with a specified condition 
+                    number threshold.
 
-                - truncation - pseudo-inverse where a fixed number of singular values
-                are retained for the inverse.
+                - tikhonov
+                    Pseudo-inverse using the Tikhonov regularization method.
+
+                - truncation
+                    Pseudo-inverse where a fixed number of singular values are 
+                    retained for the inverse.
+
         regularization_weighting_matrix : sdpy.Matrix, optional
             Matrix used to weight input degrees of freedom via Tikhonov regularization.
         regularization_parameter : float or np.ndarray, optional
@@ -4007,22 +3839,30 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         l_curve_type : str
             The type of L-curve that is used to find the "optimal regularization 
             parameter. The available types are:
-                - forces - This L-curve is constructed with the "size" of the forces on 
-                the Y-axis and the regularization parameter on the X-axis. 
 
-                - standard (default) - This L-curve is constructed with the residual squared 
-                error on the X-axis and the "size" of the forces on the Y-axis. 
+                - forces
+                    This L-curve is constructed with the "size" of the forces on the 
+                    Y-axis and the regularization parameter on the X-axis. 
+
+                - standard (default)
+                    This L-curve is constructed with the residual squared error on 
+                    the X-axis and the "size" of the forces on the Y-axis. 
+
         optimality_condition : str
             The method that is used to find an "optimal" regularization parameter.
             The options are:
-                - curvature (default) - This method searches for the regularization
-                parameter that results in maximum curvature of the L-curve. It is 
-                also referred to as the L-curve criterion. 
 
-                - distance - This method searches for the regularization parameter that
-                minimizes the distance between the L-curve and a "virtual origin". A 
-                virtual origin is used, because the L-curve is scaled and offset to always 
-                range from zero to one, in this case.
+                - curvature (default)
+                    This method searches for the regularization parameter that results 
+                    in maximum curvature of the L-curve. It is also referred to as the 
+                    L-curve criterion. 
+
+                - distance
+                    This method searches for the regularization parameter that minimizes 
+                    the distance between the L-curve and a "virtual origin". A virtual 
+                    origin is used, because the L-curve is scaled and offset to always 
+                    range from zero to one, in this case.
+
         frf_interpolation_type : str, optional
             The type of interpolation to use on the FRFs (to account for the zero padding).
             This can be 'sinc' or any type that is allowed with scipy.interpolate.interp1d.
@@ -4146,9 +3986,13 @@ class TransientSourcePathReceiver(SourcePathReceiver):
             regularization limits.  
         cross_validation_type : str, optional
             The cross validation method to use. The available options are:
-                - loocv (default) - Leave one out cross validation.
-                
-                - k-fold - K fold cross validation.
+
+                - loocv (default)
+                    Leave one out cross validation.
+
+                - k-fold
+                    K fold cross validation.
+
         number_folds : int
             The number of folds to use in the k fold cross validation. The number of 
             response DOFs must be evenly divisible by the number of folds.

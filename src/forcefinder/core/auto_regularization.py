@@ -341,13 +341,21 @@ def leave_one_out_cv(frfs, response,
     error_function : function, optional
         The function that is used to compute the error in the inverse 
         problem. The function should take the following parameters:
-            - validation_frfs - ndarray that is sized [number of lines, number of validation responses, number of references]. 
-            - validation_response - ndarray that is sized [number of lines, number of responses].
-            - frf_inverse - ndarray that is sized [number of lines, number of references, number of training responses].
-            - training_response - ndarray that is sized [number of lines, number of training responses, 1].
-        The function should output:
-            - error - a 1d array that is sized number of lines.
-        The default function computes the residual squared error.
+
+        - validation_frfs 
+            ndarray that is sized [number of lines, number of validation responses, number of references]. 
+            
+        - validation_response
+            ndarray that is sized [number of lines, number of responses].
+           
+        - frf_inverse
+            ndarray that is sized [number of lines, number of references, number of training responses].
+            
+        - training_response
+            ndarray that is sized [number of lines, number of training responses, 1].
+
+        The function should output a 1d array of the computed error that is 
+        sized number of lines. The default function computes the residual squared error.
     
     Returns
     -------
@@ -447,15 +455,22 @@ def k_fold_cv(frfs, response,
     error_function : function, optional
         The function that is used to compute the error in the inverse 
         problem. The function should take the following parameters:
-            - validation_frfs - ndarray that is sized [number of lines, number of validation responses, number of references]. 
+
+            - validation_frfs
+                ndarray that is sized [number of lines, number of validation responses, number of references]. 
             
-            - validation_response - ndarray that is sized [number of lines, number of responses].
+            - validation_response
+                ndarray that is sized [number of lines, number of responses].
             
-            - frf_inverse - ndarray that is sized [number of lines, number of references, number of training responses].
+            - frf_inverse
+                ndarray that is sized [number of lines, number of references, number of training responses].
             
-            - training_response - ndarray that is sized [number of lines, number of training responses, 1].
-        The function should return a 1d array that is sized number of lines.
-        The default function computes the mean squared error.
+            - training_response
+                ndarray that is sized [number of lines, number of training responses, 1].
+        
+        The function should return a 1d array with the computed errors that 
+        is sized number of lines. The default function computes the mean squared 
+        error.
     
     Returns
     -------
@@ -560,23 +575,29 @@ def l_curve_optimal_regularization(regularization_values, penalty, residual,
     l_curve_type : str
         The type of L-curve that is used to find the "optimal regularization 
         parameter. The available types are:
-            - forces (default) - This L-curve is constructed with the "size" 
-            of the forces on the Y-axis and the regularization parameter on the 
-            X-axis. 
 
-            - standard - This L-curve is constructed with the residual squared 
-            error on the X-axis and the "size" of the forces on the Y-axis. 
+            - forces (default)
+                This L-curve is constructed with the "size" of the forces on the Y-axis 
+                and the regularization parameter on the X-axis [ar_lcor_3]_. 
+
+            - standard
+                This L-curve is constructed with the residual squared error on the 
+                X-axis and the "size" of the forces on the Y-axis [ar_lcor_1]_, [ar_lcor_2]_. 
+
     optimality_condition : str
         The method that is used to find an "optimal" regularization parameter.
         The options are:
-            - curvature (default) - This method searches for the regularization
-            parameter that results in maximum curvature of the L-curve. It is 
-            also referred to as the L-curve criterion. 
 
-            - distance - This method searches for the regularization parameter that
-            minimizes the distance between the L-curve and a "virtual origin". A 
-            virtual origin is used, because the L-curve is scaled and offset to always 
-            range from zero to one, in this case.
+            - curvature (default)
+                This method searches for the regularization parameter that results in 
+                maximum curvature of the L-curve. It is also referred to as the L-curve 
+                criterion. 
+
+            - distance
+                This method searches for the regularization parameter that minimizes the 
+                distance between the L-curve and a "virtual origin". A virtual origin is used, 
+                because the L-curve is scaled and offset to always range from zero to one, in 
+                this case.
     
     Returns
     -------
@@ -587,20 +608,24 @@ def l_curve_optimal_regularization(regularization_values, penalty, residual,
     Raises
     ------
     ValueError
-        If the requested L-curve type is not available.
-    ValueError
-        If the requested optimality condition is not available.   
+        If any of the following occurs:
+
+        - If the requested L-curve type is not available.
+
+        - If the requested optimality condition is not available.   
     
     References
     ----------
-    .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
-        of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-        vol. 14, no. 6, pp. 1487-1503, 1993.
-    .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-        problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
-        2000, pp. 119-142.  
-    .. [3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
-        Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
+    .. [ar_lcor_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
+       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+       vol. 14, no. 6, pp. 1487-1503, 1993.
+
+    .. [ar_lcor_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+       problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
+       2000, pp. 119-142.  
+
+    .. [ar_lcor_3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
+       Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
     """
     if not np.any(np.array(['standard', 'forces']) == l_curve_type):
         raise ValueError('The selected L-curve type is not available')
@@ -623,7 +648,7 @@ def l_curve_optimal_regularization(regularization_values, penalty, residual,
 def broadcasting_l_curve_criterion(x_axis, y_axis, regularization_values, return_curvature=False):
     """
     Finds the "optimal" regularization value from an L-curve via the 
-    location where its curvature is at a maximum (the L-curve criterion).
+    location where its curvature is at a maximum (the L-curve criterion) [ar_blcc_1]_, [ar_blcc_2]_.
 
     Parameters
     ----------
@@ -663,12 +688,13 @@ def broadcasting_l_curve_criterion(x_axis, y_axis, regularization_values, return
 
     References
     ----------
-    .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
-           of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-           vol. 14, no. 6, pp. 1487-1503, 1993.
-    .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-           problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
-           2000, pp. 119-142.  
+    .. [ar_blcc_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
+       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+       vol. 14, no. 6, pp. 1487-1503, 1993.
+
+    .. [ar_blcc_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+       problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
+       2000, pp. 119-142.  
     """
     divisor = np.gradient(np.log(regularization_values), axis=0)
 
@@ -753,11 +779,14 @@ def select_model_by_information_criterion(H, x, f, method):
     method : str
         The desired information criterion, the available options are:
 
-            - 'BIC': the Bayesian information criterion
+            - 'BIC' 
+                The Bayesian information criterion
         
-            - 'AIC': the Akaike information criterion
+            - 'AIC'
+                The Akaike information criterion
             
-            - 'AICC': the corrected Akaike information criterion
+            - 'AICC'
+                The corrected Akaike information criterion
     
     Returns
     -------
@@ -891,7 +920,7 @@ def l_curve_selection(regularization_values, penalty, residual, forces_full_path
                       optimality_condition = 'curvature',
                       curvature_method = 'numerical'):
     """
-    Selects the optimal regularization parameter and forces using L-curve methods
+    Selects the optimal regularization parameter and forces using L-curve methods.
 
     Parameters
     ----------
@@ -911,37 +940,50 @@ def l_curve_selection(regularization_values, penalty, residual, forces_full_path
     l_curve_type : str
         The type of L-curve that is used to find the "optimal regularization 
         parameter. The available types are:
-            - forces (default) - This L-curve is constructed with the "size" 
-            of the forces on the Y-axis and the regularization parameter on the 
-            X-axis. 
-            - standard - This L-curve is constructed with the residual squared 
-            error on the X-axis and the "size" of the forces on the Y-axis. 
+
+            - forces (default) 
+                This L-curve is constructed with the "size" of the forces on the 
+                Y-axis and the regularization parameter on the X-axis [ar_lcs_3]_. 
+
+            - standard
+                This L-curve is constructed with the residual squared error on the 
+                X-axis and the "size" of the forces on the Y-axis [ar_lcs_1]_, [ar_lcs_2]_. 
+
     optimality_condition : str
         The method that is used to find an "optimal" regularization parameter.
         The options are:
-            - curvature (default) - This method searches for the regularization
-            parameter that results in maximum curvature of the L-curve. It is 
-            also referred to as the L-curve criterion. 
-            - distance - This method searches for the regularization parameter that
-            minimizes the distance between the L-curve and a "virtual origin". A 
-            virtual origin is used, because the L-curve is scaled and offset to always 
-            range from zero to one, in this case.
+
+            - curvature (default)
+                This method searches for the regularization parameter that results in 
+                maximum curvature of the L-curve. It is also referred to as the L-curve 
+                criterion. 
+
+            - distance
+                This method searches for the regularization parameter that minimizes the 
+                distance between the L-curve and a "virtual origin". A virtual origin is 
+                used, because the L-curve is scaled and offset to always range from zero to 
+                one, in this case.
+
     curvature_method : str
         The method that is used to compute the curvature of the L-curve, in the 
         case that the curvature is used to find the optimal regularization 
         parameter. The options are:
-            - numerical (default) - this method computes the curvature of 
-            the L-curve via numerical derivatives
-            - cubic_spline - this method fits a cubic spline to the L-curve
-            the computes the curvature from the cubic spline (this might 
-            perform better if the L-curve isn't "smooth")      
+
+            - numerical (default)
+                This method computes the curvature of the L-curve via numerical derivatives
+
+            - cubic_spline
+                This method fits a cubic spline to the L-curve the computes the curvature 
+                from the cubic spline (this might perform better if the L-curve isn't "smooth")      
     
     Raises
     ------
     ValueError
-        If the requested L-curve type is not available.
-    ValueError
-        If the requested optimality condition is not available.
+        If any of the following occurs:
+
+            - If the requested L-curve type is not available.
+
+            - If the requested optimality condition is not available.
     
     Returns
     -------
@@ -958,14 +1000,16 @@ def l_curve_selection(regularization_values, penalty, residual, forces_full_path
 
     References
     ----------
-    .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
-        of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-        vol. 14, no. 6, pp. 1487-1503, 1993.
-    .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-        problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
-        2000, pp. 119-142.  
-    .. [3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
-        Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
+    .. [ar_lcs_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
+       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+       vol. 14, no. 6, pp. 1487-1503, 1993.
+
+    .. [ar_lcs_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+       problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
+       2000, pp. 119-142.  
+
+    .. [ar_lcs_3] M. Rezghi and S. Hosseini, "A new variant of L-curve for Tikhonov regularization,"
+       Journal of Computational and Applied Mathematics, vol. 231, pp. 914-924, 2008.
     """
     if forces_full_path.ndim==4: #Forces are CPSDs
         chosen_force = np.zeros((forces_full_path.shape[0], forces_full_path.shape[-2], forces_full_path.shape[-1]), dtype=complex)
@@ -1002,7 +1046,7 @@ def l_curve_criterion(x_axis,
                       return_curvature = False):
     """
     Finds the "optimal" regularization value from an L-curve via the 
-    location where its curvature is at a maximum (the L-curve criterion).
+    location where its curvature is at a maximum (the L-curve criterion) [ar_lcc_1]_, [ar_lcc_2]_. 
 
     Parameters
     ----------
@@ -1020,11 +1064,15 @@ def l_curve_criterion(x_axis,
     method : str
         This is the method by which the curvature is computed, the 
         available methods are:
-            - numerical (default) - this method computes the curvature of 
-              the L-curve via numerical derivatives
-            - cubic_spline - this method fits a cubic spline to the L-curve
-              the computes the curvature from the cubic spline (this might 
-              perform better if the L-curve isn't "smooth")
+
+            - numerical (default)
+                This method computes the curvature of the L-curve via numerical 
+                derivatives
+
+            - cubic_spline
+                This method fits a cubic spline to the L-curve the computes the 
+                curvature from the cubic spline (this might perform better if the 
+                L-curve isn't "smooth")
 
     Returns
     -------
@@ -1039,12 +1087,12 @@ def l_curve_criterion(x_axis,
     
     References
     ----------
-    .. [1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
-           of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
-           vol. 14, no. 6, pp. 1487-1503, 1993.
-    .. [2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
-           problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
-           2000, pp. 119-142.  
+    .. [ar_lcc_1] P.C. Hansen and D.P. O'Leary, "The Use of the L-Curve in the Regularization 
+       of Discrete Ill-Posed Problems," SIAM Journal on Scientific Computing,
+       vol. 14, no. 6, pp. 1487-1503, 1993.
+    .. [ar_lcc_2] P.C. Hansen, "The L-curve and its use in the numerical treatment of inverse
+       problems," in Computational Inverse Problems in Electrocardiology," WIT Press, 
+       2000, pp. 119-142.  
     """
     if np.all(x_axis==0) or np.all(y_axis==0):
         # This is done to handle the case where either the penalty or residual is all zero. 
@@ -1179,222 +1227,3 @@ def compute_residual_penalty_for_l_curve(frfs, forces, response):
             residual[ii,...] = norm(response - frfs@forces[ii, ...]@frfs.conj().transpose((0,2,1)), axis = (-2,-1), ord = 'fro')**2
         penalty = norm(forces, axis =(-2,-1), ord='fro')**2
     return residual, penalty
-
-#%% obsolete auto-tikhonov functions
-
-def _tikhonov_full_path(frf, response,
-                       low_regularization_limit = None, 
-                       high_regularization_limit = None,
-                       number_regularization_values=100,
-                       parallel = False,
-                       num_jobs = -2):
-    """
-    Performs the inverse source estimation problem with Tikhonov regularization, 
-    where the regularization parameter is automatically selected with L-curve 
-    methods.
-
-    Parameters
-    ----------
-    frf : ndarray
-        The FRF data for the source estimation. It should be sized
-        [number of lines, number of responses, number of references].
-    response : ndarray
-        The response data for the source estimation. This can either be 
-        linear spectra or power spectrum and should be organized such that 
-        the frequency lines are the first axis of the array. 
-    low_regularization_limit : ndarray
-        The low regularization limit to search through. This should be a 1d
-        array with a length that matches the number of frequency lines in 
-        the SourcePathReceiver object. The default is the smallest singular
-        value of the target frf array.
-    high_regularization_limit : ndarray
-        The high regularization limit to search through. This should be a 1d
-        array with a length that matches the number of frequency lines in 
-        the SourcePathReceiver object.
-    number_regularization_values : int
-        The number of regularization parameters to search over, where the 
-        potential parameters are geometrically spaced between the low and high
-        regularization limits.  
-    l_curve_type : str
-        The type of L-curve that is used to find the "optimal regularization 
-        parameter. The available types are:
-            - forces (default) - This L-curve is constructed with the "size" 
-            of the forces on the Y-axis and the regularization parameter on the 
-            X-axis. 
-            - standard - This L-curve is constructed with the residual squared 
-            error on the X-axis and the "size" of the forces on the Y-axis. 
-    optimality_condition : str
-        The method that is used to find an "optimal" regularization parameter.
-        The options are:
-            - curvature (default) - This method searches for the regularization
-            parameter that results in maximum curvature of the L-curve. It is 
-            also referred to as the L-curve criterion. 
-            - distance - This method searches for the regularization parameter that
-            minimizes the distance between the L-curve and a "virtual origin". A 
-            virtual origin is used, because the L-curve is scaled and offset to always 
-            range from zero to one, in this case.
-    curvature_method : std
-        The method that is used to compute the curvature of the L-curve, in the 
-        case that the curvature is used to find the optimal regularization 
-        parameter. The options are:
-            - numerical (default) - this method computes the curvature of 
-            the L-curve via numerical derivatives
-            - cubic_spline - this method fits a cubic spline to the L-curve
-            the computes the curvature from the cubic spline (this might 
-            perform better if the L-curve isn't "smooth")
-    use_transformation : bool
-        Whether or not the response and reference transformation from the class 
-        definition should be used (which is handled in the "linear_inverse_processing" 
-        decorator function). The default is true. 
-    response : ndarray
-        The preprocessed response data. The preprocessing is handled by the decorator 
-        function and object definition. This argument should not be supplied by the 
-        user. 
-    
-    parallel : bool
-        Whether or not to parallelize the computation using Joblib. The default is 
-        False. 
-    num_jobs : int
-        The number of processors to use when parallelizing the code. The default is 
-        -2, which uses all the available processors except one. Refer to the joblib
-        documentation for more details. 
-
-    Returns
-    -------
-    forces_full_path : ndarray
-        The estimated forces over all frequencies and regularization parameters. It
-        is sized [number of frequencies, number of regularization values, force array size], 
-        where the force array could be a matrix depending on if the responses are linear
-        spectra or CPSDs.
-    regularization_values : ndarray
-        The regularization values that were used in the force estimation. This variable
-        is size [number of frequencies, number of regularization values].
-    residual : ndarray
-        The least squares residual (mean squared error) for all the estimated forces.
-        This variable is sized [number of frequencies, number of regularization values].
-    penalty : ndarray
-        The square of the 2-norm of the forces (the frobenius norm is used when the responses
-        are CPSDs).This variable is sized [number of frequencies, number of regularization values]. 
-
-    Notes
-    -----
-    Parallelizing generally isn't faster for "small" inverse problems because of the 
-    overhead involved in the parallelizing. Some experience has shown that the 
-    parallelization adds ~1-1.5 minutes to the computation, but this will depend on 
-    the specific computer that is being used.
-    """
-    if np.any(low_regularization_limit) or np.any(high_regularization_limit) is None:
-        s = np.linalg.svd(frf, compute_uv=False)
-    if np.any(low_regularization_limit) is None:
-        low_regularization_limit = s[:, -1]
-    if np.any(high_regularization_limit) is None:
-        high_regularization_limit = s[:, 0]
-
-    if parallel==True:
-        tasks = [delayed(_tikhonov_full_path_single_frequency)(frf[ii, ...], 
-                                                              response[ii, ...], 
-                                                              low_regularization_limit=low_regularization_limit[ii], 
-                                                              high_regularization_limit=high_regularization_limit[ii],
-                                                              number_regularization_values=int(number_regularization_values)) for ii in range(frf.shape[0])]
-        results = Parallel(n_jobs=int(num_jobs), prefer='threads')(tasks)
-        forces_full_path, regularization_values, residual, penalty = zip(*results)
-        # Making sure that the unpacked results are ndarrays
-        forces_full_path = np.array(forces_full_path)
-        regularization_values = np.array(regularization_values)
-        residual = np.array(residual)
-        penalty = np.array(penalty)
-    elif parallel==False:
-        if response.ndim==3: #Responses are CPSDs
-            forces_full_path = np.zeros((frf.shape[0], number_regularization_values, frf.shape[2], frf.shape[2]), dtype=complex)
-        else: # Responses are Linear Spectra
-            forces_full_path = np.zeros((frf.shape[0], number_regularization_values, frf.shape[2]), dtype=complex)
-        regularization_values = np.zeros((frf.shape[0], number_regularization_values), dtype=float) 
-        residual = np.zeros((frf.shape[0], number_regularization_values), dtype=float) 
-        penalty = np.zeros((frf.shape[0], number_regularization_values), dtype=float)
-        for ii in range(frf.shape[0]):
-            forces_full_path[ii, ...], regularization_values[ii, ...], residual[ii, ...], penalty[ii, ...] = _tikhonov_full_path_single_frequency(frf[ii, ...], 
-                                                                                                                                                 response[ii, ...], 
-                                                                                                                                                 low_regularization_limit=low_regularization_limit[ii], 
-                                                                                                                                                 high_regularization_limit=high_regularization_limit[ii],
-                                                                                                                                                 number_regularization_values=int(number_regularization_values))
-    return forces_full_path, regularization_values, residual, penalty
-
-def _tikhonov_full_path_single_frequency(H, x,  
-                                        low_regularization_limit = None, 
-                                        high_regularization_limit = None,
-                                        number_regularization_values = 100):
-    """
-    Computes the Tikhonov "regularization path" between the high and low
-    regularization parameters for the inverse source estimation problem at 
-    a single frequency line. 
-
-    Parameters
-    ----------
-    H : ndarray
-        The FRF matrix for the inverse problem.
-    x : ndarray
-        The response for the inverse problem. A vector should be supplied 
-        for a linear spectrum and a matrix should be supplied for a power 
-        spectrum. Note that the function behaves slightly differently if a 
-        vector or matrix is supplied for the response. 
-    low_regularization_limit : float
-        This is the smallest regularization value to be used in the 
-        regression problem. The default is the smallest singular
-        value of the FRF matrix. 
-    high_regularization_limit : float
-        This is the highest regularization value to be used in the 
-        regression problem. The default is the largest singular value
-        of the FRF matrix.
-    number_regularization_values : int
-        This is the number of values to put evaluate the L-curve
-        over. The default is 100. 
-
-    Returns
-    -------
-    forces : ndarray
-        A matrix of forces found using the different regularization 
-        values. Organized by [number of regularization values x number of forces]
-    lambda_values : ndarray
-        The sequence of regularization values used in developing the L-Curve
-    residual : ndarray
-        The residual error from the least squares problem for the different 
-        regularization values. This is the square of the 2-norm of the error
-        vector in the linear spectrum case or the square of the Frobenius norm 
-        in the power spectrum case.
-    penalty : np.ndarray
-        The regularization penalty for the different regularization values. The 
-        penalty is defined by the square of the 2-norm of the force vector in the 
-        linear spectrum case or the square of the Frobenius norm in the power 
-        spectrum case. 
-
-    Notes
-    -----
-    The regularization values are spread over a geometric space that spans
-    the low and high regularization limits. 
-
-    This function works for situations where the response is either a linear 
-    spectrum or a power spectrum. The difference is sensed based on the shape 
-    of the response array (one dimension or two dimensions)
-    """    
-    lambda_values = np.geomspace(low_regularization_limit, high_regularization_limit, num = number_regularization_values)
-
-    if x.ndim == 1:
-        f = np.zeros([lambda_values.size, H.shape[1]], dtype=complex)
-    elif x.ndim == 2:
-        f = np.zeros([lambda_values.size, H.shape[1], H.shape[1]], dtype=complex)
-
-    for ii, l in enumerate(lambda_values):
-        H_pinv = pinv_by_tikhonov(H, regularization_parameter=l)
-        if x.ndim == 1:
-            f[ii, ...] = H_pinv@x
-        if x.ndim == 2:
-            f[ii, ...] = H_pinv@x@np.moveaxis(H_pinv.conj(), -1, -2)
-
-    if x.ndim == 1:
-        residual = norm(x - np.squeeze(H[np.newaxis, ...]@f[..., np.newaxis]), axis = -1, ord = 2)**2
-        penalty = norm(f, axis = -1, ord = 2)**2
-    elif x.ndim == 2:
-        residual = norm(x - H[np.newaxis, ...]@f@np.moveaxis(H.conj(), -1, -2)[np.newaxis, ...], axis = (-2, -1), ord = 'fro')**2
-        penalty = norm(f, axis = (-2, -1), ord = 'fro')**2
-
-    return f, lambda_values, residual, penalty

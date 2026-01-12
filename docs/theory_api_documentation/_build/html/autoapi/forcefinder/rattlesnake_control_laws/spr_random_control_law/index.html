@@ -479,13 +479,19 @@ parameter. The default depends on if the TSVD or Tikhonov regularization
 are being used and the options are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>forces - This L-curve is constructed with the “size” of the</p></li>
+<li><dl class="simple">
+<dt>forces</dt><dd><p>This L-curve is constructed with the “size” of the forces on the
+Y-axis and the regularization parameter on the X-axis.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>standard</dt><dd><p>This L-curve is constructed with the residual squared error on
+the X-axis and the “size” of the forces on the Y-axis.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>forces on the Y-axis and the regularization parameter on the X-axis.</p>
-<ul class="simple">
-<li><p>standard - This L-curve is constructed with the residual squared</p></li>
-</ul>
-<p>error on the X-axis and the “size” of the forces on the Y-axis.</p>
 </div></blockquote>
 </dd>
 <dt>optimality_condition<span class="classifier">str</span></dt><dd><p>The method that is used to find an “optimal” regularization parameter.
@@ -493,16 +499,22 @@ The default depends on if the TSVD or Tikhonov regularization
 is being used and the options are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>curvature - This method searches for the regularization parameter</p></li>
-</ul>
-<p>that results in maximum curvature of the L-curve. It is also referred
+<li><dl class="simple">
+<dt>curvature</dt><dd><p>This method searches for the regularization parameter that
+results in maximum curvature of the L-curve. It is also referred
 to as the L-curve criterion.</p>
-<ul class="simple">
-<li><p>distance - This method searches for the regularization parameter</p></li>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>distance</dt><dd><p>This method searches for the regularization parameter that
+minimizes the distance between the L-curve and a “virtual origin”.
+A virtual origin is used, because the L-curve is scaled and offset
+to always range from zero to one, in this case.</p>
+</dd>
+</dl>
+</li>
 </ul>
-<p>that minimizes the distance between the L-curve and a “virtual origin”.
-A virtual origin is used, because the L-curve is scaled and offset to
-always range from zero to one, in this case.</p>
 </div></blockquote>
 </dd>
 <dt>match_trace<span class="classifier">bool</span></dt><dd><p>Whether or not to apply a match trace update during the control.</p>
@@ -529,12 +541,12 @@ always range from zero to one, in this case.</p>
 box. It should be set-up so that each return parameter is set equal to a
 value with a line break between each value, for example:</p>
 <blockquote>
-<div><p>df = 0.1
-bp_freqs = 10, 500, 2000
-ISE_technique = manual_inverse
-inverse_method = threshold
-cond_num_threshold = 50, 1000, 300
-use_buzz = True</p>
+<div><p>df = 0.1</p>
+<p>bp_freqs = 10, 500, 2000</p>
+<p>ISE_technique = manual_inverse</p>
+<p>inverse_method = threshold</p>
+<p>cond_num_threshold = 50, 1000, 300</p>
+<p>use_buzz = True</p>
 </div></blockquote>
 </dd></dl>
 

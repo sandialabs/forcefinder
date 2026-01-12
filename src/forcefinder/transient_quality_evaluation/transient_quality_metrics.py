@@ -44,14 +44,19 @@ def preprocess_data_for_quality_metric(spr_object,
     channel_set : str, optional
         The channel set to make the response comparisons between.
         The available options are:
-            - training (default) - This compares the responses for the 
-            transformed training DOFs in the SPR object.
 
-            - validation - This compares the responses for the validation
-            response DOFs in the SPR object.
+            - training (default)
+                This compares the responses for the transformed training 
+                DOFs in the SPR object.
 
-            - target - This compares the responses for all the target 
-            response DOFs in the SPR object. 
+            - validation
+                This compares the responses for the validation response 
+                DOFs in the SPR object.
+
+            - target
+                This compares the responses for all the target response 
+                DOFs in the SPR object. 
+
     samples_per_frame : int, optional
         Number of samples in each measurement frame to compute the RMS 
         for. Either this argument or `frame_length` must be specified.  
@@ -313,10 +318,13 @@ def compute_time_varying_level_error(truth_response, check_response, level_type=
         for the check response in the comparison. 
     level_type : str, optional
         The type of level to be used in the comparison. The options are:
-            - rms - The rms level error for each frame of data in the 
-            responses. This is the default.
-            - max - The error in the maximum level that is seem for each 
-            frame of data in the responses.
+
+            - rms (default)
+                The rms level error for each frame of data in the responses
+
+            - max
+                The error in the maximum level that is seem for each frame 
+                of data in the responses.
 
     Returns
     -------
@@ -377,14 +385,19 @@ def compute_error_stft(spr_object,
     channel_set : str, optional
         The channel set to make the response comparisons between.
         The available options are:
-            - training (default) - This compares the responses for the 
-            transformed training DOFs in the SPR object.
 
-            - validation - This compares the responses for the validation
-            response DOFs in the SPR object.
-            
-            - target - This compares the responses for all the target 
-            response DOFs in the SPR object. 
+            - training (default)
+                This compares the responses for the transformed training 
+                DOFs in the SPR object.
+
+            - validation
+                This compares the responses for the validation response DOFs 
+                in the SPR object.
+
+            - target
+                This compares the responses for all the target response DOFs 
+                in the SPR object. 
+
     samples_per_frame : int, optional
         Number of samples in each measurement frame to compute the RMS 
         for. Either this argument or `frame_length` must be specified.  
@@ -424,12 +437,19 @@ def compute_error_stft(spr_object,
     -------
     db_error_stft : dict
         A dictionary with the following keys:
-            - time (ndarray) - The time vector for the STFT.
-            - frequency (ndarray) - The frequency vector for the STFT. 
-            - response_coordinate (coordinate_array) - The response 
-              coordinate array for the STFT.
-            - amplitude (ndarray) - The dB error STFT, it is organized 
-              [response coordinate, frequency axis, time axis].
+
+            - time (ndarray)
+                The time vector for the STFT.
+
+            - frequency (ndarray)
+                The frequency vector for the STFT.
+
+            - response_coordinate (coordinate_array)
+                The response coordinate array for the STFT.
+
+            - amplitude (ndarray)
+                The dB error STFT, it is organized [response coordinate, 
+                frequency axis, time axis].
 
     Notes 
     -----
@@ -504,12 +524,19 @@ def compute_stft(data,
     -------
     stft : dict
         A dictionary with the following keys:
-            - time (ndarray) - The time vector for the STFT.
-            - frequency (ndarray) - The frequency vector for the STFT. 
-            - response_coordinate (coordinate_array) - The response 
-              coordinate array for the STFT.
-            - amplitude (ndarray) - The STFT, it is organized 
-              [response coordinate, frequency axis, time axis].
+
+            - time (ndarray)
+                The time vector for the STFT.
+
+            - frequency (ndarray)
+                The frequency vector for the STFT. 
+
+            - response_coordinate (coordinate_array)
+                The response coordinate array for the STFT.
+
+            - amplitude (ndarray)
+                The STFT, it is organized [response coordinate, 
+                frequency axis, time axis].
 
     Notes 
     -----
