@@ -385,3 +385,45 @@ def test_predicted_response_specific_dofs(unit_test_spr, unit_test_response):
     test_spr._force_array_ = None
     with pytest.raises(AttributeError, match='There is no force array in this object so predicted responses cannot be computed'):
         test_spr.predicted_response_specific_dofs(sdpy.coordinate_array(string_array=['1X+']))
+
+def test_reconstructed_response(unit_test_frf, unit_test_force, unit_test_response):
+    """
+    This makes sure that the reconstructed response properties work as expected. It
+    checks that the properties computes the response for the correct DOFs and 
+    makes sure that the correct errors are raised, as necessary.
+    """
+    target_dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    training_dof = sdpy.coordinate_array(node=[1,2], direction=1)
+    validation_dof = sdpy.coordinate_array(node=[3,4], direction=1)
+
+    unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response, 
+                                                unit_test_force, 
+                                                training_response_coordinate=training_dof)
+
+    # Validating that the sample splitting worked as expected
+    assert np.all(unit_test_spr.training_response_coordinate == training_dof)
+    assert np.all(unit_test_spr.validation_response_coordinate == validation_dof)
+    assert np.all(unit_test_spr.target_response_coordinate == target_dof)
+
+    reconstructed_target_response = unit_test_spr.reconstructed_target_response
+    assert np.all(reconstructed_target_response.ordinate == unit_test_response.ordinate)
+
+    reconstructed_training_response = unit_test_spr.reconstructed_training_response
+    assert np.all(reconstructed_training_response.ordinate == unit_test_response.ordinate[:2,:])
+
+    reconstructed_validation_response = unit_test_spr.reconstructed_validation_response
+    assert np.all(reconstructed_validation_response.ordinate == unit_test_response.ordinate[2:,:])
+
+    no_force_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                               unit_test_response,  
+                                               training_response_coordinate=training_dof)
+
+    with pytest.raises(AttributeError, match='There is no force array in this object so target responses cannot be reconstructed'):
+        no_force_spr.reconstructed_target_response
+
+    with pytest.raises(AttributeError, match='There is no force array in this object so training responses cannot be reconstructed'):
+        no_force_spr.reconstructed_training_response
+    
+    with pytest.raises(AttributeError, match='There is no force array in this object so validation responses cannot be reconstructed'):
+        no_force_spr.reconstructed_validation_response

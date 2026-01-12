@@ -914,7 +914,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
     @property
     def reconstructed_target_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
         reconstructed_target_response = (self._target_frf_array_@self._force_array_[..., np.newaxis])[..., 0]
         return sdpy.data_array(FunctionTypes.SPECTRUM, self.abscissa, np.moveaxis(reconstructed_target_response, 0, -1), 
                                self._target_response_coordinate_[..., np.newaxis])
@@ -922,7 +922,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
     @property
     def reconstructed_training_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so training responses cannot be reconstructed')
         reconstructed_training_response = (self._training_frf_array_@self._force_array_[..., np.newaxis])[..., 0]
         return sdpy.data_array(FunctionTypes.SPECTRUM, self.abscissa, np.moveaxis(reconstructed_training_response, 0, -1), 
                                self._training_response_coordinate_[..., np.newaxis])
@@ -930,7 +930,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
     @property
     def reconstructed_validation_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so validation responses cannot be reconstructed')
         reconstructed_validation_response = (self._validation_frf_array_@self._force_array_[..., np.newaxis])[..., 0]
         return sdpy.data_array(FunctionTypes.SPECTRUM, self.abscissa, np.moveaxis(reconstructed_validation_response, 0, -1), 
                                self._validation_response_coordinate_[..., np.newaxis])
@@ -1933,7 +1933,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
     @property
     def reconstructed_training_response(self):
         if self._force_array_ is None:
-            raise AttributeError('There is no force array in this object so target responses cannot be reconstructed')
+            raise AttributeError('There is no force array in this object so training responses cannot be reconstructed')
         reconstructed_training_response = self._training_frf_array_@self._force_array_@np.transpose(self._training_frf_array_.conj(), (0, 2, 1))
         
         return sdpy.data_array(FunctionTypes.POWER_SPECTRAL_DENSITY, self.abscissa, np.moveaxis(reconstructed_training_response, 0, -1), 
