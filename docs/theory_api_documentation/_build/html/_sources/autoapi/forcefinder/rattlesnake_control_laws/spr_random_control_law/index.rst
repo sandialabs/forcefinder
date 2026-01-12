@@ -56,32 +56,41 @@ Module Contents
    :returns: **extra_parameters** -- A dictionary with the parameters from the string parsed into the
              various optional arguments for the inverse. The potential keys
              are (the string in Rattlesnake should use the same names):
+
                  df : float
                      The frequency spacing for the control problem.
+
                  bp_freqs : ndarray
                      A 1D ndarray that defines the breakpoint frequencies for the
                      frequency dependent regularization.
+
                  ISE_technique : str
                      The ISE technique that is being used. This aligns with the
                      method names in the PowerSourcePathReceiver class.
+
                  inverse_method : str
                      The inverse method that is being used. This aligns with the
                      inverse methods that are in the "manual_inverse" method.
+
                  regularization_parameter : ndarray
                      A 1D ndarray that defines the breakpoint regularization parameters
                      (if Tikhonov regularization is being used) for the frequency
                      dependent regularization.
+
                  cond_num_threshold : ndarray
                      A 1D ndarray that defines the breakpoint condition number
                      threshold (if the TSVD is being used) for the frequency
                      dependent regularization.
+
                  num_retained_values : ndarray
                      A 1D ndarray that defines the breakpoint number of retained
                      singular values (if the TSVD is being used) for the frequency
                      dependent regularization.
+
                  number_regularization_values : int
                      The number of regularization values to search over in the auto
                      regularization methods. The default is 100.
+
                  l_curve_type : str
                      The type of L-curve that is used to find the "optimal regularization
                      parameter. The default depends on if the TSVD or Tikhonov regularization
@@ -106,13 +115,13 @@ Module Contents
                              to as the L-curve criterion.
 
                          - distance
-                             This method searches for the regularization parameter that
-                             minimizes the distance between the L-curve and a "virtual origin".
-                             A virtual origin is used, because the L-curve is scaled and offset
-                             to always range from zero to one, in this case.
+                             This method scales and offsets the L-curve so it ranges zero to one
+                             and then searches for the regularization parameter that puts the curve
+                             closest to the origin.
 
                  match_trace : bool
                      Whether or not to apply a match trace update during the control.
+
                  use_buzz : bool
                      Whether or not to use the buzz method for cross-term modification.
    :rtype: dict
