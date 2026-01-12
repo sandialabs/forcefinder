@@ -507,10 +507,9 @@ to as the L-curve criterion.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>distance</dt><dd><p>This method searches for the regularization parameter that
-minimizes the distance between the L-curve and a “virtual origin”.
-A virtual origin is used, because the L-curve is scaled and offset
-to always range from zero to one, in this case.</p>
+<dt>distance</dt><dd><p>This method scales and offsets the L-curve so it ranges zero to one
+and then searches for the regularization parameter that puts the curve
+closest to the origin.</p>
 </dd>
 </dl>
 </li>
