@@ -47,3 +47,4 @@ src/forcefinder/core/__pycache__/transient_utilities.cpython-311.pyc
 src/forcefinder/core/__pycache__/utilities.cpython-311.pyc
 src/forcefinder/transient_quality_evaluation/__pycache__/transient_gui_plot.cpython-311.pyc
 src/forcefinder/transient_quality_evaluation/__pycache__/transient_quality_metrics.cpython-311.pyc
+.vscode/settings.json
