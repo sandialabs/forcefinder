@@ -735,3 +735,40 @@ def test_sample_splitting(unit_test_frf, unit_test_response):
     assert np.all(misordered_spr.target_frfs.ordinate == unit_test_frf.ordinate)
     assert np.all(misordered_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,3],:,:])
     assert np.all(misordered_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[1,2],:,:])
+
+def test_organization(unit_test_frf, unit_test_response, unit_test_force):
+    """
+    Tests that the SPR initialization organizes the data, as expected. It 
+    takes the unit test objects, mixes up the DOFs, and then loads them 
+    into the SPR object. The data should be organized the same as the test 
+    fixtures if things work as expected.
+    """
+    response = unit_test_response
+    mixed_up_response_dof = sdpy.coordinate_array(node=[4,3,2,1], direction=1)
+    mixed_up_response = response[mixed_up_response_dof[...,np.newaxis]]
+
+    if not np.all(mixed_up_response.ordinate==response.ordinate[[3,2,1,0],...]):
+        raise ValueError('Response organization did not work as expected')
+    
+    frf = unit_test_frf
+    mixed_up_frf_dof = sdpy.coordinate_array(node=[3,1,2,4], direction=1)
+    mixed_up_frf_coord = sdpy.coordinate.outer_product(mixed_up_frf_dof, mixed_up_frf_dof)
+    mixed_up_frf = frf[mixed_up_frf_coord]
+
+    if not np.all(mixed_up_frf.ordinate==frf.ordinate[[2,0,1,3],...][:, [2,0,1,3], :]):
+        raise ValueError('FRF organization did not work as expected')
+    
+    force = unit_test_force
+    mixed_up_force_dof = sdpy.coordinate_array(node=[1,4,3,2], direction=1)
+    mixed_up_force = force[mixed_up_force_dof[...,np.newaxis]]
+
+    if not np.all(mixed_up_force.ordinate==force.ordinate[[0,3,2,1],...]):
+        raise ValueError('Force organization did not work as expected')
+    
+    organized_spr = ff.TransientSourcePathReceiver(mixed_up_frf, mixed_up_response, mixed_up_force)
+
+    assert np.all(organized_spr.force.ordinate == force.ordinate)
+    assert np.all(organized_spr.target_response.ordinate == response.ordinate)
+    assert np.all(organized_spr.training_response.ordinate == response.ordinate)
+    assert np.all(organized_spr.target_frfs.ordinate == frf.ordinate)
+    assert np.all(organized_spr.training_frfs.ordinate == frf.ordinate)
