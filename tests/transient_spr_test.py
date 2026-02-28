@@ -736,6 +736,23 @@ def test_sample_splitting(unit_test_frf, unit_test_response):
     assert np.all(misordered_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,3],:,:])
     assert np.all(misordered_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[1,2],:,:])
 
+    # Testing when the training and target response is supplied 
+    unit_test_spr = ff.TransientSourcePathReceiver(unit_test_frf, 
+                                                target_response=unit_test_response,
+                                                training_response=unit_test_response[training_dof[...,np.newaxis]])
+    
+    assert np.all(unit_test_spr.target_response.ordinate == unit_test_response.ordinate)
+    assert np.all(unit_test_spr.training_response.ordinate == unit_test_response[training_dof[...,np.newaxis]].ordinate)
+    assert np.all(unit_test_spr.validation_response.ordinate == unit_test_response[validation_dof[...,np.newaxis]].ordinate)
+
+    assert np.all(unit_test_spr.target_response_coordinate == target_dof)
+    assert np.all(unit_test_spr.training_response_coordinate == training_dof)
+    assert np.all(unit_test_spr.validation_response_coordinate == validation_dof)
+
+    assert np.all(unit_test_spr.target_frfs.ordinate == unit_test_frf.ordinate)
+    assert np.all(unit_test_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,1],:,:])
+    assert np.all(unit_test_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[2,3],:,:])
+
 def test_organization(unit_test_frf, unit_test_response, unit_test_force):
     """
     Tests that the SPR initialization organizes the data, as expected. It 
