@@ -348,10 +348,32 @@ def unit_test_force():
                                dof[...,np.newaxis])
 
 @pytest.fixture(scope='module')
+def unit_test_force_different_abscissa():
+    abscissa = np.array([1,2,3])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]]),0,-1), 
+                               dof[...,np.newaxis])
+
+@pytest.fixture(scope='module')
 def unit_test_response():
     abscissa = np.array([0,1,2])
     dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
     return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]])*[1,2,3,4],0,-1), 
+                               dof[...,np.newaxis])
+
+@pytest.fixture(scope='module')
+def unit_test_response_different_abscissa():
+    abscissa = np.array([1,2,3])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16]])*[1,2,3,4],0,-1), 
+                               dof[...,np.newaxis])
+
+@pytest.fixture(scope='module')
+def unit_test_response_long_abscissa():
+    abscissa = np.array([1,2,3,4])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    return sdpy.spectrum_array(abscissa, np.moveaxis(np.array([[1,2,3,4], [2,4,6,8], 
+                                                               [4,8,12,16], [8,16,24,32]])*[1,2,3,4],0,-1), 
                                dof[...,np.newaxis])
 
 @pytest.fixture()
@@ -540,3 +562,24 @@ def test_organization(unit_test_frf, unit_test_response, unit_test_force):
     assert np.all(organized_spr.training_response.ordinate == response.ordinate)
     assert np.all(organized_spr.target_frfs.ordinate == frf.ordinate)
     assert np.all(organized_spr.training_frfs.ordinate == frf.ordinate)
+
+def test_abscissa_validation(unit_test_frf, unit_test_response, 
+                             unit_test_response_different_abscissa,
+                             unit_test_force_different_abscissa,
+                             unit_test_response_long_abscissa):
+    """
+    This test validates the function that compares the abscissa for the 
+    FRFs, responses, and forces.
+    """
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_different_abscissa)
+        
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_long_abscissa)
+    
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.LinearSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                unit_test_force_different_abscissa)

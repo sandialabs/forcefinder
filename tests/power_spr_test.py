@@ -667,6 +667,19 @@ def unit_test_force():
                                              sdpy.coordinate.outer_product(dof, dof))
 
 @pytest.fixture(scope='module')
+def unit_test_force_different_abscissa():
+    abscissa = np.array([0,1,2,3,4,5])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis(ord,0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
 def unit_test_response():
     abscissa = np.array([1,2,3,4,5,6])
     dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
@@ -676,6 +689,33 @@ def unit_test_response():
                     np.diag([8,16,24,32]),
                     np.diag([16,32,48,64]),
                     np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
+def unit_test_response_different_abscissa():
+    abscissa = np.array([0,1,2,3,4,5])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
+def unit_test_response_long_abscissa():
+    abscissa = np.array([0,1,2,3,4,5,6])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128]),
+                    np.diag([64,128,192,256])])
     return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
                                              sdpy.coordinate.outer_product(dof, dof))
 
@@ -947,3 +987,24 @@ def test_organization(unit_test_frf, unit_test_response, unit_test_force):
     assert np.all(organized_spr.training_response.ordinate == response.ordinate)
     assert np.all(organized_spr.target_frfs.ordinate == frf.ordinate)
     assert np.all(organized_spr.training_frfs.ordinate == frf.ordinate)
+
+def test_abscissa_validation(unit_test_frf, unit_test_response, 
+                             unit_test_response_different_abscissa,
+                             unit_test_force_different_abscissa,
+                             unit_test_response_long_abscissa):
+    """
+    This test validates the function that compares the abscissa for the 
+    FRFs, responses, and forces.
+    """
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_different_abscissa)
+        
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_long_abscissa)
+    
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                unit_test_force_different_abscissa)
