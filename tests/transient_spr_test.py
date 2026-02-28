@@ -626,7 +626,7 @@ def unit_test_response_wrong_fs():
 
 @pytest.fixture(scope='module')
 def unit_test_response_different_abscissa():
-    abscissa = np.array([0,0.25,0.5,0.74])
+    abscissa = np.array([0,0.25,0.5,0.75])
     ordinate = np.array([[1,2,3,4], [2,4,6,8], [4,8,12,16], [8,16,24,32]])
     dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
     return sdpy.time_history_array(abscissa, np.moveaxis(ordinate*[1,2,3,4],0,-1), dof[...,np.newaxis])
@@ -829,7 +829,7 @@ def test_abscissa_validation(unit_test_frf, unit_test_response,
     """
     with pytest.raises(ValueError, match='The abscissa for the data does not match'):
         unit_test_spr = ff.TransientSourcePathReceiver(frfs=unit_test_frf, 
-                                                target_response=unit_test_response 
+                                                target_response=unit_test_response, 
                                                 training_response=unit_test_response_different_abscissa)
     
     with pytest.raises(ValueError, match='The abscissa for the data does not match'):
