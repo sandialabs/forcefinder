@@ -22,7 +22,7 @@ import numpy as np
 import sdynpy as sdpy
 from sdynpy.signal_processing.sdynpy_cpsd import cpsd_coherence, cpsd_from_coh_phs
 
-def check_frequency_abscissa(data, reference_abscissa):
+def check_abscissa(data, reference_abscissa):
     """
     Checks the abscissa of the data for building a source-path-receiver 
     model. It validates that the data has a common abscissa for all
@@ -42,6 +42,8 @@ def check_frequency_abscissa(data, reference_abscissa):
         If the abscissa from data doesn't match reference_data.
     """
     data.abscissa_spacing
+    if data.flatten()[0].abscissa.shape[0] != reference_abscissa.shape[0]:
+        raise ValueError('The abscissa for the data does not match')
     if not np.all(data.flatten()[0].abscissa==reference_abscissa):
         raise ValueError('The abscissa for the data does not match')
 
