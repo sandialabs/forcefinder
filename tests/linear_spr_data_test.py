@@ -90,9 +90,6 @@ Basic checks to provide data to the object and then make sure that all the
 data is stored in the object as expected.
 
 Needed tests:
-    - Testing the freeze-thaw behavior
-    - Testing that the slots work
-    - failing object construction where there isn't response data
     - Have all the data, but the training dofs are a subset of the full data
         - a passing object construction where everything matches
         - a failing object construction where the training DOFs aren't in the full DOFs
@@ -107,6 +104,18 @@ def default_dataset_realization_1():
 @pytest.fixture(scope='function')
 def default_dataset_realization_2():
     return make_linear_spectra_data()
+
+@pytest.fixture(scope='function')
+def larger_dataset_realization_1():
+    return make_linear_spectra_data(number_dofs=8)
+
+@pytest.fixture(scope='function')
+def larger_dataset_realization_2():
+    return make_linear_spectra_data(number_dofs=8)
+
+@pytest.fixture(scope='function')
+def larger_dataset_different_dofs():
+    return make_linear_spectra_data(number_dofs=4, dof_offset=10)
 
 def test_basic_construction(default_dataset_realization_1,
                             default_dataset_realization_2):
@@ -180,7 +189,93 @@ def test_immutability(default_dataset_realization_1,
                                                default_dataset_realization_1[3],
                                                default_dataset_realization_1[4],
                                                default_dataset_realization_1[1].response_coordinate)
-    # need to actually add these tests
     spr_data.thaw()
-    with pytest.raises(AttributeError, match='LinearSourcePathReceiverData cannot be modified after initialization'):
-        spr_data.frfs = default_dataset_realization_1[0]
+
+    with pytest.raises(AttributeError, match='The FRFs cannot be reset once the object is initialized'):
+        spr_data.frfs = default_dataset_realization_2[0]
+    assert np.all(spr_data._frf_array_==np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+
+    with pytest.raises(AttributeError, match='The training FRFs of an SPR object cannot be reset once the object is initialized'):
+        spr_data.training_frfs = default_dataset_realization_1[0]
+    assert np.all(spr_data._training_frf_array_==np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
+
+    with pytest.raises(AttributeError, match='The force data cannot be reset once the object is initialized'):
+        spr_data.force = default_dataset_realization_2[2]
+    assert np.all(spr_data._force_array_==np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
+
+    with pytest.raises(AttributeError, match='The target response cannot be reset once the object is initialized'):
+        spr_data.target_response = default_dataset_realization_2[1]
+    assert np.all(spr_data._target_response_array_==np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+
+    with pytest.raises(AttributeError, match='The training responses cannot be reset once the object is initialized'):
+        spr_data.training_response = default_dataset_realization_1[1]
+    assert np.all(spr_data._training_response_array_==np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
+
+    with pytest.raises(AttributeError, match='The response transformation cannot be reset once the object is initialized'):
+        spr_data.response_transformation = default_dataset_realization_2[3]
+    assert np.all(spr_data._response_transformation_array_==default_dataset_realization_1[3].matrix)
+
+    with pytest.raises(AttributeError, match='The reference transformation cannot be reset once the object is initialized'):
+        spr_data.reference_transformation = default_dataset_realization_2[4].matrix
+    assert np.all(spr_data._reference_transformation_array_==default_dataset_realization_1[4].matrix)
+
+    # Can't check that these stayed the same because the different 
+    # datasets have the same values for these attributes
+    with pytest.raises(AttributeError, match='The response coordinate cannot be reset after it is initialized'):
+        spr_data.response_coordinate = default_dataset_realization_1[0][:,0].response_coordinate
+
+    with pytest.raises(AttributeError, match='The reference coordinate cannot be reset after it is initialized'):
+        spr_data.reference_coordinate = default_dataset_realization_1[0][0,:].reference_coordinate
+
+    with pytest.raises(AttributeError, match='The target response coordinate cannot be reset after it is initialized'):
+        spr_data.target_response_coordinate = default_dataset_realization_1[1].response_coordinate
+
+    with pytest.raises(AttributeError, match='The training response coordinate cannot be reset after it is initialized'):
+        spr_data.training_response_coordinate = default_dataset_realization_2[1].response_coordinate
+
+    with pytest.raises(AttributeError, match='The abscissa cannot be reset after it is initialized'):
+        spr_data.abscissa = default_dataset_realization_2[1][0].abscissa
+
+def test_slots(default_dataset_realization_1):
+    spr_data = ff.LinearSourcePathReceiverData(target_response=default_dataset_realization_1[1])
+    spr_data.thaw()
+    with pytest.raises(AttributeError):
+        spr_data._test_attribute_ = 5
+
+def test_no_response(default_dataset_realization_1):
+    with pytest.raises(AttributeError, match='Response data is required to initialize SourcePathReceiverData object'):
+        ff.LinearSourcePathReceiverData(frfs=default_dataset_realization_1[0])
+
+def test_good_training_data(larger_dataset_realization_1,
+                            larger_dataset_realization_2):
+    spr_data = ff.LinearSourcePathReceiverData(larger_dataset_realization_1[0], 
+                                               larger_dataset_realization_2[0][:4,:],
+                                               larger_dataset_realization_1[1],
+                                               larger_dataset_realization_2[1][:4],
+                                               training_response_coordinate=larger_dataset_realization_2[1][:4].response_coordinate)
+    
+    assert np.all(spr_data._frf_array_ == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._training_frf_array_ == np.moveaxis(larger_dataset_realization_2[0][:4,:].ordinate,-1,0))
+    assert np.all(spr_data._target_response_array_ == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._training_response_array_ == np.moveaxis(larger_dataset_realization_2[1][:4].ordinate,-1,0))
+    assert np.all(spr_data._response_coordinate_ == larger_dataset_realization_1[0][:,0].response_coordinate)
+    assert np.all(spr_data._target_response_coordinate_ == larger_dataset_realization_1[1].response_coordinate)
+    assert np.all(spr_data._training_response_coordinate_ == larger_dataset_realization_2[1][:4].response_coordinate)
+
+    spr_data1 = ff.LinearSourcePathReceiverData(frfs=larger_dataset_realization_1[0], 
+                                                target_response=larger_dataset_realization_1[1],
+                                                training_response_coordinate=larger_dataset_realization_1[1][:4].response_coordinate)
+    
+    assert np.all(spr_data1._frf_array_ == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data1.training_frfs.ordinate == larger_dataset_realization_1[0][:4,:].ordinate)
+    assert np.all(spr_data1._target_response_array_ == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data1.training_response.ordinate == larger_dataset_realization_1[1][:4].ordinate)
+    assert np.all(spr_data1._response_coordinate_ == larger_dataset_realization_1[0][:,0].response_coordinate)
+    assert np.all(spr_data1._target_response_coordinate_ == larger_dataset_realization_1[1].response_coordinate)
+    assert np.all(spr_data1._training_response_coordinate_ == larger_dataset_realization_1[1][:4].response_coordinate)
+
+def test_bad_training_data(larger_dataset_realization_1,
+                            larger_dataset_different_dofs):
+    with pytest.raises(ValueError):
+        ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
+                                training_response_coordinate=larger_dataset_different_dofs[1].response_coordinate)

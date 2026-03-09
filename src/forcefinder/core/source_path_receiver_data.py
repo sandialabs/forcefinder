@@ -74,7 +74,7 @@ class SourcePathReceiverData:
             if self._training_response_coordinate_ is None:
                 self.training_response_coordinate = training_response_coordinate
             else:
-                if not np.all(np.sort(training_response_coordinate) == self._target_response_coordinate_):
+                if not np.all(np.sort(training_response_coordinate) == self._training_response_coordinate_):
                     raise ValueError('The supplied training response coordinate does not match the data in the object')
 
         if force is not None:
@@ -161,12 +161,12 @@ class SourcePathReceiverData:
     
     @training_response_coordinate.setter
     def training_response_coordinate(self, coordinate_array):
+        if self._training_response_coordinate_ is not None:
+            raise AttributeError('The training response coordinate cannot be reset after it is initialized')
         if self._target_response_coordinate_ is not None:
             if not np.all(np.isin(coordinate_array, self._target_response_coordinate_)):
                         raise ValueError('The training response coordinate {:} is missing the target response coordinate'.
                                 format(self.training_response_coordinate[~np.isin(coordinate_array, self.target_response_coordinate)].string_array()))
-        if self._training_response_coordinate_ is not None:
-            raise AttributeError('The training response coordinate cannot be reset after it is initialized')
         self._training_response_coordinate_ = np.sort(coordinate_array)
 
     @property
@@ -246,7 +246,7 @@ class SourcePathReceiverData:
             if not np.all(data_array[0, :].reference_coordinate==self._reference_coordinate_):
                 raise ValueError('The training FRF reference DOFs do not match reference DOFs in the object')
         else:
-            self._reference_coordinate_ = data_array[0,:].reference_coordinate
+            self.reference_coordinate = data_array[0,:].reference_coordinate
         check_abscissa(data_array, self._abscissa_)
         frf_coordinate = outer_product(self.training_response_coordinate, self._reference_coordinate_)
         self._training_frf_array_ = np.moveaxis(data_array[frf_coordinate].ordinate, -1, 0)
@@ -269,6 +269,8 @@ class SourcePathReceiverData:
     
     @response_transformation.setter
     def response_transformation(self, transformation_matrix):
+        if self._response_transformation_array_ is not None:
+            raise AttributeError('The response transformation cannot be reset once the object is initialized')
         if not isinstance(transformation_matrix, sdpy.Matrix):
             raise TypeError('The response transformation must be defined as a SDynPy Matrix')
         self._transformed_response_coordinate_ = np.sort(transformation_matrix.row_coordinate)
@@ -289,6 +291,8 @@ class SourcePathReceiverData:
     
     @reference_transformation.setter
     def reference_transformation(self, transformation_matrix):
+        if self._reference_transformation_array_ is not None:
+            raise AttributeError('The reference transformation cannot be reset once the object is initialized')
         if not isinstance(transformation_matrix, sdpy.Matrix):
             raise TypeError('The reference transformation must be defined as a SDynPy Matrix')
         self._transformed_reference_coordinate_ = np.sort(transformation_matrix.row_coordinate)
@@ -349,8 +353,7 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
             if self._target_response_array_ is None:
                 return self._training_response_array_
             else:
-                return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._target_response_array_, 0, -1), 
-                                    self._target_response_coordinate_[..., np.newaxis])
+                return self.target_response[self._training_response_coordinate_[..., np.newaxis]]
         else: 
             return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._training_response_array_, 0, -1), 
                                 self._training_response_coordinate_[..., np.newaxis])
@@ -358,7 +361,7 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
     @training_response.setter
     def training_response(self, data_array):
         if self._training_response_array_ is not None:
-            raise AttributeError('The training responses of an SPR object cannot be reset once the object is initialized')
+            raise AttributeError('The training responses cannot be reset once the object is initialized')
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The training response must be a SDynPy SpectrumArray')
         
@@ -380,6 +383,8 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
     
     @force.setter
     def force(self, data_array):
+        if self._force_array_ is not None:
+            raise AttributeError('The force data cannot be reset once the object is initialized')
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The force must be a SDynPy SpectrumArray')
         if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
