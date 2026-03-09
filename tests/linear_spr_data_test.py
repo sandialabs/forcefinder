@@ -85,18 +85,6 @@ def make_linear_spectra_data(number_dofs=4, number_transformed_dofs=2, dof_offse
 
     return frf, response, force, response_transformation, reference_transformation
 
-"""
-Basic checks to provide data to the object and then make sure that all the 
-data is stored in the object as expected.
-
-Needed tests:
-    - Have all the data, but the training dofs are a subset of the full data
-        - a passing object construction where everything matches
-        - a failing object construction where the training DOFs aren't in the full DOFs
-        - need to check supplying training DOFs with the correct and incorrect overlaps
-    - 
-"""
-
 @pytest.fixture(scope='function')
 def default_dataset_realization_1():
     return make_linear_spectra_data()
