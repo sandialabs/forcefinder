@@ -166,7 +166,7 @@ class SourcePathReceiverData:
         if self._target_response_coordinate_ is not None:
             if not np.all(np.isin(coordinate_array, self._target_response_coordinate_)):
                         raise ValueError('The training response coordinate {:} is missing the target response coordinate'.
-                                format(self.training_response_coordinate[~np.isin(coordinate_array, self.target_response_coordinate)].string_array()))
+                                format(coordinate_array[~np.isin(coordinate_array, self.target_response_coordinate)].string_array()))
         self._training_response_coordinate_ = np.sort(coordinate_array)
 
     @property

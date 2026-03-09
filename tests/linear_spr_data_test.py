@@ -279,3 +279,21 @@ def test_bad_training_data(larger_dataset_realization_1,
     with pytest.raises(ValueError):
         ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
                                 training_response_coordinate=larger_dataset_different_dofs[1].response_coordinate)
+    
+    with pytest.raises(ValueError):
+        ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
+                                training_response=larger_dataset_different_dofs[1])
+        
+    with pytest.raises(ValueError):
+        ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
+                                training_frfs=larger_dataset_different_dofs[0])
+        
+    with pytest.raises(ValueError):
+        ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
+                                        training_response=larger_dataset_realization_1[1][:4],
+                                        training_frfs=larger_dataset_different_dofs[0])
+        
+    with pytest.raises(ValueError):
+        ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
+                                        training_response=larger_dataset_realization_1[1][:4],
+                                        training_response_coordinate=larger_dataset_different_dofs[0][:4].response_coordinate)
