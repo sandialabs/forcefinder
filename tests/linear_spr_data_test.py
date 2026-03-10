@@ -117,18 +117,33 @@ def test_basic_construction(default_dataset_realization_1,
                                                default_dataset_realization_1[1].response_coordinate)
     
     assert np.all(spr_data._frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
     assert np.all(spr_data._training_frf_array_.data == np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
+    assert np.all(spr_data.training_frfs.ordinate == default_dataset_realization_2[0].ordinate)
     assert np.all(spr_data._target_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data.target_response.ordinate == default_dataset_realization_1[1].ordinate)
     assert np.all(spr_data._training_response_array_.data == np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
+    assert np.all(spr_data.training_response.ordinate == default_dataset_realization_2[1].ordinate)
     assert np.all(spr_data._force_array_.data == np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
+    assert np.all(spr_data.force.ordinate == default_dataset_realization_1[2].ordinate)
     assert np.all(spr_data._response_coordinate_ == default_dataset_realization_1[0][:,0].response_coordinate)
+    assert np.all(spr_data.response_coordinate == default_dataset_realization_1[0][:,0].response_coordinate)
     assert np.all(spr_data._target_response_coordinate_ == default_dataset_realization_1[1].response_coordinate)
+    assert np.all(spr_data.target_response_coordinate == default_dataset_realization_1[1].response_coordinate)
     assert np.all(spr_data._training_response_coordinate_ == default_dataset_realization_2[1].response_coordinate)
+    assert np.all(spr_data.training_response_coordinate == default_dataset_realization_2[1].response_coordinate)
     assert np.all(spr_data._reference_coordinate_ == default_dataset_realization_1[0][0,:].reference_coordinate)
-    assert np.all(spr_data._response_transformation_array_ == default_dataset_realization_1[3].matrix)
+    assert np.all(spr_data.reference_coordinate == default_dataset_realization_1[0][0,:].reference_coordinate)
+    assert np.all(spr_data._response_transformation_array_.data == default_dataset_realization_1[3].matrix)
+    assert np.all(spr_data.response_transformation.matrix == default_dataset_realization_1[3].matrix)
     assert np.all(spr_data._transformed_response_coordinate_ == default_dataset_realization_1[3].row_coordinate)
-    assert np.all(spr_data._reference_transformation_array_ == default_dataset_realization_1[4].matrix)
+    assert np.all(spr_data.response_transformation.row_coordinate == default_dataset_realization_1[3].row_coordinate)
+    assert np.all(spr_data.response_transformation.column_coordinate == default_dataset_realization_1[3].column_coordinate)
+    assert np.all(spr_data._reference_transformation_array_.data == default_dataset_realization_1[4].matrix)
+    assert np.all(spr_data.reference_transformation.matrix == default_dataset_realization_1[4].matrix)
     assert np.all(spr_data._transformed_reference_coordinate_ == default_dataset_realization_1[4].row_coordinate)
+    assert np.all(spr_data.reference_transformation.row_coordinate == default_dataset_realization_1[4].row_coordinate)
+    assert np.all(spr_data.reference_transformation.column_coordinate == default_dataset_realization_1[4].column_coordinate)
 
 
 def test_construction_without_training_data(default_dataset_realization_1):
@@ -201,11 +216,11 @@ def test_immutability(default_dataset_realization_1,
 
     with pytest.raises(AttributeError, match='The response transformation cannot be reset once the object is initialized'):
         spr_data.response_transformation = default_dataset_realization_2[3]
-    assert np.all(spr_data._response_transformation_array_==default_dataset_realization_1[3].matrix)
+    assert np.all(spr_data._response_transformation_array_.data==default_dataset_realization_1[3].matrix)
 
     with pytest.raises(AttributeError, match='The reference transformation cannot be reset once the object is initialized'):
         spr_data.reference_transformation = default_dataset_realization_2[4].matrix
-    assert np.all(spr_data._reference_transformation_array_==default_dataset_realization_1[4].matrix)
+    assert np.all(spr_data._reference_transformation_array_.data==default_dataset_realization_1[4].matrix)
 
     # Can't check that these stayed the same because the different 
     # datasets have the same values for these attributes
@@ -285,3 +300,57 @@ def test_bad_training_data(larger_dataset_realization_1,
         ff.LinearSourcePathReceiverData(target_response=larger_dataset_realization_1[1],
                                         training_response=larger_dataset_realization_1[1][:4],
                                         training_response_coordinate=larger_dataset_different_dofs[0][:4].response_coordinate)
+        
+def test_basic_construction_with_labels(default_dataset_realization_1,
+                                        default_dataset_realization_2):
+    spr_data = ff.LinearSourcePathReceiverData({'frfs_realization_1':default_dataset_realization_1[0]}, 
+                                               {'frfs_realization_2':default_dataset_realization_2[0]},
+                                               {'response_realization_1':default_dataset_realization_1[1]},
+                                               {'response_realization_2':default_dataset_realization_2[1]},
+                                               {'force_realization_1':default_dataset_realization_1[2]},
+                                               {'res_xform_realization_1':default_dataset_realization_1[3]},
+                                               {'ref_xform_realization_1':default_dataset_realization_1[4]},
+                                               default_dataset_realization_1[1].response_coordinate)
+    
+    assert np.all(spr_data._frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert spr_data._frf_array_.label == 'frfs_realization_1'
+    assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
+    
+    assert np.all(spr_data._training_frf_array_.data == np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
+    assert spr_data._training_frf_array_.label == 'frfs_realization_2'
+    assert np.all(spr_data.training_frfs.ordinate == default_dataset_realization_2[0].ordinate)
+    
+    assert np.all(spr_data._target_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert spr_data._target_response_array_.label == 'response_realization_1'
+    assert np.all(spr_data.target_response.ordinate == default_dataset_realization_1[1].ordinate)
+
+    assert np.all(spr_data._training_response_array_.data == np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
+    assert spr_data._training_response_array_.label == 'response_realization_2'
+    assert np.all(spr_data.training_response.ordinate == default_dataset_realization_2[1].ordinate)
+
+    assert np.all(spr_data._force_array_.data == np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
+    assert spr_data._force_array_.label == 'force_realization_1'
+    assert np.all(spr_data.force.ordinate == default_dataset_realization_1[2].ordinate)
+
+    assert np.all(spr_data._response_coordinate_ == default_dataset_realization_1[0][:,0].response_coordinate)
+    assert np.all(spr_data.response_coordinate == default_dataset_realization_1[0][:,0].response_coordinate)
+    assert np.all(spr_data._target_response_coordinate_ == default_dataset_realization_1[1].response_coordinate)
+    assert np.all(spr_data.target_response_coordinate == default_dataset_realization_1[1].response_coordinate)
+    assert np.all(spr_data._training_response_coordinate_ == default_dataset_realization_2[1].response_coordinate)
+    assert np.all(spr_data.training_response_coordinate == default_dataset_realization_2[1].response_coordinate)
+    assert np.all(spr_data._reference_coordinate_ == default_dataset_realization_1[0][0,:].reference_coordinate)
+    assert np.all(spr_data.reference_coordinate == default_dataset_realization_1[0][0,:].reference_coordinate)
+
+    assert np.all(spr_data._response_transformation_array_.data == default_dataset_realization_1[3].matrix)
+    assert spr_data._response_transformation_array_.label == 'res_xform_realization_1'
+    assert np.all(spr_data.response_transformation.matrix == default_dataset_realization_1[3].matrix)
+    assert np.all(spr_data._transformed_response_coordinate_ == default_dataset_realization_1[3].row_coordinate)
+    assert np.all(spr_data.response_transformation.row_coordinate == default_dataset_realization_1[3].row_coordinate)
+    assert np.all(spr_data.response_transformation.column_coordinate == default_dataset_realization_1[3].column_coordinate)
+
+    assert np.all(spr_data._reference_transformation_array_.data == default_dataset_realization_1[4].matrix)
+    assert spr_data._reference_transformation_array_.label == 'ref_xform_realization_1'
+    assert np.all(spr_data.reference_transformation.matrix == default_dataset_realization_1[4].matrix)
+    assert np.all(spr_data._transformed_reference_coordinate_ == default_dataset_realization_1[4].row_coordinate)
+    assert np.all(spr_data.reference_transformation.row_coordinate == default_dataset_realization_1[4].row_coordinate)
+    assert np.all(spr_data.reference_transformation.column_coordinate == default_dataset_realization_1[4].column_coordinate)
