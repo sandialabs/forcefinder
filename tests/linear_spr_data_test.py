@@ -116,11 +116,11 @@ def test_basic_construction(default_dataset_realization_1,
                                                default_dataset_realization_1[4],
                                                default_dataset_realization_1[1].response_coordinate)
     
-    assert np.all(spr_data._frf_array_ == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
-    assert np.all(spr_data._training_frf_array_ == np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
-    assert np.all(spr_data._target_response_array_ == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
-    assert np.all(spr_data._training_response_array_ == np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
-    assert np.all(spr_data._force_array_ == np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
+    assert np.all(spr_data._frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._training_frf_array_.data == np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
+    assert np.all(spr_data._target_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._training_response_array_.data == np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
+    assert np.all(spr_data._force_array_.data == np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
     assert np.all(spr_data._response_coordinate_ == default_dataset_realization_1[0][:,0].response_coordinate)
     assert np.all(spr_data._target_response_coordinate_ == default_dataset_realization_1[1].response_coordinate)
     assert np.all(spr_data._training_response_coordinate_ == default_dataset_realization_2[1].response_coordinate)
@@ -135,10 +135,10 @@ def test_construction_without_training_data(default_dataset_realization_1):
     spr_data = ff.LinearSourcePathReceiverData(frfs=default_dataset_realization_1[0], 
                                                target_response=default_dataset_realization_1[1])
     
-    assert np.all(spr_data._frf_array_ == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
     assert spr_data._training_frf_array_ == None
     assert np.all(spr_data.training_frfs.ordinate == default_dataset_realization_1[0].ordinate)
-    assert np.all(spr_data._target_response_array_ == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._target_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
     assert spr_data._training_response_array_ == None
     assert np.all(spr_data.training_response.ordinate == default_dataset_realization_1[1].ordinate)
     assert spr_data._training_response_coordinate_ == None
@@ -148,10 +148,10 @@ def test_construction_without_target_data(default_dataset_realization_1):
     spr_data = ff.LinearSourcePathReceiverData(training_frfs=default_dataset_realization_1[0], 
                                                training_response=default_dataset_realization_1[1])
     
-    assert np.all(spr_data._training_frf_array_ == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._training_frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
     assert spr_data._frf_array_ == None
     assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
-    assert np.all(spr_data._training_response_array_ == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._training_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
     assert spr_data._target_response_array_ == None
     assert np.all(spr_data.target_response.ordinate == default_dataset_realization_1[1].ordinate)
     assert spr_data._target_response_coordinate_ == None
@@ -181,23 +181,23 @@ def test_immutability(default_dataset_realization_1,
 
     with pytest.raises(AttributeError, match='The FRFs cannot be reset once the object is initialized'):
         spr_data.frfs = default_dataset_realization_2[0]
-    assert np.all(spr_data._frf_array_==np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._frf_array_.data==np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
 
     with pytest.raises(AttributeError, match='The training FRFs of an SPR object cannot be reset once the object is initialized'):
         spr_data.training_frfs = default_dataset_realization_1[0]
-    assert np.all(spr_data._training_frf_array_==np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
+    assert np.all(spr_data._training_frf_array_.data==np.moveaxis(default_dataset_realization_2[0].ordinate,-1,0))
 
     with pytest.raises(AttributeError, match='The force data cannot be reset once the object is initialized'):
         spr_data.force = default_dataset_realization_2[2]
-    assert np.all(spr_data._force_array_==np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
+    assert np.all(spr_data._force_array_.data==np.moveaxis(default_dataset_realization_1[2].ordinate,-1,0))
 
     with pytest.raises(AttributeError, match='The target response cannot be reset once the object is initialized'):
         spr_data.target_response = default_dataset_realization_2[1]
-    assert np.all(spr_data._target_response_array_==np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._target_response_array_.data==np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
 
     with pytest.raises(AttributeError, match='The training responses cannot be reset once the object is initialized'):
         spr_data.training_response = default_dataset_realization_1[1]
-    assert np.all(spr_data._training_response_array_==np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
+    assert np.all(spr_data._training_response_array_.data==np.moveaxis(default_dataset_realization_2[1].ordinate,-1,0))
 
     with pytest.raises(AttributeError, match='The response transformation cannot be reset once the object is initialized'):
         spr_data.response_transformation = default_dataset_realization_2[3]
@@ -242,10 +242,10 @@ def test_good_training_data(larger_dataset_realization_1,
                                                larger_dataset_realization_2[1][:4],
                                                training_response_coordinate=larger_dataset_realization_2[1][:4].response_coordinate)
     
-    assert np.all(spr_data._frf_array_ == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
-    assert np.all(spr_data._training_frf_array_ == np.moveaxis(larger_dataset_realization_2[0][:4,:].ordinate,-1,0))
-    assert np.all(spr_data._target_response_array_ == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
-    assert np.all(spr_data._training_response_array_ == np.moveaxis(larger_dataset_realization_2[1][:4].ordinate,-1,0))
+    assert np.all(spr_data._frf_array_.data == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data._training_frf_array_.data == np.moveaxis(larger_dataset_realization_2[0][:4,:].ordinate,-1,0))
+    assert np.all(spr_data._target_response_array_.data == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data._training_response_array_.data == np.moveaxis(larger_dataset_realization_2[1][:4].ordinate,-1,0))
     assert np.all(spr_data._response_coordinate_ == larger_dataset_realization_1[0][:,0].response_coordinate)
     assert np.all(spr_data._target_response_coordinate_ == larger_dataset_realization_1[1].response_coordinate)
     assert np.all(spr_data._training_response_coordinate_ == larger_dataset_realization_2[1][:4].response_coordinate)
@@ -254,9 +254,9 @@ def test_good_training_data(larger_dataset_realization_1,
                                                 target_response=larger_dataset_realization_1[1],
                                                 training_response_coordinate=larger_dataset_realization_1[1][:4].response_coordinate)
     
-    assert np.all(spr_data1._frf_array_ == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
+    assert np.all(spr_data1._frf_array_.data == np.moveaxis(larger_dataset_realization_1[0].ordinate,-1,0))
     assert np.all(spr_data1.training_frfs.ordinate == larger_dataset_realization_1[0][:4,:].ordinate)
-    assert np.all(spr_data1._target_response_array_ == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
+    assert np.all(spr_data1._target_response_array_.data == np.moveaxis(larger_dataset_realization_1[1].ordinate,-1,0))
     assert np.all(spr_data1.training_response.ordinate == larger_dataset_realization_1[1][:4].ordinate)
     assert np.all(spr_data1._response_coordinate_ == larger_dataset_realization_1[0][:,0].response_coordinate)
     assert np.all(spr_data1._target_response_coordinate_ == larger_dataset_realization_1[1].response_coordinate)

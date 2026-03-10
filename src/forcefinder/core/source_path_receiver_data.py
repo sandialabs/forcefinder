@@ -19,10 +19,20 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+from dataclasses import dataclass
 import numpy as np
 import sdynpy as sdpy
 from .utilities import check_abscissa
 from sdynpy.core.sdynpy_coordinate import outer_product
+
+@dataclass
+class LabeledData:
+    """
+    A basic dataclass to store the data attributes in the SourcePathReceiverData class. This only
+    has two attributes; label and data. 
+    """
+    label:str
+    data:np.ndarray
 
 class SourcePathReceiverData:
     """
@@ -173,18 +183,24 @@ class SourcePathReceiverData:
     def frfs(self):
         if self._frf_array_ is None:
             if self._training_frf_array_ is not None:
-                return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._training_frf_array_, 0, -1), 
+                return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._training_frf_array_.data, 0, -1), 
                                                     outer_product(self.training_response_coordinate, self._reference_coordinate_))
             else:
                 return self._frf_array_
         elif self._frf_array_ is not None:
-            return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._frf_array_, 0, -1), 
+            return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._frf_array_.data, 0, -1), 
                                                 outer_product(self._response_coordinate_, self._reference_coordinate_))
     
     @frfs.setter
-    def frfs(self, data_array):
+    def frfs(self, data):
         if self._frf_array_ is not None:
             raise AttributeError('The FRFs cannot be reset once the object is initialized')
+        if isinstance(data, dict):
+            label = list(data)[0]
+            data_array = data[label]
+        else:
+            label = ''
+            data_array = data
         if not isinstance(data_array, sdpy.core.sdynpy_data.TransferFunctionArray):
             raise TypeError('The FRFs must be a SDynPy TransferFunctionArray')
         
@@ -194,7 +210,7 @@ class SourcePathReceiverData:
 
         self.response_coordinate = data_array[:, 0].response_coordinate
         self.reference_coordinate = data_array[0, :].reference_coordinate
-        self._frf_array_ = np.moveaxis(data_array.ordinate, -1, 0)
+        self._frf_array_ = LabeledData(label, np.moveaxis(data_array.ordinate, -1, 0))
 
     @property
     def response_coordinate(self):
@@ -227,13 +243,19 @@ class SourcePathReceiverData:
                 frf_coordinate = outer_product(self.training_response_coordinate, self._reference_coordinate_)
                 return self.frfs[frf_coordinate]
         else:
-            return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._training_frf_array_, 0, -1), 
+            return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._training_frf_array_.data, 0, -1), 
                                 outer_product(self.training_response_coordinate, self._reference_coordinate_))
 
     @training_frfs.setter
-    def training_frfs(self, data_array):
+    def training_frfs(self, data):
         if self._training_frf_array_ is not None:
             raise AttributeError('The training FRFs of an SPR object cannot be reset once the object is initialized')
+        if isinstance(data, dict):
+            label = list(data)[0]
+            data_array = data[label]
+        else:
+            label = ''
+            data_array = data
         if not isinstance(data_array, sdpy.core.sdynpy_data.TransferFunctionArray):
             raise TypeError('The training FRFs must be a SDynPy TransferFunctionArray')
         data_array = data_array.reshape_to_matrix()
@@ -249,7 +271,7 @@ class SourcePathReceiverData:
             self.reference_coordinate = data_array[0,:].reference_coordinate
         check_abscissa(data_array, self._abscissa_)
         frf_coordinate = outer_product(self.training_response_coordinate, self._reference_coordinate_)
-        self._training_frf_array_ = np.moveaxis(data_array[frf_coordinate].ordinate, -1, 0)
+        self._training_frf_array_ = LabeledData(label, np.moveaxis(data_array[frf_coordinate].ordinate, -1, 0))
 
     @property
     def force(self):
@@ -331,21 +353,28 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
             if self._training_response_array_ is None:
                 return self._target_response_array_   
             else: 
-                return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._training_response_array_, 0, -1), 
-                                        self._training_response_coordinate_[..., np.newaxis])
+                return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._training_response_array_.data, 0, -1), 
+                                        self.training_response_coordinate[..., np.newaxis])
         else:
-            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._target_response_array_, 0, -1), 
-                                       self._target_response_coordinate_[..., np.newaxis])
+            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._target_response_array_.data, 0, -1), 
+                                       self.target_response_coordinate[..., np.newaxis])
     
     @target_response.setter
-    def target_response(self, data_array):
+    def target_response(self, data):
         if self._target_response_array_ is not None:
             raise AttributeError('The target response cannot be reset once the object is initialized')
+        if isinstance(data, dict):
+            label = list(data)[0]
+            data_array = data[label]
+        else:
+            label = ''
+            data_array = data
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The target response must be a SDynPy SpectrumArray')
         self.target_response_coordinate = np.sort(data_array.response_coordinate)
         self.abscissa = data_array.ravel()[0].abscissa
-        self._target_response_array_ = np.moveaxis(data_array[self._target_response_coordinate_[..., np.newaxis]].ordinate, -1, 0)
+        self._target_response_array_ = LabeledData(label, 
+                            np.moveaxis(data_array[self._target_response_coordinate_[..., np.newaxis]].ordinate, -1, 0))
 
     @property
     def training_response(self):
@@ -353,15 +382,21 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
             if self._target_response_array_ is None:
                 return self._training_response_array_
             else:
-                return self.target_response[self._training_response_coordinate_[..., np.newaxis]]
+                return self.target_response[self.training_response_coordinate[..., np.newaxis]]
         else: 
-            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._training_response_array_, 0, -1), 
-                                self._training_response_coordinate_[..., np.newaxis])
+            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._training_response_array_.data, 0, -1), 
+                                self.training_response_coordinate[..., np.newaxis])
     
     @training_response.setter
-    def training_response(self, data_array):
+    def training_response(self, data):
         if self._training_response_array_ is not None:
             raise AttributeError('The training responses cannot be reset once the object is initialized')
+        if isinstance(data, dict):
+            label = list(data)[0]
+            data_array = data[label]
+        else:
+            label = ''
+            data_array = data
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The training response must be a SDynPy SpectrumArray')
         
@@ -371,23 +406,31 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
             check_abscissa(data_array, self._abscissa_)
         
         self.training_response_coordinate = np.sort(data_array.response_coordinate)
-        self._training_response_array_ = np.moveaxis(data_array[self._training_response_coordinate_[..., np.newaxis]].ordinate, -1, 0) 
+        self._training_response_array_ = LabeledData(label,
+                    np.moveaxis(data_array[self._training_response_coordinate_[..., np.newaxis]].ordinate, -1, 0)) 
 
     @property
     def force(self):
         if self._force_array_ is None:
             return self._force_array_
         else:
-            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._force_array_, 0, -1), 
+            return sdpy.spectrum_array(self._abscissa_, np.moveaxis(self._force_array_.data, 0, -1), 
                                 self._reference_coordinate_[..., np.newaxis])
     
     @force.setter
-    def force(self, data_array):
+    def force(self, data):
         if self._force_array_ is not None:
             raise AttributeError('The force data cannot be reset once the object is initialized')
+        if isinstance(data, dict):
+            label = list(data)[0]
+            data_array = data[label]
+        else:
+            label = ''
+            data_array = data
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The force must be a SDynPy SpectrumArray')
         if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
             raise ValueError('Force {:} is not in the reference_coordinate'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
         check_abscissa(data_array, self._abscissa_)
-        self._force_array_ = np.moveaxis(data_array[self.reference_coordinate[..., np.newaxis]].ordinate, -1, 0)
+        self._force_array_ = LabeledData(label,
+                    np.moveaxis(data_array[self.reference_coordinate[..., np.newaxis]].ordinate, -1, 0))
