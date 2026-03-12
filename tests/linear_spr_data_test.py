@@ -152,10 +152,12 @@ def test_construction_without_training_data(default_dataset_realization_1):
     
     assert np.all(spr_data._frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
     assert spr_data._training_frf_array_ == None
+    assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
     assert np.all(spr_data.training_frfs.ordinate == default_dataset_realization_1[0].ordinate)
     assert np.all(spr_data._target_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
     assert spr_data._training_response_array_ == None
     assert np.all(spr_data.training_response.ordinate == default_dataset_realization_1[1].ordinate)
+    assert np.all(spr_data.target_response.ordinate == default_dataset_realization_1[1].ordinate)
     assert spr_data._training_response_coordinate_ == None
     assert np.all(spr_data.training_response_coordinate == default_dataset_realization_1[1].response_coordinate)
 
@@ -166,21 +168,24 @@ def test_construction_without_target_data(default_dataset_realization_1):
     assert np.all(spr_data._training_frf_array_.data == np.moveaxis(default_dataset_realization_1[0].ordinate,-1,0))
     assert spr_data._frf_array_ == None
     assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
+    assert np.all(spr_data.training_frfs.ordinate == default_dataset_realization_1[0].ordinate)
     assert np.all(spr_data._training_response_array_.data == np.moveaxis(default_dataset_realization_1[1].ordinate,-1,0))
     assert spr_data._target_response_array_ == None
     assert np.all(spr_data.target_response.ordinate == default_dataset_realization_1[1].ordinate)
+    assert np.all(spr_data.training_response.ordinate == default_dataset_realization_1[1].ordinate)
     assert spr_data._target_response_coordinate_ == None
     assert np.all(spr_data.target_response_coordinate == default_dataset_realization_1[1].response_coordinate)
 
-def test_freeze_thaw(default_dataset_realization_1):
+def test_freeze_thaw(default_dataset_realization_1, 
+                     default_dataset_realization_2):
     spr_data = ff.LinearSourcePathReceiverData(training_response=default_dataset_realization_1[1])
 
     with pytest.raises(AttributeError, match='LinearSourcePathReceiverData cannot be modified after initialization'):
         spr_data.frfs = default_dataset_realization_1[0]
 
     spr_data.thaw()
-    spr_data.frfs = default_dataset_realization_1[0]
-    assert np.all(spr_data.frfs.ordinate == default_dataset_realization_1[0].ordinate)
+    spr_data.frfs = default_dataset_realization_2[0]
+    assert np.all(spr_data.frfs.ordinate == default_dataset_realization_2[0].ordinate)
 
 def test_immutability(default_dataset_realization_1,
                       default_dataset_realization_2):

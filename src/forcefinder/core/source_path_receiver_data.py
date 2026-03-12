@@ -246,14 +246,17 @@ class SourcePathReceiverData:
     @property
     def training_frfs(self):
         if self._training_frf_array_ is None:
-            if self._frf_array_ is None:
-                return self._training_frf_array_
+            if self._frf_array_ is not None:
+                if self._frf_array_.data is None:
+                    return self._frf_array_.data
+                else:
+                    frf_coordinate = outer_product(self.training_response_coordinate, self._reference_coordinate_)
+                    return self.frfs[frf_coordinate]
             else:
-                frf_coordinate = outer_product(self.training_response_coordinate, self._reference_coordinate_)
-                return self.frfs[frf_coordinate]
+                return self._training_frf_array_
         else:
-            if self._frf_array_.data is None:
-                return self._frf_array_.data
+            if self._training_frf_array_.data is None:
+                return self._training_frf_array_.data
             else:
                 return sdpy.transfer_function_array(self._abscissa_, np.moveaxis(self._training_frf_array_.data, 0, -1), 
                                 outer_product(self.training_response_coordinate, self._reference_coordinate_))
