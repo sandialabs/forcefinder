@@ -359,3 +359,61 @@ def test_basic_construction_with_labels(default_dataset_realization_1,
     assert np.all(spr_data._transformed_reference_coordinate_ == default_dataset_realization_1[4].row_coordinate)
     assert np.all(spr_data.reference_transformation.row_coordinate == default_dataset_realization_1[4].row_coordinate)
     assert np.all(spr_data.reference_transformation.column_coordinate == default_dataset_realization_1[4].column_coordinate)
+
+def test_equality_check(default_dataset_realization_1, default_dataset_realization_2):
+    spr_data_full_labeled_1 = ff.LinearSourcePathReceiverData({'frfs_realization_1':default_dataset_realization_1[0]}, 
+                                                              {'frfs_realization_2':default_dataset_realization_2[0]},
+                                                              {'response_realization_1':default_dataset_realization_1[1]},
+                                                              {'response_realization_2':default_dataset_realization_2[1]},
+                                                              {'force_realization_1':default_dataset_realization_1[2]},
+                                                              {'res_xform_realization_1':default_dataset_realization_1[3]},
+                                                              {'ref_xform_realization_1':default_dataset_realization_1[4]},
+                                                              default_dataset_realization_1[1].response_coordinate)
+    
+    spr_data_full_labeled_2 = ff.LinearSourcePathReceiverData({'frfs_realization_2':default_dataset_realization_2[0]}, 
+                                                              {'frfs_realization_1':default_dataset_realization_1[0]},
+                                                              {'response_realization_2':default_dataset_realization_2[1]},
+                                                              {'response_realization_1':default_dataset_realization_1[1]},
+                                                              {'force_realization_2':default_dataset_realization_2[2]},
+                                                              {'res_xform_realization_2':default_dataset_realization_2[3]},
+                                                              {'ref_xform_realization_2':default_dataset_realization_2[4]},
+                                                              default_dataset_realization_2[1].response_coordinate)
+    
+    assert spr_data_full_labeled_1 == spr_data_full_labeled_1
+    assert not spr_data_full_labeled_1 == spr_data_full_labeled_2
+
+    spr_data_full_1 = ff.LinearSourcePathReceiverData(default_dataset_realization_1[0], 
+                                                      default_dataset_realization_2[0],
+                                                      default_dataset_realization_1[1],
+                                                      default_dataset_realization_2[1],
+                                                      default_dataset_realization_1[2],
+                                                      default_dataset_realization_1[3],
+                                                      default_dataset_realization_1[4],
+                                                      default_dataset_realization_1[1].response_coordinate)
+    
+    spr_data_full_2 = ff.LinearSourcePathReceiverData(default_dataset_realization_2[0], 
+                                                      default_dataset_realization_1[0],
+                                                      default_dataset_realization_2[1],
+                                                      default_dataset_realization_1[1],
+                                                      default_dataset_realization_2[2],
+                                                      default_dataset_realization_2[3],
+                                                      default_dataset_realization_2[4],
+                                                      default_dataset_realization_2[1].response_coordinate)
+    
+    assert spr_data_full_1 == spr_data_full_1
+    assert not spr_data_full_1 == spr_data_full_2
+    assert not spr_data_full_1 == spr_data_full_labeled_1
+
+    spr_data_abbreviated_1 = ff.LinearSourcePathReceiverData(frfs=default_dataset_realization_1[0], 
+                                                             target_response=default_dataset_realization_1[1],
+                                                             force=default_dataset_realization_1[2])
+    
+    spr_data_abbreviated_2 = ff.LinearSourcePathReceiverData(frfs=default_dataset_realization_2[0], 
+                                                             target_response=default_dataset_realization_2[1],
+                                                             force=default_dataset_realization_2[2])
+    
+    assert spr_data_abbreviated_1 == spr_data_abbreviated_1
+    assert not spr_data_abbreviated_1 == spr_data_abbreviated_2
+    assert not spr_data_abbreviated_1 == spr_data_full_1
+
+    

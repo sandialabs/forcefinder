@@ -34,6 +34,15 @@ class LabeledData:
     label:str
     data:np.ndarray
 
+    def __eq__(self, other):
+        if type(self) is not type(other):
+            raise TypeError('Class {:} cannot be compared to {:} class'.format(self.__class__.__name__, 
+                                                                               other.__class__.__name__))
+        
+        return (self.label == other.label and
+                np.array_equal(self.data, other.data))
+
+
 class SourcePathReceiverData:
     """
     A basic class to store the data that is used to compile the data for a single realization of a 
@@ -108,6 +117,16 @@ class SourcePathReceiverData:
             if name != '_frozen_' and self._frozen_:
                 raise AttributeError(f'{self.__class__.__name__} cannot be modified after initialization')
         super().__setattr__(name, data)
+
+    def __eq__(self, other):
+        if type(self) is not type(other):
+            raise TypeError('Class {:} cannot be compared to {:} class'.format(self.__class__.__name__, 
+                                                                               other.__class__.__name__))
+        for attribute in self.attributes:
+            if np.all(getattr(self, attribute) != getattr(other, attribute)):
+                return False
+        
+        return True
 
     #def __repr__(self):
         # need to figure out how to look up all the attributes and find which is none
