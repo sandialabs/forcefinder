@@ -26,3 +26,4 @@ from .core.source_path_receiver import (LinearSourcePathReceiver,
                                         TransientSourcePathReceiver)
 from .core.response_limit import ResponseLimit
 from .core.source_path_receiver_data import LinearSourcePathReceiverData
+from .core.source_path_receiver_set import SourcePathReceiverSet

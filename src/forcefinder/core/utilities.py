@@ -156,3 +156,28 @@ def reduce_drives_condition_not_met(training_psd, reconstructed_psd,
         return True
     else:
         return False
+    
+def is_dataset_labeled(dataset):
+    """
+    Reviews the data attributes in a SourcePathReceiverData object to determine 
+    if they are labeled. 
+
+    Parameters
+    ----------
+    dataset : SourcePathReceiverData
+        The dataset to evaluate.
+
+    Returns
+    -------
+    is_labeled : bool
+        Whether or not the data attributes in the supplied dataset are labeled.
+    """
+    attributes_to_evaluate = ['_frf_array_', '_training_frf_array_', '_force_array_', '_target_response_array_',
+              '_training_response_array_', '_response_transformation_array_', '_reference_transformation_array_']
+    
+    for attribute in attributes_to_evaluate:
+        if getattr(dataset, attribute) is not None:
+            if not getattr(dataset, attribute).label:
+                return False
+    
+    return True

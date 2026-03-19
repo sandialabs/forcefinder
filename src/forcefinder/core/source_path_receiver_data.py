@@ -99,6 +99,10 @@ class SourcePathReceiverData:
 
         self.freeze()
 
+    @classmethod
+    def empty(cls):
+        return cls.__new__(cls)
+
     def __setattr__(self, name, data):
         if hasattr(self, '_frozen_'):
             if name != '_frozen_' and self._frozen_:
@@ -364,6 +368,14 @@ class SourcePathReceiverData:
     @property
     def transformed_reference_coordinate(self):
         return self._transformed_reference_coordinate_
+    
+    @property
+    def attributes(self):
+        attribute_labels = []
+        for class_label in self.__class__.__mro__:
+            if '__slots__' in class_label.__dict__:
+                attribute_labels.extend(class_label.__slots__)
+        return attribute_labels
     
 class LinearSourcePathReceiverData(SourcePathReceiverData):
     """
