@@ -35,7 +35,11 @@ class LabeledData:
     data:np.ndarray
 
     def __eq__(self, other):
-        if type(self) is not type(other):
+        if other is None:
+            # Catch a comparison against None, the LabeledData object is obviously not None if 
+            # this comparison is happening
+            return False
+        elif type(self) is not type(other):
             raise TypeError('Class {:} cannot be compared to {:} class'.format(self.__class__.__name__, 
                                                                                other.__class__.__name__))
         
@@ -123,7 +127,7 @@ class SourcePathReceiverData:
             raise TypeError('Class {:} cannot be compared to {:} class'.format(self.__class__.__name__, 
                                                                                other.__class__.__name__))
         for attribute in self.attributes:
-            if np.all(getattr(self, attribute) != getattr(other, attribute)):
+            if np.any(getattr(self, attribute) != getattr(other, attribute)):
                 return False
         
         return True
