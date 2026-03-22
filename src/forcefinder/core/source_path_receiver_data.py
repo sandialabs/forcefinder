@@ -514,10 +514,13 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
         else:
             label = ''
             data_array = data
-        if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
-            raise TypeError('The force must be a SDynPy SpectrumArray')
-        if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
-            raise ValueError('Force {:} is not in the reference_coordinate'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
-        check_abscissa(data_array, self._abscissa_)
-        self._force_array_ = LabeledData(label,
-                    np.moveaxis(data_array[self.reference_coordinate[..., np.newaxis]].ordinate, -1, 0))
+        if data_array is None:
+            self._training_response_array_ = LabeledData(label, data_array)
+        else:
+            if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
+                raise TypeError('The force must be a SDynPy SpectrumArray')
+            if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
+                raise ValueError('Force {:} is not in the reference_coordinate'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
+            check_abscissa(data_array, self._abscissa_)
+            self._force_array_ = LabeledData(label,
+                        np.moveaxis(data_array[self.reference_coordinate[..., np.newaxis]].ordinate, -1, 0))

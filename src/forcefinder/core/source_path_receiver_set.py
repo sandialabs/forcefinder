@@ -128,7 +128,7 @@ class SourcePathReceiverSet:
                   'PowerSourcePathReceiverData', 
                   'TransientSourcePathReceiverData']
     
-    def __init__(self, datasets=None):
+    def __init__(self, datasets: dict | None = None):
         self._frf_pool_ = DataPool()
         self._training_frf_pool_ = DataPool()
         self._target_response_pool_ = DataPool()
@@ -181,7 +181,7 @@ class SourcePathReceiverSet:
     def __repr__(self):
         return repr('SourcePathReceiverSet object with {:} datasets'.format(len(self)))
 
-    def append(self, datasets):
+    def append(self, datasets: dict):
         """
         Adds a SourcePathReceiverData object to the set. 
 
@@ -223,7 +223,9 @@ class SourcePathReceiverSet:
                         if class_attribute[class_attribute.label.index(loop_attribute.label)].data is None:
                             class_attribute[class_attribute.label.index(loop_attribute.label)].data = loop_attribute.data
                         elif not np.all(class_attribute[class_attribute.label.index(loop_attribute.label)].data == loop_attribute.data):
-                            raise ValueError('The {:} in dataset {:} does not match the data with the same name in the SPR set object'.format(loop_attribute.label, dataset))
+                            if loop_attribute.data is not None:
+                                # Don't want to fail this check if the data is None
+                                raise ValueError('The {:} in dataset {:} does not match the data with the same name in the SPR set object'.format(loop_attribute.label, dataset))
                         dataset_pool_ids.__setattr__(data_attribute_pairs[attribute][1:]+'id', 
                                                      class_attribute.label.index(loop_attribute.label))
                     else:
