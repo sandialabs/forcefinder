@@ -1,6 +1,6 @@
 """
 Defines the SourcePathReceiverSet object, which is used to gather the 
-data for inverse source estimation problems.
+data for several inverse source estimation problems.
 
 Copyright 2025 National Technology & Engineering Solutions of Sandia,
 LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.
@@ -70,10 +70,10 @@ class DataPool:
         if isinstance(idx, int):
             if idx > len(self)-1:
                 raise IndexError('Index {:} is out of bounds for DataPool with size {:}'.format(idx, len(self)))
-            if len(self) == 1:
-                return self
-            else:    
-                return self.ordinate[idx]
+            #if len(self) == 1:
+            #    return spr_data.LabeledData(self.label, self.ordinate)
+            #else:    
+            return spr_data.LabeledData(self.label[idx], self.ordinate[idx])
         else:
             raise TypeError('The DataPool class can only be indexed by single integers')
         
@@ -163,7 +163,11 @@ class SourcePathReceiverSet:
                     empty_object._abscissa_ = self._abscissa_pool_[self._pool_ids_[idx].abscissa_pool_id]
                 if attribute in data_attribute_pairs:
                     attribute_pool_id = getattr(self._pool_ids_[idx], data_attribute_pairs[attribute][1:]+'id')
-                    empty_object.__setattr__(attribute, getattr(self, data_attribute_pairs[attribute])[attribute_pool_id])
+                    loop_data = getattr(self, data_attribute_pairs[attribute])[attribute_pool_id]
+                    if loop_data.data is None:
+                        empty_object.__setattr__(attribute, None)
+                    else:
+                        empty_object.__setattr__(attribute, loop_data)
                 if attribute in coordinate_attribute_pairs:
                     attribute_pool_id = getattr(self._pool_ids_[idx], coordinate_attribute_pairs[attribute][1:]+'id')
                     empty_object.__setattr__(attribute, getattr(self, coordinate_attribute_pairs[attribute])[attribute_pool_id])
@@ -174,6 +178,9 @@ class SourcePathReceiverSet:
         else:
             raise TypeError('The SourcePathReceiverSet class can only be indexed by single integers')
     
+    def __repr__(self):
+        return repr('SourcePathReceiverSet object with {:} datasets'.format(len(self)))
+
     def append(self, datasets):
         """
         Adds a SourcePathReceiverData object to the set. 
