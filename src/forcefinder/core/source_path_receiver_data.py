@@ -169,7 +169,7 @@ class SourcePathReceiverData:
     def target_response_coordinate(self, coordinate_array):
         if self._target_response_coordinate_ is not None:
             raise AttributeError('The target response coordinate cannot be reset after it is initialized')
-        self._target_response_coordinate_ = coordinate_array
+        self._target_response_coordinate_ = np.sort(coordinate_array)
 
     @property
     def abscissa(self):
@@ -258,7 +258,7 @@ class SourcePathReceiverData:
             raise AttributeError('The response coordinate cannot be reset after it is initialized')
         if not np.all(np.isin(self.target_response_coordinate, coordinate_array)):
             raise ValueError('The FRF response coordinate is missing the {:} target response coordinate'.format(self.target_response_coordinate[~np.isin(self.target_response_coordinate, coordinate_array)].string_array()))
-        self._response_coordinate_ = coordinate_array
+        self._response_coordinate_ = np.sort(coordinate_array)
 
     @property
     def reference_coordinate(self):
@@ -268,7 +268,7 @@ class SourcePathReceiverData:
     def reference_coordinate(self, coordinate_array):
         if self._reference_coordinate_ is not None:
             raise AttributeError('The reference coordinate cannot be reset after it is initialized')
-        self._reference_coordinate_ = coordinate_array
+        self._reference_coordinate_ = np.sort(coordinate_array)
     
     @property
     def training_frfs(self):
@@ -384,6 +384,13 @@ class SourcePathReceiverData:
         else:
             if not isinstance(transformation_matrix, sdpy.Matrix):
                 raise TypeError('The reference transformation must be defined as a SDynPy Matrix')
+            if self._reference_coordinate_ is not None:
+                coordinate_array = transformation_matrix.column_coordinate
+                if not np.all(np.isin(coordinate_array, self.reference_coordinate)):
+                        raise ValueError('The reference coordinate {:} is missing the transformation column coordinate'.
+                                format(coordinate_array[~np.isin(coordinate_array, self.target_response_coordinate)].string_array()))
+            else:
+                self.reference_coordinate = transformation_matrix.column_coordinate
             self._transformed_reference_coordinate_ = np.sort(transformation_matrix.row_coordinate)
             self._reference_transformation_array_ = LabeledData(label, transformation_matrix[self.transformed_reference_coordinate, 
                                                                       self.reference_coordinate])
@@ -515,10 +522,12 @@ class LinearSourcePathReceiverData(SourcePathReceiverData):
             label = ''
             data_array = data
         if data_array is None:
-            self._training_response_array_ = LabeledData(label, data_array)
+            self._force_array_ = LabeledData(label, data_array)
         else:
             if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
                 raise TypeError('The force must be a SDynPy SpectrumArray')
+            if self._reference_coordinate_ is None:
+                self.reference_coordinate = data_array.response_coordinate
             if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
                 raise ValueError('Force {:} is not in the reference_coordinate'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
             check_abscissa(data_array, self._abscissa_)
