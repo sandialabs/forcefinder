@@ -1,5 +1,6 @@
 """
-Contains helper functions for estimating forces with the elastic net.
+Contains helper functions for sparse force estimation (not using all the 
+available force DOFs).
 
 Copyright 2025 National Technology & Engineering Solutions of Sandia,
 LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S.
@@ -19,6 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import numpy as np
+from sdynpy.core.sdynpy_coordinate import coordinate_array
 from joblib import Parallel, delayed
 
 def elastic_net_full_path_all_frequencies_parallel(H, x, 
@@ -179,3 +181,171 @@ def elastic_net_full_path(H, x,
                 print('The optimizer hit the maximum number of iterations and did not converge')
         forces_ring[:, kk+1] = current_estimate
     return forces_ring, lambda_values
+
+def forward_stepwise_force_dof_evaluation(spr_object, evaluation_function, num_forces=None, num_jobs=None, 
+                                          use_transformation=False, **evaluation_kwargs):
+    """
+    Evaluates set of force DOFs for a given response through forward stepwise 
+    selection algorithm where the cost function is defined by the user. 
+
+    Parameters
+    ----------
+    spr_object : SourcePathReceiver
+        A source path receiver that has the FRFs (at all possible force DOFs) and 
+        training response.
+    evaluation_function : callable
+        A function to evaluate the a set of force DOFs with. This function should 
+        take the FRF and response ordinate (with the frequency vector on the first
+        axis), estimate the forces, then return some cost function that can be 
+        used to compare one set of force DOFs against another. This function can 
+        return multiple parameters, but the first parameter must be the cost 
+        function that is used to compare the DOF sets. 
+    num_forces : int, optional
+        The maximum number of forces to include in a DOF set. I.E., this is the 
+        maximum number of times through the stepwise algorithm. For example, if this
+        is set to six, the stepwise algorithm will be cycled through six times, where
+        a new "optimal" force DOF is added to the output at each step. The default 
+        behavior is to evaluate all the DOFs, which returns the the force DOFs 
+        (all the references in the FRFs) in order of the DOFs that minimized the 
+        cost function the most. 
+    num_jobs : int, optional
+        The number of jobs to dispatch for the multi-processing.
+    use_transformation : bool, optional
+        Whether or not to use the transformations in the algorithm. 
+    
+    Returns
+    -------
+    ordered_force_dofs : sdpy.CoordinateArray
+        The force DOFs (from the FRF matrix) that are ordered from the DOF that 
+        minimized the cost function the most to the DOF that minimize the cost function 
+        the least.
+    tracking_error : ndarray
+        A 1d array of the cost function value for a given force DOF set, as defined
+        in the `evaluation_function`.
+    extra_result : tuple
+        Any extra return variables from the evaluation function. 
+
+    Raises
+    ------
+    NotImplementedError
+        If there is a non-identity reference transformation in the SPR object.
+
+    Notes
+    -----
+    This function is a wrapper around the _forward_stepwise_force_evaluation_ that
+    extracts the necessary data from the supplied SPR object. 
+
+    The returned `ordered_force_dofs` should be viewed as the "optimal" set of 
+    forces DOFs, depending on the desired number of forces. I.E., `ordered_force_dofs[:2]`
+    is the optimal set of two force DOFs for the given force DOFs and training responses.
+    The `tracking_error` should also be interpreted as the error for a set. I.E., 
+    `tracking_error[1]` is the error that corresponds to dof set `ordered_force_dofs[:2]`.
+
+    This function uses a greedy optimization approach, which means that the supplied
+    force DOF sets are "approximately" optimal.
+    """
+
+
+    if use_transformation:
+        # Checking that there is not a reference transformation
+        num_reference_coord = spr_object._reference_coordinate_.shape[0]
+        if spr_object._reference_transformation_array_.shape != (num_reference_coord, num_reference_coord):
+            raise NotImplementedError('The greedy force DOF selection does not currently work with SPR objects that have non-identity reference transformations')
+        else:
+            if not np.all(spr_object._reference_transformation_array_ == np.eye(num_reference_coord)):
+                raise NotImplementedError('The greedy force DOF selection does not currently work with SPR objects that have non-identity reference transformations')
+
+        frf_ord = spr_object.transformed_training_frfs.ordinate.transpose(2,0,1)
+        res_ord = spr_object.transformed_training_response.ordinate.transpose(2,0,1)
+    elif not use_transformation:
+        frf_ord = spr_object._training_frf_array_
+        res_ord = spr_object._training_response_array_
+    
+    force_dof_index, tracking_error, *extra_result = _forward_stepwise_force_evaluation_(frf_ord, res_ord, evaluation_function, 
+                                                                                  num_forces, num_jobs, **evaluation_kwargs)
+    ordered_force_dofs = spr_object._reference_coordinate_[force_dof_index]
+
+    if any(extra_result): # returning extra_result if something is in it
+        return ordered_force_dofs, tracking_error, extra_result
+    else:
+        return ordered_force_dofs, tracking_error
+
+def _forward_stepwise_force_evaluation_(frf_ord, res_ord, evaluation_function, num_forces=None, 
+                                        num_jobs=-2, **evaluation_kwargs):
+    """
+    Evaluates set of force DOFs for a given response through forward stepwise 
+    selection algorithm where the cost function is defined by the user. 
+
+    Parameters
+    ----------
+    frf_ord : ndarray
+        An ndarray of FRFs to run through the forward stepwise algorithm. The 
+        FRFs should be sized [number of lines, number of responses, number of forces]
+    res_ord : ndarray
+        An ndarray of responses use in the forward stepwise algorithm. The 
+        response can be either CPSDs or linear spectra. CPSDs should be sized 
+        [number of lines, number of responses, number of forces] and linear spectra
+        should be sized [number of lines, number of responses].
+    evaluation_function : callable
+        A function to evaluate the a set of force DOFs with. This function should 
+        take the FRF and response ordinate (with the frequency vector on the first
+        axis), estimate the forces, then return some cost function that can be 
+        used to compare one set of force DOFs against another. This function can 
+        return multiple parameters, but the first parameter must be the cost 
+        function that is used to compare the DOF sets. 
+    num_forces : int, optional
+        The maximum number of forces to include in a DOF set. I.E., this is the 
+        maximum number of times through the stepwise algorithm. For example, if this
+        is set to six, the stepwise algorithm will be cycled through six times, where
+        a new "optimal" force DOF is added to the output at each step. The default 
+        behavior is to evaluate all the DOFs, which returns the the force DOFs 
+        (all the references in the FRFs) in order of the DOFs that minimized the 
+        cost function the most. 
+    num_jobs : int, optional
+        The number of jobs to dispatch for the multi-processing, which is used with
+        the Joblib Parallel function. The default is -2.
+    
+    Returns
+    -------
+    best_ind : ndarray
+        The indices that correspond to the column in the FRF matrix that minimized
+        the cost function the most to the column that minimized the cost function 
+        the least. 
+    tracking_error : ndarray
+        A 1d array of the cost function value for a given force DOF set, as defined
+        in the `evaluation_function`.
+    extra_result : tuple
+        Any extra return variables from the evaluation function. 
+
+    Notes
+    -----
+    The returned `best_ind` should be viewed as the indices that correspond to the
+    "optimal" set of forces DOFs, depending on the desired number of forces. 
+    I.E., `best_ind[:2]` corresponds to the optimal set of two force DOFs for the 
+    given FRFs and training responses. The `tracking_error` should also be interpreted 
+    as the error for a set. I.E., `tracking_error[1]` is the error that corresponds to 
+    dof set that corresponds to `best_ind[:2]`.
+
+    This function uses a greedy optimization approach, which means that the supplied
+    force DOF sets are "approximately" optimal.
+    """
+    best_ind = np.array([], dtype=np.int64)
+    if num_forces is None:
+        num_forces = frf_ord.shape[-1]
+
+    tracking_error = np.zeros(num_forces, dtype=np.float64)
+    for jj in range(num_forces):
+        outer_index = np.array([ind for ind in np.arange(frf_ord.shape[-1]) if ind not in best_ind])
+        evaluation_result = Parallel(n_jobs=num_jobs)(delayed(evaluation_function)(res_ord=res_ord, 
+                    frf_ord=frf_ord[:, :, np.append(best_ind, index)], **evaluation_kwargs) for index in outer_index)
+        try: 
+            error, *extra_result = zip(*evaluation_result)
+        except TypeError:
+            extra_result = []
+            error = evaluation_result 
+        best_ind = np.append(best_ind, outer_index[np.argmin(error)])
+        tracking_error[jj] = np.min(error)
+    try:
+        return best_ind, tracking_error, extra_result
+    except ValueError:
+        return best_ind, tracking_error
