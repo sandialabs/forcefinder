@@ -140,6 +140,7 @@ def transient_inverse_processing(method):
     def wrapper(self, **kwargs):
         cola_frame_length = kwargs.pop('cola_frame_length', None)
         cola_window = kwargs.pop('cola_window', ('tukey', 0.5))
+        use_synthesis_window = kwargs.pop('use_synthesis_window', False)
         cola_overlap_samples = kwargs.pop('cola_overlap_samples', None)
         use_transformation = kwargs.pop('use_transformation', False)
         frf_interpolation_type = kwargs.pop('frf_interpolation_type', 'sinc')
@@ -185,7 +186,8 @@ def transient_inverse_processing(method):
         
         # Initializing the generator for reconstructing the segmented force
         reconstruction_generator = generate_signal_from_cola_frames(signal_sizes, self.time_abscissa.shape[0], window[...,0], 
-                                                                    self.reference_coordinate.shape[0], reference_transform, use_transformation)
+                                                                    self.reference_coordinate.shape[0], reference_transform, 
+                                                                    use_transformation, use_synthesis_window)
         _ = next(reconstruction_generator)
 
         # "method" is the class method that is doing the inverse

@@ -3663,6 +3663,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                        frf_interpolation_type = 'sinc',
                        transformation_interpolation_type = 'cubic',
                        use_transformation = False,
+                       use_synthesis_window = False,
                        response_generator = None, 
                        frf = None, 
                        reconstruction_generator = None):
@@ -3786,23 +3787,25 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                             'FRF_interpolation_type':frf_interpolation_type,
                                             'transformation_interpolation_type':transformation_interpolation_type,
                                             'use_transformation':use_transformation,
+                                            'use_synthesis_window':use_synthesis_window,
                                             'regularization_weighting_matrix':regularization_weighting_matrix,
                                             'regularization_parameter':regularization_parameter,
                                             'cond_num_threshold':cond_num_threshold,
                                             'num_retained_values':num_retained_values})
         except AttributeError: 
             self.inverse_settings = {'ISE_technique':'manual', 
-                                        'cola_frame_length':cola_frame_length,
-                                        'cola_window':cola_window,
-                                        'cola_overlap':cola_overlap_samples,
-                                        'inverse_method':inverse_method,
-                                        'FRF_interpolation_type':frf_interpolation_type,
-                                        'transformation_interpolation_type':transformation_interpolation_type,
-                                        'use_transformation':use_transformation,
-                                        'regularization_weighting_matrix':regularization_weighting_matrix,
-                                        'regularization_parameter':regularization_parameter,
-                                        'cond_num_threshold':cond_num_threshold,
-                                        'num_retained_values':num_retained_values}
+                                     'cola_frame_length':cola_frame_length,
+                                     'cola_window':cola_window,
+                                     'cola_overlap':cola_overlap_samples,
+                                     'inverse_method':inverse_method,
+                                     'FRF_interpolation_type':frf_interpolation_type,
+                                     'transformation_interpolation_type':transformation_interpolation_type,
+                                     'use_transformation':use_transformation,
+                                     'use_synthesis_window':use_synthesis_window,
+                                     'regularization_weighting_matrix':regularization_weighting_matrix,
+                                     'regularization_parameter':regularization_parameter,
+                                     'cond_num_threshold':cond_num_threshold,
+                                     'num_retained_values':num_retained_values}
 
         return reconstructed_force 
        
@@ -3819,6 +3822,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                  frf_interpolation_type = 'sinc',
                                  transformation_interpolation_type = 'cubic',
                                  use_transformation = False,
+                                 use_synthesis_window = False,
                                  response_generator = None, 
                                  frf = None, 
                                  reconstruction_generator = None):
@@ -3946,12 +3950,13 @@ class TransientSourcePathReceiver(SourcePathReceiver):
     
         try:
             self.inverse_settings.update({'ISE_technique':'manual', 
-                                            'cola_frame_length':cola_frame_length,
-                                            'cola_window':cola_window,
-                                            'cola_overlap':cola_overlap_samples,
-                                            'FRF_interpolation_type':frf_interpolation_type,
-                                            'transformation_interpolation_type':transformation_interpolation_type,
-                                            'use_transformation':use_transformation})
+                                          'cola_frame_length':cola_frame_length,
+                                          'cola_window':cola_window,
+                                          'cola_overlap':cola_overlap_samples,
+                                          'FRF_interpolation_type':frf_interpolation_type,
+                                          'transformation_interpolation_type':transformation_interpolation_type,
+                                          'use_transformation':use_transformation,
+                                          'use_synthesis_window':use_synthesis_window})
         except AttributeError: 
             self.inverse_settings = {'ISE_technique':'manual', 
                                      'cola_frame_length':cola_frame_length,
@@ -3959,7 +3964,8 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                      'cola_overlap':cola_overlap_samples,
                                      'FRF_interpolation_type':frf_interpolation_type,
                                      'transformation_interpolation_type':transformation_interpolation_type,
-                                     'use_transformation':use_transformation}
+                                     'use_transformation':use_transformation,
+                                     'use_synthesis_window':use_synthesis_window,}
 
         return reconstructed_force 
     
@@ -3976,6 +3982,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                 frf_interpolation_type='sinc',
                                 transformation_interpolation_type='cubic',
                                 use_transformation=False,
+                                use_synthesis_window=False,
                                 response_generator=None, 
                                 frf=None, 
                                 reconstruction_generator=None):
@@ -4094,7 +4101,8 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                           'cola_overlap':cola_overlap_samples,
                                           'FRF_interpolation_type':frf_interpolation_type,
                                           'transformation_interpolation_type':transformation_interpolation_type,
-                                          'use_transformation':use_transformation})
+                                          'use_transformation':use_transformation,
+                                          'use_synthesis_window':use_synthesis_window,})
         except AttributeError: 
             self.inverse_settings.update({'ISE_technique':'auto_tikhonov_by_cv_rse',
                                           'inverse_method':'Tikhonov regularization',
@@ -4106,6 +4114,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
                                           'cola_overlap':cola_overlap_samples,
                                           'FRF_interpolation_type':frf_interpolation_type,
                                           'transformation_interpolation_type':transformation_interpolation_type,
-                                          'use_transformation':use_transformation})
+                                          'use_transformation':use_transformation,
+                                          'use_synthesis_window':use_synthesis_window,})
 
         return reconstructed_force

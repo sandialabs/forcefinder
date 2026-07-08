@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import numpy as np
 from scipy.signal import get_window, check_COLA
+from scipy.signal._short_time_fft import closest_STFT_dual_window
 from scipy.fft import rfft, irfft, next_fast_len, rfftfreq
 from scipy.interpolate import interp1d
 from typing import Union
@@ -190,7 +191,8 @@ def generate_zero_padded_response_fft(full_data, frame_indices, signal_sizes,
             yield rfft(zero_padded_response, axis=0, norm='backward')[..., np.newaxis]
 
 def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_window, 
-                                     number_of_dofs, reference_transform, use_transformation):
+                                     number_of_dofs, reference_transform, use_transformation,
+                                     synthesis_window):
     """
     Reconstructs a full time signal from cola frame FFTs.
 
@@ -241,6 +243,8 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
         shaped [number of frequency lines, number of references, number of references].
     use_transformation : bool
         Whether or not to use the reference transformation.
+    synthesis_window : bool
+        Whether or not to use a synthesis window in signal reconstruction.
 
     Yields
     -------
@@ -257,6 +261,14 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
     reconstruction_frame_indices = ([0, signal_sizes['zero_padded_signal_length']] + np.arange(signal_sizes['number_cola_frames'])[:, np.newaxis]*((signal_sizes['cola_frame_length']-signal_sizes['cola_overlap_samples']))).astype(int)
     reconstructed_signal = np.zeros((return_signal_length+signal_sizes['pre_data_blank_frame_length']+signal_sizes['post_data_blank_frame_length']+signal_sizes['right_zero_pad_length'], number_of_dofs), dtype=float)
 
+    if synthesis_window:
+        hop_size = signal_sizes['cola_frame_length'] - signal_sizes['cola_overlap_samples']
+        synthesis_window = np.zeros((signal_sizes['zero_padded_signal_length'],1), dtype=float)
+        dual_window, _ = closest_STFT_dual_window(cola_window, hop_size, cola_window, scaled=False)
+        synthesis_window[signal_sizes['left_zero_pad_length']+np.arange(signal_sizes['cola_frame_length'])] = dual_window[...,np.newaxis]
+    else:
+        synthesis_window = np.ones((signal_sizes['zero_padded_signal_length'],1), dtype=float)
+
     segment_fft = yield []
 
     for ii in range(signal_sizes['number_cola_frames']):
@@ -264,7 +276,7 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
             segment_force = irfft((reference_transform@segment_fft)[...,0], axis=0, n=signal_sizes['zero_padded_signal_length'], norm='backward')
         else:
             segment_force = irfft(segment_fft[...,0], axis=0, n=signal_sizes['zero_padded_signal_length'], norm='backward')
-        reconstructed_signal[reconstruction_frame_indices[ii,0]:reconstruction_frame_indices[ii,-1],...] += segment_force
+        reconstructed_signal[reconstruction_frame_indices[ii,0]:reconstruction_frame_indices[ii,-1],...] += segment_force*synthesis_window
         
         if ii != signal_sizes['number_cola_frames']-1:
             # Continues through the loop as long as we haven't hit the end
