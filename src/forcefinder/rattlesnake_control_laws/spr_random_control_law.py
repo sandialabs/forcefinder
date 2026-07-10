@@ -354,7 +354,7 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
         if self.inverse_settings['ISE_technique'].lower() == 'auto_tikhonov_by_l_curve':
             self.auto_tikhonov_by_l_curve(use_transformation=False, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'auto_truncation_by_l_curve':
-            self.auto_truncation_by_l_curve(use_transformation=False, update_header=False, update_header=False, **inverse_arguments)
+            self.auto_truncation_by_l_curve(use_transformation=False, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'auto_tikhonov_by_cv_rse':
             self.auto_tikhonov_by_cv_rse(use_transformation=False, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'manual_inverse':
