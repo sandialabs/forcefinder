@@ -31,7 +31,7 @@ from scipy.signal import sosfiltfilt
 from scipy.fft import rfftfreq
 from scipy.interpolate import interp1d
 from .utilities import (check_frequency_abscissa, compare_sampling_rate, is_cpsd, apply_buzz_method,
-                        reduce_drives_condition_not_met)
+                        reduce_drives_condition_not_met, nth_octave_bands)
 from .inverse_processing import (linear_inverse_processing, power_inverse_processing, transient_inverse_processing)
 from .auto_regularization import (tikhonov_full_path_for_l_curve,
                                   l_curve_optimal_regularization,
@@ -2692,7 +2692,191 @@ class PowerSourcePathReceiver(SourcePathReceiver):
                                         'use_buzz':use_buzz})
 
         return selected_force
-    
+
+    @power_inverse_processing
+    def band_average_inverse(self,
+                             octave_fraction=6,
+                             condition_number='auto',
+                             drive_reduction=float(0),
+                             use_transformation=True,
+                             use_buzz = False,
+                             update_header=True,
+                             response = None, frf = None):
+        """
+        Performs the inverse source estimation problem in fractional-octave-band
+        space: one correlated force CPSD is solved per band such that the
+        band-averaged response matches the band-averaged target, rather than
+        matching the target line by line.
+
+        Parameters
+        ----------
+        octave_fraction : int, optional
+            The octave fraction N for the 1/N-octave analysis bands. The default
+            is 6 (1/6-octave bands).
+        condition_number : str or float, optional
+            The condition-number threshold kappa for the per-band regularization,
+            where singular values of the band sensitivity smaller than
+            sigma_max/kappa are damped (the Tikhonov weight per band is
+            (sigma_max/kappa)**2). The threshold is relative to sigma_max, so a
+            value transfers between problems of different units or scale. The
+            default is 'auto', which sweeps kappa over 10-10000, predicts each
+            candidate's band-averaged error and force energy through the band
+            sensitivity, and selects the knee of that trade: the smallest kappa
+            whose predicted error is within 0.1 dB of the best achievable over
+            the sweep. A numeric value pins kappa explicitly and skips the sweep.
+        drive_reduction : float, optional
+            The fraction of the automatically selected solution's predicted force
+            energy to give up by regularizing harder (e.g., 0.3 solves for a force
+            with approximately 30% less energy), at the cost of band-averaged
+            accuracy. Only meaningful with condition_number='auto'. The default
+            is 0 (the knee solution).
+        use_transformation : bool
+            Whether or not the response and reference transformation from the class
+            definition should be used (which is handled in the "power_inverse_processing"
+            decorator function). The default is true.
+        use_buzz : bool
+            Whether or not to use the buzz method with the buzz CPSDs from the class
+            definition (this is handled in the "power_inverse_processing" decorator
+            function). The default is false.
+        response : ndarray
+            The preprocessed response data. The preprocessing is handled by the decorator
+            function and object definition. This argument should not be supplied by the
+            user.
+        frf : ndarray
+            The preprocessed frf data. The preprocessing is handled by the decorator
+            function and object definition. This argument should not be supplied by the
+            user.
+
+        Returns
+        -------
+        selected_force : ndarray
+            An ndarray of the estimated sources, flat within each band. The
+            "power_inverse_processing" decorator function applies this force to the
+            force property of the SourcePathReceiver object.
+
+        Notes
+        -----
+        The method poses the inverse on band-averaged quantities. For a force CPSD
+        that is flat within a band, the band-averaged response auto-spectrum is
+        exactly sum_ij C[p,i,j,b] * P_b[i,j], where
+        C[p,i,j,b] = <H[p,i] conj(H[p,j])>_b is the band-averaged cross-power
+        sensitivity. Each band's minimum-norm solution is therefore the
+        least-energy correlated force CPSD whose band-averaged response matches
+        the band-averaged target, and because the FRF is averaged over each band
+        before it is inverted, identification noise in the FRF is not amplified.
+        The reconstructed response matches the target in the band-averaged sense,
+        not line by line; the residual within a band is the deliberate compromise
+        of the flat-in-band force model.
+
+        The estimated force CPSD only spans the frequency lines covered by the
+        analysis bands (lines below the lowest band edge carry zero force).
+
+        All the settings, including the selected condition-number threshold, are
+        saved to the "inverse_settings" class property.
+
+        References
+        ----------
+        .. [1] B. Zwink, T. Brown, G. Throneberry, and R. Schultz, "Bandwidth-Averaged
+            Control Method for Multi-Input Multi-Output Random Vibration Testing,"
+            in preparation for the 45th International Modal Analysis Conference
+            (IMAC XLV), Society for Experimental Mechanics, 2027.
+        """
+        abscissa = np.asarray(self.abscissa, dtype=float).flatten()
+        number_of_lines, number_of_responses, number_of_references = frf.shape
+        band_lower_edges, band_upper_edges = nth_octave_bands(abscissa, octave_fraction)
+        number_of_bands = band_lower_edges.size
+
+        band_of_line = np.searchsorted(band_lower_edges, abscissa, side='right') - 1
+        in_band = ((band_of_line >= 0)
+                   & (abscissa < band_upper_edges[np.clip(band_of_line, 0, number_of_bands - 1)])
+                   & (abscissa >= band_lower_edges[0]))
+
+        response_asd = np.real(np.diagonal(response, axis1=1, axis2=2))
+
+        # per-band cross-power sensitivity C[p,i,j,b] = <H[p,i] conj(H[p,j])>_b, flattened
+        # to [number_of_responses, number_of_references**2] and SVD factored once per band
+        band_data = []
+        for band_index in range(number_of_bands):
+            line_select = in_band & (band_of_line == band_index)
+            if not line_select.any():
+                band_data.append(None)
+                continue
+            frf_lines = np.moveaxis(frf[line_select], 0, -1)
+            cross_power = (frf_lines @ np.conj(np.swapaxes(frf_lines, -1, -2)))/line_select.sum()
+            sensitivity = cross_power.reshape(number_of_responses, number_of_references**2)
+            target = response_asd[line_select].mean(axis=0)
+            left_vectors, singular_values, right_vectors_h = np.linalg.svd(sensitivity, full_matrices=False)
+            band_data.append((sensitivity, left_vectors, singular_values, right_vectors_h,
+                              target, line_select))
+
+        def solve_bands(kappa):
+            # regularized minimum-norm solve per band, Hermitian positive semidefinite
+            # projection, and the predicted band error (mean absolute dB) and energy
+            force_blocks = []
+            error_sum = 0.0
+            error_count = 0
+            energy = 0.0
+            for band in band_data:
+                if band is None:
+                    force_blocks.append(None)
+                    continue
+                sensitivity, left_vectors, singular_values, right_vectors_h, target, line_select = band
+                regularization = (singular_values.max()/kappa)**2 if singular_values.max() > 0 else 0.0
+                projected_target = np.conj(left_vectors.T)@target
+                filter_factors = singular_values/(singular_values**2 + regularization)
+                force_block = (np.conj(right_vectors_h.T)@(filter_factors*projected_target)).reshape(
+                    number_of_references, number_of_references)
+                force_block = (force_block + np.conj(force_block.T))/2
+                eigenvalues, eigenvectors = np.linalg.eigh(force_block)
+                force_block = (eigenvectors*np.clip(eigenvalues.real, 0.0, None))@np.conj(eigenvectors.T)
+                force_blocks.append(force_block)
+                predicted = np.real(sensitivity@force_block.reshape(-1))
+                target_defined = target > 0
+                if target_defined.any():
+                    ratio = np.clip(predicted[target_defined]/target[target_defined], 1e-6, None)
+                    error_sum += np.abs(10.0*np.log10(ratio)).sum()
+                    error_count += int(target_defined.sum())
+                energy += np.real(np.trace(force_block))*line_select.sum()
+            error = error_sum/error_count if error_count else np.inf
+            return force_blocks, error, energy
+
+        if isinstance(condition_number, str) and condition_number.lower() == 'auto':
+            kappa_grid = np.logspace(1.0, 4.0, 49)
+            errors = np.zeros(kappa_grid.size)
+            energies = np.zeros(kappa_grid.size)
+            for grid_index, kappa in enumerate(kappa_grid):
+                _, errors[grid_index], energies[grid_index] = solve_bands(kappa)
+            knee_index = int(np.argmax(errors <= errors.min() + 0.1))
+            selected_index = knee_index
+            if drive_reduction > 0:
+                energy_target = (1.0 - drive_reduction)*energies[knee_index]
+                candidates = [grid_index for grid_index in range(knee_index + 1)
+                              if energies[grid_index] <= energy_target]
+                selected_index = candidates[-1] if candidates else 0
+            selected_condition_number = float(kappa_grid[selected_index])
+        else:
+            selected_condition_number = float(condition_number)
+
+        force_blocks, _, _ = solve_bands(selected_condition_number)
+        selected_force = np.zeros((number_of_lines, number_of_references, number_of_references),
+                                  dtype=complex)
+        for band, force_block in zip(band_data, force_blocks):
+            if band is None:
+                continue
+            selected_force[band[5]] = force_block
+
+        if update_header:
+            self.inverse_settings.update({'ISE_technique':'band_average_inverse',
+                                        'octave_fraction':octave_fraction,
+                                        'number_of_bands':number_of_bands,
+                                        'condition_number':selected_condition_number,
+                                        'condition_number_setting':condition_number,
+                                        'drive_reduction':drive_reduction,
+                                        'use_transformation':use_transformation,
+                                        'use_buzz':use_buzz})
+
+        return selected_force
+
     def match_trace_update(self, use_transformation=True,
                            in_place=True):
         """
