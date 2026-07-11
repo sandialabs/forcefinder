@@ -154,3 +154,40 @@ def reduce_drives_condition_not_met(training_psd, reconstructed_psd,
         return True
     else:
         return False
+def nth_octave_bands(abscissa, octave_fraction=3):
+    """
+    Computes the lower and upper edges of the 1/N-octave bands that overlap a
+    frequency axis.
+
+    Parameters
+    ----------
+    abscissa : ndarray
+        The frequency axis (Hz) that the bands should cover. Only the minimum
+        and maximum are used.
+    octave_fraction : int, optional
+        The octave fraction N for 1/N-octave bands (e.g., 3 for 1/3-octave,
+        6 for 1/6-octave). The default is 3.
+
+    Returns
+    -------
+    band_lower_edges : ndarray
+        The lower band-edge frequencies (Hz) of the overlapping bands.
+    band_upper_edges : ndarray
+        The upper band-edge frequencies (Hz) of the overlapping bands.
+
+    Notes
+    -----
+    The bands follow the ANSI S1.11 base-ten convention (octave ratio
+    10**0.3) with the 1 kHz reference. Frequencies below 10 Hz are excluded
+    from the band selection.
+    """
+    abscissa = np.asarray(abscissa, dtype=float).flatten()
+    octave_ratio = 10.0**0.3
+    reference_frequency = 1000.0
+    band_numbers = np.arange(-200, 201)
+    band_powers = [(2*band_numbers + 1)/(2*octave_fraction), band_numbers/octave_fraction]
+    band_centers = reference_frequency*octave_ratio**band_powers[octave_fraction % 2]
+    band_lower_edges = (band_centers*octave_ratio**(-1/(2*octave_fraction))).round(12)
+    band_upper_edges = (band_centers*octave_ratio**(1/(2*octave_fraction))).round(12)
+    keep = (max(abscissa.min(), 10.0) < band_upper_edges) & (abscissa.max() > band_lower_edges)
+    return band_lower_edges[keep], band_upper_edges[keep]

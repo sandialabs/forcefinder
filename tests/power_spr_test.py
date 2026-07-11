@@ -890,3 +890,91 @@ def test_sample_splitting(unit_test_frf, unit_test_response):
     assert np.all(misordered_spr.target_frfs.ordinate == unit_test_frf.ordinate)
     assert np.all(misordered_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,3],:,:])
     assert np.all(misordered_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[1,2],:,:])
+
+#%% Testing the band-average inverse
+def test_band_average_inverse_solution(beam_ise_frfs, system_a_truth_response):
+    """
+    This test verifies the band-average inverse on the system A beam with exact
+    (consistent) responses. It checks that:
+
+        1. The band-averaged reconstructed response matches the band-averaged
+        target response within a dB tolerance. Note that the band-average
+        inverse matches the target in the band-averaged sense, not line by
+        line, and both its regularization and the positive-semidefinite
+        projection of the force CPSD deliberately trade band error for a
+        physical, bounded force, so an allclose comparison does not apply.
+        2. The band-averaged error is smaller than the narrowband error of the
+        same reconstruction -- the defining property of the method (a
+        flat-in-band force cannot track the response within a band, but its
+        band averages land on the target).
+        3. The automatically selected condition-number threshold is recorded in
+        the inverse settings and falls inside the swept range.
+    """
+    from forcefinder.core.utilities import nth_octave_bands
+    system_a_ise_frfs, _ = beam_ise_frfs
+    band_average_spr = ff.PowerSourcePathReceiver(system_a_ise_frfs, system_a_truth_response)
+    band_average_spr.band_average_inverse()
+
+    assert band_average_spr.inverse_settings['ISE_technique'] == 'band_average_inverse'
+    assert 10 <= band_average_spr.inverse_settings['condition_number'] <= 10000
+
+    band_lower_edges, band_upper_edges = nth_octave_bands(band_average_spr.abscissa, 6)
+    target_bands = band_average_spr.target_response.bandwidth_average(band_lower_edges, band_upper_edges)
+    reconstructed_bands = band_average_spr.reconstructed_target_response.bandwidth_average(band_lower_edges,
+                                                                                           band_upper_edges)
+    target_asd = np.real(np.einsum('iik->ik', target_bands.ordinate))
+    reconstructed_asd = np.real(np.einsum('iik->ik', reconstructed_bands.ordinate))
+    defined = target_asd > 0
+    band_error_db = np.abs(10*np.log10(reconstructed_asd[defined]/target_asd[defined]))
+    assert band_error_db.mean() < 1.0
+
+    target_lines = np.real(np.einsum('iik->ik', band_average_spr.target_response.ordinate))
+    reconstructed_lines = np.real(np.einsum('iik->ik',
+                                            band_average_spr.reconstructed_target_response.ordinate))
+    lines_defined = target_lines > 0
+    line_error_db = np.abs(10*np.log10(np.clip(
+        reconstructed_lines[lines_defined]/target_lines[lines_defined], 1e-12, None)))
+    assert band_error_db.mean() < line_error_db.mean()
+
+def test_band_average_inverse_noise_robustness(beam_ise_frfs, system_a_noised_response):
+    """
+    This test verifies that the band-average inverse does not amplify
+    identification/measurement noise, by comparing it to the unregularized
+    manual inverse on the noised system A responses. The band-average inverse
+    averages the FRF over each band before inverting it, so its force RMS
+    should be less than the manual inverse force RMS (which inverts the noise).
+    """
+    system_a_ise_frfs, _ = beam_ise_frfs
+    manual_spr = ff.PowerSourcePathReceiver(system_a_ise_frfs, system_a_noised_response)
+    manual_spr.manual_inverse()
+    band_average_spr = ff.PowerSourcePathReceiver(system_a_ise_frfs, system_a_noised_response)
+    band_average_spr.band_average_inverse()
+
+    manual_force_rms = np.sqrt(np.mean(np.abs(np.einsum('kii->ki', manual_spr._force_array_))**2))
+    band_average_force_rms = np.sqrt(np.mean(np.abs(np.einsum('kii->ki', band_average_spr._force_array_))**2))
+    assert band_average_force_rms < manual_force_rms
+
+def test_band_average_inverse_with_response_limit(beam_ise_frfs, system_a_truth_response):
+    """
+    This test verifies that the band-average inverse composes with the existing
+    apply_response_limit: after applying a deliberately binding limit on one
+    response DOF, the predicted response at that DOF is at or below the limit
+    at every limited frequency line.
+    """
+    system_a_ise_frfs, _ = beam_ise_frfs
+    band_average_spr = ff.PowerSourcePathReceiver(system_a_ise_frfs, system_a_truth_response)
+    band_average_spr.band_average_inverse()
+
+    limit_coordinate = str(band_average_spr.response_coordinate[0])
+    predicted = np.abs(band_average_spr.predicted_response_specific_dofs(
+        sdpy.coordinate_array(string_array=[limit_coordinate])).ordinate)[0, 0, :]
+    abscissa = band_average_spr.abscissa
+    limit_level = 0.5*predicted[(abscissa >= 20) & (abscissa <= 80)].max()
+    binding_limit = ff.ResponseLimit(limit_coordinate, [20, 80], [limit_level, limit_level])
+
+    band_average_spr.apply_response_limit(binding_limit)
+    limited_prediction = np.abs(band_average_spr.predicted_response_specific_dofs(
+        sdpy.coordinate_array(string_array=[limit_coordinate])).ordinate)[0, 0, :]
+    limited_lines = (abscissa >= 20) & (abscissa <= 80)
+    assert np.all(limited_prediction[limited_lines] <= limit_level*(1 + 1e-9))
+
