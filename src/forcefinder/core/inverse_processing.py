@@ -152,7 +152,8 @@ def transient_inverse_processing(method):
         padded_response, signal_sizes, frame_indices, window = prepare_for_zero_padding(self,
                                                                                         cola_frame_length=cola_frame_length, 
                                                                                         cola_window=cola_window,
-                                                                                        cola_overlap_samples=cola_overlap_samples)
+                                                                                        cola_overlap_samples=cola_overlap_samples,
+                                                                                        use_synthesis_window=use_synthesis_window)
 
         if frf_interpolation_type == 'sinc':
             interpolated_frfs = sinc_interpolation(self._training_frf_array_, signal_sizes['zero_padded_signal_length'])
