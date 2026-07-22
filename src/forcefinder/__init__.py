@@ -19,8 +19,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+# cvxpy must be included before PyQt5 within .transient_gui_plot
+# as the second import messes with a .dll for some reason
+import cvxpy  # noqa: F401
 from .transient_quality_evaluation import transient_quality_metrics
-from .transient_quality_evaluation.transient_gui_plot import SpectrogramGUI, LevelErrorGUI 
+from .transient_quality_evaluation.transient_gui_plot import SpectrogramGUI, LevelErrorGUI
 from .core.source_path_receiver import (LinearSourcePathReceiver,
                                         PowerSourcePathReceiver,
                                         TransientSourcePathReceiver)
