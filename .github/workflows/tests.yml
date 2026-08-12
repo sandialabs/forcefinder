@@ -5,10 +5,15 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
+  workflow_dispatch: 
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    env:
+      QT_QPA_PLATFORM: offscreen
+      PYVISTA_OFF_SCREEN: "true"
 
     strategy:
       matrix:
