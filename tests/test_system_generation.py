@@ -541,7 +541,7 @@ def create_transient_excitation(force_coordinate=sdpy.coordinate_array(node=np.a
     random_excitation *= smoothed_shape[np.newaxis, ...]
 
     window = tukey(number_samples, alpha=0.75)
-    sos_filter = butter(10, [0.05*sampling_rate/2,0.95*sampling_rate/2], btype='bandpass', output='sos', fs=sampling_rate)
+    sos_filter = butter(10, [0.1*sampling_rate/2,0.95*sampling_rate/2], btype='bandpass', output='sos', fs=sampling_rate)
 
     force_ordinate = sosfiltfilt(sos_filter, (random_excitation+chirp_base+pulse_base)*window[np.newaxis, ...], axis=-1)
     force = sdpy.data_array(sdpy.data.FunctionTypes.TIME_RESPONSE, time, force_ordinate, force_coordinate[...,np.newaxis])

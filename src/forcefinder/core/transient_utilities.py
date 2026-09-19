@@ -128,8 +128,8 @@ def prepare_for_zero_padding(spr_object,
     left_samples = (zero_pad_signal_length-cola_frame_length)//2
     right_samples = cola_frame_length+left_samples
 
-    if use_synthesis_window:
-        window = np.sqrt(window)
+    #if use_synthesis_window:
+    #    window = np.sqrt(window)
 
     signal_sizes = {'pre_data_blank_frame_length':pre_data_pad_length,
                     'post_data_blank_frame_length':post_data_pad_length,
@@ -268,10 +268,10 @@ def generate_signal_from_cola_frames(signal_sizes, return_signal_length, cola_wi
     reconstructed_signal = np.zeros((return_signal_length+signal_sizes['pre_data_blank_frame_length']+signal_sizes['post_data_blank_frame_length']+signal_sizes['right_zero_pad_length'], number_of_dofs), dtype=float)
 
     if synthesis_window:
-        #hop_size = signal_sizes['cola_frame_length'] - signal_sizes['cola_overlap_samples']
+        hop_size = signal_sizes['cola_frame_length'] - signal_sizes['cola_overlap_samples']
         synthesis_window = np.zeros((signal_sizes['zero_padded_signal_length'],1), dtype=float)
-        #dual_window, _ = closest_STFT_dual_window(cola_window, hop_size, cola_window, scaled=False)
-        synthesis_window[signal_sizes['left_zero_pad_length']+np.arange(signal_sizes['cola_frame_length'])] = cola_window[...,np.newaxis]#dual_window[...,np.newaxis]
+        dual_window, _ = closest_STFT_dual_window(cola_window, hop_size, cola_window, scaled=False)
+        synthesis_window[signal_sizes['left_zero_pad_length']+np.arange(signal_sizes['cola_frame_length'])] = dual_window[...,np.newaxis]#cola_window[...,np.newaxis]
     else:
         synthesis_window = np.ones((signal_sizes['zero_padded_signal_length'],1), dtype=float)
 
