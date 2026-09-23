@@ -26,6 +26,19 @@ from forcefinder import PowerSourcePathReceiver # Import from ForceFinder direct
 def trace(cpsd):
     return np.einsum ('ijj->i', cpsd)
 
+def load_transformation(path):
+    """
+    Loads a transformation array from a .npy file or a .npz file that contains
+    a single array. The array can be 2D (applied broadband) or 3D (frequency
+    dependent, organized with frequency on the first axis).
+    """
+    data = np.load(path)
+    if isinstance(data, np.lib.npyio.NpzFile):
+        if len(data.files) != 1:
+            raise ValueError('The transformation npz file must contain exactly one array: {:}'.format(path))
+        data = data[data.files[0]]
+    return data
+
 def parse_extra_parameters(string):
     """
     Parses the extra parameters from the Rattlesnake text box.
@@ -110,6 +123,18 @@ def parse_extra_parameters(string):
             use_buzz : bool
                 Whether or not to use the buzz method for cross-term modification. 
 
+            response_transformation : str
+                Path to a .npy or .npz file (with a single array) that defines the 
+                response transformation array. It is shaped [number of transformed 
+                responses, number of responses] or [number of lines, number of 
+                transformed responses, number of responses].
+
+            reference_transformation : str
+                Path to a .npy or .npz file (with a single array) that defines the 
+                reference transformation array. It is shaped [number of transformed 
+                references, number of references] or [number of lines, number of 
+                transformed references, number of references].
+
     Raises
     ------
     ValueError
@@ -177,6 +202,10 @@ def parse_extra_parameters(string):
                 extra_parameters['match_trace'] = True
             elif value.lower() == 'false':
                 extra_parameters['match_trace'] = False
+        elif name.lower() == 'response_transformation':
+            extra_parameters['response_transformation'] = value.strip('\'"')
+        elif name.lower() == 'reference_transformation':
+            extra_parameters['reference_transformation'] = value.strip('\'"')
     if 'match_trace' not in extra_parameters:
         extra_parameters['match_trace'] = False
         
@@ -270,6 +299,13 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
         self._warning_levels_=warning_levels
         self._abort_levels_=abort_levels
         self.inverse_settings = parse_extra_parameters(extra_control_parameters)
+        response_transformation_path = self.inverse_settings.pop('response_transformation', None)
+        reference_transformation_path = self.inverse_settings.pop('reference_transformation', None)
+        self.use_transformation = response_transformation_path is not None or reference_transformation_path is not None
+        if response_transformation_path is not None:
+            self._response_transformation_array_ = load_transformation(response_transformation_path)
+        if reference_transformation_path is not None:
+            self._reference_transformation_array_ = load_transformation(reference_transformation_path)
         self._training_frf_array_=transfer_function
         self._noise_response_cpsd_array_=noise_response_cpsd
         self._noise_reference_cpsd_array_=noise_reference_cpsd
@@ -330,10 +366,11 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
         
         Notes
         -----
-        The use_transformation parameter in the inverse method must be set to false 
-        in the inverse source estimation since the transformations are done in 
-        Rattlesnake and the transformation arrays are not available to the control 
-        class. 
+        The use_transformation parameter in the inverse method is only set to true
+        if a response and/or reference transformation file is supplied in the extra
+        control parameters. If only one of the transformations is supplied, the other
+        is set to an identity matrix. The transformations supplied here are applied
+        in the control law, so they should not also be applied in Rattlesnake. 
         """
         self._training_frf_array_=transfer_function
         self._noise_response_cpsd_array_=noise_response_cpsd
@@ -343,6 +380,12 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
         self._multiple_coherence_array_=multiple_coherence
         self._frames_=frames
         self._total_frames_=total_frames
+
+        if self.use_transformation:
+            if self._response_transformation_array_ is None:
+                self._response_transformation_array_ = np.eye(transfer_function.shape[-2])
+            if self._reference_transformation_array_ is None:
+                self._reference_transformation_array_ = np.eye(transfer_function.shape[-1])
         
         # Need to create an inverse argument dictionary so I can remove keys that are
         # unnecessary for the ISE technique (unexpected kwargs cause errors)
@@ -352,11 +395,11 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
         del inverse_arguments['match_trace']
         
         if self.inverse_settings['ISE_technique'].lower() == 'auto_tikhonov_by_l_curve':
-            self.auto_tikhonov_by_l_curve(use_transformation=False, update_header=False, **inverse_arguments)
+            self.auto_tikhonov_by_l_curve(use_transformation=self.use_transformation, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'auto_truncation_by_l_curve':
-            self.auto_truncation_by_l_curve(use_transformation=False, update_header=False, **inverse_arguments)
+            self.auto_truncation_by_l_curve(use_transformation=self.use_transformation, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'auto_tikhonov_by_cv_rse':
-            self.auto_tikhonov_by_cv_rse(use_transformation=False, update_header=False, **inverse_arguments)
+            self.auto_tikhonov_by_cv_rse(use_transformation=self.use_transformation, update_header=False, **inverse_arguments)
         elif self.inverse_settings['ISE_technique'].lower() == 'manual_inverse':
             if 'bp_freqs' in inverse_arguments:
                 # need to interpolate the regularization parameters if breakpoints are supplied
@@ -384,7 +427,7 @@ class RandomControlSourcePathReceiver(PowerSourcePathReceiver):
                                                                             fill_value=(inverse_arguments['num_retained_values'][0],inverse_arguments['num_retained_values'][-1]),
                                                                             assume_sorted=True)(abscissa)
                     del inverse_arguments['bp_freqs']
-            self.manual_inverse(use_transformation=False, update_header=False, **inverse_arguments)
+            self.manual_inverse(use_transformation=self.use_transformation, update_header=False, **inverse_arguments)
         else:
             raise ValueError('The specified ISE technique is not available.')
             
