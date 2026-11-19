@@ -21,6 +21,13 @@ concurrency:
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
+    
+    env:
+      QT_QPA_PLATFORM: "offscreen"
+      MPLBACKEND: "Agg"
+      PYTHONFAULTHANDLER: "1"
+      PYTHONUNBUFFERED: "1"
+      
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -32,7 +39,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
