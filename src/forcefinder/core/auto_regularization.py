@@ -796,11 +796,23 @@ def select_model_by_information_criterion(H, x, f, method):
 
     Raise
     -----
-    NotImplementedError
-        If the supplied responses are a CPSD matrix.
+    ValuedError
+        If the shape of the supplied data isn't expected.
     """
-    if is_cpsd(x):
-        raise NotImplementedError('The information criterion code has not been implemented for power spectra')
+    if H.shape[0] != f.shape[0]:
+        raise ValueError('The number of frequency lines in the forces and FRFs do not match')
+    if H.shape[-1] != f.shape[-1]:
+        raise ValueError('The number of reference DOFs in the forces and FRFs do not match')
+    if H.shape[0] != x.shape[0]:
+        raise ValueError('The number of frequency lines in the responses and FRFs do not match')
+    if H.shape[1] != x.shape[1]:
+        raise ValueError('The number of response DOFs in the responses and FRFs do not match')
+    if x.ndim != 2:
+        raise ValueError('The response data does not have the expected number of dimensions')
+    if f.ndim != 3:
+        raise ValueError('The force data does not have the expected number of dimensions')
+    if H.ndim != 3:
+        raise ValueError('The FRF data does not have the expected number of dimensions')
     
     n = np.squeeze(x).shape[-1]
     p = f.shape[-1]
