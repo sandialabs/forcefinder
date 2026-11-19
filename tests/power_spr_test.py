@@ -667,6 +667,19 @@ def unit_test_force():
                                              sdpy.coordinate.outer_product(dof, dof))
 
 @pytest.fixture(scope='module')
+def unit_test_force_different_abscissa():
+    abscissa = np.array([0,1,2,3,4,5])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis(ord,0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
 def unit_test_response():
     abscissa = np.array([1,2,3,4,5,6])
     dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
@@ -676,6 +689,33 @@ def unit_test_response():
                     np.diag([8,16,24,32]),
                     np.diag([16,32,48,64]),
                     np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
+def unit_test_response_different_abscissa():
+    abscissa = np.array([0,1,2,3,4,5])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128])])
+    return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
+                                             sdpy.coordinate.outer_product(dof, dof))
+
+@pytest.fixture(scope='module')
+def unit_test_response_long_abscissa():
+    abscissa = np.array([0,1,2,3,4,5,6])
+    dof = sdpy.coordinate_array(node=[1,2,3,4], direction=1)
+    ord = np.array([np.diag([1,2,3,4]), 
+                    np.diag([2,4,6,8]), 
+                    np.diag([4,8,12,16]),
+                    np.diag([8,16,24,32]),
+                    np.diag([16,32,48,64]),
+                    np.diag([32,64,96,128]),
+                    np.diag([64,128,192,256])])
     return sdpy.power_spectral_density_array(abscissa, np.moveaxis((ord*[1,2,3,4])*[1,2,3,4],0,-1), 
                                              sdpy.coordinate.outer_product(dof, dof))
 
@@ -890,3 +930,81 @@ def test_sample_splitting(unit_test_frf, unit_test_response):
     assert np.all(misordered_spr.target_frfs.ordinate == unit_test_frf.ordinate)
     assert np.all(misordered_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,3],:,:])
     assert np.all(misordered_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[1,2],:,:])
+
+    # Testing when the training and target response is supplied 
+    unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                target_response=unit_test_response,
+                                                training_response=unit_test_response[training_coordinate])
+    validation_coordinate = sdpy.coordinate.outer_product(validation_dof, validation_dof)
+
+    assert np.all(unit_test_spr.target_response.ordinate == unit_test_response.ordinate)
+    assert np.all(unit_test_spr.training_response.ordinate == unit_test_response[training_coordinate].ordinate)
+    assert np.all(unit_test_spr.validation_response.ordinate == unit_test_response[validation_coordinate].ordinate)
+
+    assert np.all(unit_test_spr.target_response_coordinate == target_dof)
+    assert np.all(unit_test_spr.training_response_coordinate == training_dof)
+    assert np.all(unit_test_spr.validation_response_coordinate == validation_dof)
+
+    assert np.all(unit_test_spr.target_frfs.ordinate == unit_test_frf.ordinate)
+    assert np.all(unit_test_spr.training_frfs.ordinate == unit_test_frf.ordinate[[0,1],:,:])
+    assert np.all(unit_test_spr.validation_frfs.ordinate == unit_test_frf.ordinate[[2,3],:,:])
+
+def test_organization(unit_test_frf, unit_test_response, unit_test_force):
+    """
+    Tests that the SPR initialization organizes the data, as expected. It 
+    takes the unit test objects, mixes up the DOFs, and then loads them 
+    into the SPR object. The data should be organized the same as the test 
+    fixtures if things work as expected.
+    """
+    response = unit_test_response
+    mixed_up_response_dof = sdpy.coordinate_array(node=[4,3,2,1], direction=1)
+    mixed_up_response_coord = sdpy.coordinate.outer_product(mixed_up_response_dof, mixed_up_response_dof)
+    mixed_up_response = response[mixed_up_response_coord]
+
+    if not np.all(mixed_up_response.ordinate==response.ordinate[[3,2,1,0],...][:, [3,2,1,0], :]):
+        raise ValueError('Response organization did not work as expected')
+    
+    frf = unit_test_frf
+    mixed_up_frf_dof = sdpy.coordinate_array(node=[3,1,2,4], direction=1)
+    mixed_up_frf_coord = sdpy.coordinate.outer_product(mixed_up_frf_dof, mixed_up_frf_dof)
+    mixed_up_frf = frf[mixed_up_frf_coord]
+
+    if not np.all(mixed_up_frf.ordinate==frf.ordinate[[2,0,1,3],...][:, [2,0,1,3], :]):
+        raise ValueError('FRF organization did not work as expected')
+    
+    force = unit_test_force
+    mixed_up_force_dof = sdpy.coordinate_array(node=[1,4,3,2], direction=1)
+    mixed_up_force_coord = sdpy.coordinate.outer_product(mixed_up_force_dof, mixed_up_force_dof)
+    mixed_up_force = force[mixed_up_force_coord]
+
+    if not np.all(mixed_up_force.ordinate==force.ordinate[[0,3,2,1],...][:, [0,3,2,1], :]):
+        raise ValueError('Force organization did not work as expected')
+    
+    organized_spr = ff.PowerSourcePathReceiver(mixed_up_frf, mixed_up_response, mixed_up_force)
+
+    assert np.all(organized_spr.force.ordinate == force.ordinate)
+    assert np.all(organized_spr.target_response.ordinate == response.ordinate)
+    assert np.all(organized_spr.training_response.ordinate == response.ordinate)
+    assert np.all(organized_spr.target_frfs.ordinate == frf.ordinate)
+    assert np.all(organized_spr.training_frfs.ordinate == frf.ordinate)
+
+def test_abscissa_validation(unit_test_frf, unit_test_response, 
+                             unit_test_response_different_abscissa,
+                             unit_test_force_different_abscissa,
+                             unit_test_response_long_abscissa):
+    """
+    This test validates the function that compares the abscissa for the 
+    FRFs, responses, and forces.
+    """
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_different_abscissa)
+        
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response_long_abscissa)
+    
+    with pytest.raises(ValueError, match='The abscissa for the data does not match'):
+        unit_test_spr = ff.PowerSourcePathReceiver(unit_test_frf, 
+                                                unit_test_response,
+                                                unit_test_force_different_abscissa)

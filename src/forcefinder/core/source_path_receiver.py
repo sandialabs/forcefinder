@@ -30,7 +30,7 @@ from scipy.linalg import norm
 from scipy.signal import sosfiltfilt 
 from scipy.fft import rfftfreq
 from scipy.interpolate import interp1d
-from .utilities import (check_frequency_abscissa, compare_sampling_rate, is_cpsd, apply_buzz_method,
+from .utilities import (check_abscissa, compare_sampling_rate, is_cpsd, apply_buzz_method,
                         reduce_drives_condition_not_met)
 from .inverse_processing import (linear_inverse_processing, power_inverse_processing, transient_inverse_processing)
 from .auto_regularization import (tikhonov_full_path_for_l_curve,
@@ -299,7 +299,7 @@ class SourcePathReceiver:
             raise ValueError('The training FRF response DOFs do not match the training response DOFs of the SourcePathReceiver object')
         if not np.all(data_array[0, :].reference_coordinate==self._reference_coordinate_):
             raise ValueError('The training FRF reference DOFs do not match the SourcePathReceiver object')
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         self._training_frf_array_ = np.moveaxis(data_array.ordinate, -1, 0)
 
     @property
@@ -829,7 +829,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             raise AttributeError('The target responses of an SPR object cannot be reset once the object is initialized')
         if not isinstance(data_array, sdpy.core.sdynpy_data.SpectrumArray):
             raise TypeError('The target response must be a SDynPy SpectrumArray')
-        check_frequency_abscissa(data_array, self.abscissa)
+        check_abscissa(data_array, self.abscissa)
         self._target_response_array_ = np.moveaxis(data_array[self._target_response_coordinate_[..., np.newaxis]].ordinate, -1, 0)
 
     @property
@@ -851,7 +851,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             raise TypeError('The force must be a SDynPy SpectrumArray')
         if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
             raise ValueError('Force {:} is not in the SPR model'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         self._force_array_ = np.moveaxis(data_array[self.reference_coordinate[..., np.newaxis]].ordinate, -1, 0)
 
     @property
@@ -884,7 +884,7 @@ class LinearSourcePathReceiver(SourcePathReceiver):
             raise ValueError('Training response {:} is not a target response coordinate in the SPR model'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self._target_response_coordinate_)].string_array()))
         if self._training_response_coordinate_ is not None and not np.all(np.isin(self._training_response_coordinate_, data_array.response_coordinate)):
             raise ValueError('Training response {:} is not available in the supplied data'.format(self._training_response_coordinate_[~np.isin(self._training_response_coordinate_, data_array.response_coordinate)].string_array()))
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         # The numpy unique is used when setting the coordinate to make sure that the DOF ordering
         # in the training_response_array matches the other data.
         if self._training_response_coordinate_ is None:
@@ -1796,7 +1796,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             raise AttributeError('The target responses of an SPR object cannot be reset once the object is initialized')
         if not isinstance(data_array, sdpy.core.sdynpy_data.PowerSpectralDensityArray):
             raise TypeError('The target response must be a SDynPy PowerSpectralDensityArray')
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         if is_cpsd(data_array):
             self._target_response_array_ = np.moveaxis(data_array[outer_product(self._target_response_coordinate_, self._target_response_coordinate_)].ordinate, -1, 0)
         else:
@@ -1824,7 +1824,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             raise TypeError('The force must be a SDynPy PowerSpectralDensityArray')
         if not np.all(np.isin(np.unique(data_array.response_coordinate), self.reference_coordinate)):
             raise ValueError('Force {:} is not in the SPR model'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         self._force_array_ = np.moveaxis(data_array[outer_product(self.reference_coordinate, self.reference_coordinate)].ordinate, -1, 0)
 
     @property
@@ -1864,7 +1864,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
             raise ValueError('Training response {:} is not a target response coordinate in the SPR model'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self._target_response_coordinate_)].string_array()))
         if self._training_response_coordinate_ is not None and not np.all(np.isin(self._training_response_coordinate_, data_array.response_coordinate)):
             raise ValueError('Training response {:} is not available in the supplied data'.format(self._training_response_coordinate_[~np.isin(self._training_response_coordinate_, data_array.response_coordinate)].string_array()))
-        check_frequency_abscissa(data_array, self._abscissa_)
+        check_abscissa(data_array, self._abscissa_)
         # The numpy unique is used when setting the coordinate to make sure that the DOF ordering
         # in the training_response_array matches the other data.
         if self._training_response_coordinate_ is None:
@@ -1889,7 +1889,7 @@ class PowerSourcePathReceiver(SourcePathReceiver):
                 raise TypeError('The training response must be a SDynPy PowerSpectralDensityArray')
             if not np.all(np.isin(self.training_response_coordinate, np.unique(data_array.response_coordinate))):
                 raise ValueError('Data for response coordinate {:} is missing from the buzz CPSD array'.format(self.training_response_coordinate[~np.isin(self.training_response_coordinate, data_array.response_coordinate)].string_array()))
-            check_frequency_abscissa(data_array, self._abscissa_)
+            check_abscissa(data_array, self._abscissa_)
             self._buzz_cpsd_array_ = np.moveaxis(data_array[outer_product(self._training_response_coordinate_, self._training_response_coordinate_)].ordinate, -1, 0) 
 
     @property
@@ -3106,6 +3106,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         if not np.all(np.isin(data_array.response_coordinate, self.reference_coordinate)):
             raise ValueError('Force {:} is not in the SPR model'.format(data_array.response_coordinate[~np.isin(data_array.response_coordinate, self.reference_coordinate)].string_array()))
         compare_sampling_rate(data_array, self._abscissa_.max()*2)
+        check_abscissa(data_array, self._time_abscissa_)
         self._force_array_ = np.moveaxis(data_array[self._reference_coordinate_[..., np.newaxis]].ordinate, -1, 0)
 
     @property
@@ -3134,6 +3135,7 @@ class TransientSourcePathReceiver(SourcePathReceiver):
         if self._training_response_coordinate_ is not None and not np.all(np.isin(self._training_response_coordinate_, data_array.response_coordinate)):
             raise ValueError('Training response {:} is not available in the supplied data'.format(self._training_response_coordinate_[~np.isin(self._training_response_coordinate_, data_array.response_coordinate)].string_array()))
         compare_sampling_rate(data_array, self._abscissa_.max()*2)
+        check_abscissa(data_array, self._time_abscissa_)
         # The numpy unique is used when setting the coordinate to make sure that the DOF ordering
         # in the training_response_array matches the other data.
         if self._training_response_coordinate_ is None:
